@@ -1,0 +1,16 @@
+.domain__subdomain-title {
+  font-size: 40px;
+}
+
+.domain__subdomain-list {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+}
+
+.domain__subdomain-list-item {
+  border-radius: 9999em;
+  border: 1px solid blue;
+  margin-right: 1rem;
+  padding: 0.5em 1em;
+}
