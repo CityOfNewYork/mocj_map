@@ -1,0 +1,15 @@
+// Helper classes
+
+.hidden-mobile {
+  display: none !important;
+  @media (min-width: $break-md) {
+    display: block !important;
+  }
+}
+
+.hidden-desktop {
+  display: block !important;
+  @media (min-width: $break-md) {
+    display: none !important;
+  }
+}

@@ -1,0 +1,106 @@
+.main-footer {
+  background-color: $color-secondary;
+  // position: absolute;
+  // bottom: 0;
+  // left: 0;
+  // right: 0;
+  padding: 1rem; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .main-footer__left{
+    display: block;
+  }
+  .main-footer__left a{
+    width: 50%;
+  }
+  .main-footer__left a{
+    display: flex;
+    flex-direction: row;
+    padding: 0 1rem 0 0;
+    justify-content: flex-start;
+  }
+  .main-footer__right{
+    
+    align-items: center;
+    
+  }
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+    .main-footer__left, .main-footer__right{
+      width: auto;
+    }
+    flex-direction: row;
+    .main-footer__right{
+      padding: 0 1rem;
+      margin-top: 0;
+    }
+  }
+}
+.mocj-logo{
+  width: auto;
+  height: 40px; 
+}
+.neighborhood_stat_logo{
+  width: auto;
+  height: 50px;
+}
+.neighborhood_stat_logo_local{
+  width: 75%;
+}
+
+
+.footer-logos{
+  display: flex; 
+  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-top: 1.5rem;
+  img{
+    height: auto;
+    max-width: 100%;
+  }
+  .logo{
+    // flex-basis: 50%;
+    width: calc(50% - 1rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    img{
+        max-height: 50px;
+        width: auto;
+      }
+  }
+  .logo + .logo{
+    
+  }
+  // .logo:nth-child(2n+1){
+  //   margin-top: 1rem;
+  //   margin-right: 1rem;
+  // }
+  @media (min-width: 768px) {
+    margin-top: 0;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    .logo{
+      width: calc(50% - 1rem);
+    }
+    .logo, .logo:nth-child(2n+1){
+      margin: 0;
+      width: auto;
+      flex-shrink: 1;
+    }
+    .logo + .logo{
+      margin-top: 0;
+      margin-left: 2rem;
+    }
+    a, img{
+      max-height: 100%;
+      width: auto;
+    }
+  }
+
+}

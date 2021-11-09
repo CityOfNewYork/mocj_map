@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="54px" height="41px" viewBox="0 0 54 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 7 Copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="0.784930909 0.343702128 47.8385455 0.343702128 47.8385455 40.9999128 0.784930909 40.9999128"></polygon>
+        <polygon id="path-3" points="0 0.651135484 32.6464658 0.651135484 32.6464658 26.5275871 0 26.5275871"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-7-Copy">
+            <g id="Group-3" transform="translate(6.000000, 0.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Clip-2"></g>
+                <path d="M44.6098036,21.6138915 C46.6127127,19.3562745 47.8388945,16.3946787 47.8388945,13.1391043 C47.8388945,6.07314681 42.1076945,0.343614894 35.0377309,0.343614894 C30.5423127,0.343614894 26.5949673,2.66404043 24.3119127,6.16823191 C22.0279855,2.66404043 18.0815127,0.343614894 13.5860945,0.343614894 C6.51700364,0.343614894 0.784930909,6.07314681 0.784930909,13.1391043 C0.784930909,16.5534447 2.13154909,19.6485085 4.31249455,21.9427638 L4.30638545,21.9462532 L24.29184,40.9999128 L44.6194036,21.6191255 L44.6098036,21.6138915 Z" id="Fill-1" fill="#00BBDC" mask="url(#mask-2)"></path>
+            </g>
+            <g id="Group-6" transform="translate(0.000000, 14.000000)">
+                <mask id="mask-4" fill="white">
+                    <use xlink:href="#path-3"></use>
+                </mask>
+                <g id="Clip-5"></g>
+                <polygon id="Fill-4" fill="#004657" mask="url(#mask-4)" points="11.0462289 26.5275871 -8.68421053e-05 15.4471355 4.19959737 11.2351355 11.0462289 18.1009742 28.4467816 0.651135484 32.6464658 4.86313548"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

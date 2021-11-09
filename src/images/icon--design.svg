@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="54px" height="52px" viewBox="0 0 54 52" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 8 Copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="0.850222222 0.0886769231 23.8684444 0.0886769231 23.8684444 21.9998308 0.850222222 21.9998308"></polygon>
+        <polygon id="path-3" points="0 52 54 52 54 0 0 0"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-8-Copy">
+            <g id="Group-3" transform="translate(30.000000, 30.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Clip-2"></g>
+                <path d="M23.8688889,11.0438308 C23.8688889,17.0946769 18.716,21.9998308 12.3595556,21.9998308 C6.00311111,21.9998308 0.850222222,17.0946769 0.850222222,11.0438308 C0.850222222,4.99383077 6.00311111,0.0886769231 12.3595556,0.0886769231 C18.716,0.0886769231 23.8688889,4.99383077 23.8688889,11.0438308" id="Fill-1" fill="#00BBDC" mask="url(#mask-2)"></path>
+            </g>
+            <mask id="mask-4" fill="white">
+                <use xlink:href="#path-3"></use>
+            </mask>
+            <g id="Clip-5"></g>
+            <polygon id="Fill-4" fill="#00BBDC" mask="url(#mask-4)" points="0 20 20 20 20 0 0 0"></polygon>
+            <polygon id="Fill-6" fill="#004657" mask="url(#mask-4)" points="45 25 39.1227015 25 39.1227015 11.6106722 25 11.6106722 25 6 45 6"></polygon>
+            <polygon id="Fill-7" fill="#004657" mask="url(#mask-4)" points="26 44 7 44 7 25 12.9107655 25 12.9107655 38.3558557 26 38.3558557"></polygon>
+        </g>
+    </g>
+</svg>

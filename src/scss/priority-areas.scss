@@ -1,0 +1,149 @@
+
+.priority-category{
+
+  // margin-bottom: 2rem;
+  
+  
+  h3{
+    font-family: $sans;
+    color: $color-secondary;
+    font-size: 16px;
+    margin: 0; 
+  }
+  ul{
+    font-size: 1rem;
+    padding-left: 30px;
+    
+    line-height: 2;
+    li a{
+      font-weight: bold;
+    }
+    li{
+      list-style: none;
+      position: relative;
+      line-height: 1.5;
+      font-size: 1rem;
+    }
+    li + li{
+      margin-top: 0.75rem;
+    }
+    li::before {
+      content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+      color: $color-primary; /* Change the color */
+      font-weight: bold; /* If you want it to be bold */
+      display: inline-block; /* Needed to add space between the bullet and the text */ 
+      width: 1em; /* Also needed for space (tweak if needed) */
+      left: -1em; /* Also needed for space (tweak if needed) */
+      top: 3px;
+      position: absolute;
+    }
+  }
+  .priority-category__content{
+    display: none;
+  }
+
+  @media(max-width:$break-md){
+    h2{font-size: 32px; }
+    ul li{
+      font-size: 18px;
+    }
+  }
+  @media(max-width:$break-lg){}
+
+}
+.priority-categories{
+  z-index: 1;
+  height: auto;
+}
+.category-full-content{
+  position: absolute;
+  z-index: -1;
+  height: 0;
+  overflow: hidden;
+  color: $color-secondary;
+  .cat-name{
+    display: block;
+  }
+  &.show {
+    position: relative;
+    z-index: 1;
+    height: auto;
+    & + .priority-categories{
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      height: 0;
+      overflow: hidden;
+    }
+  }
+  h1{
+    margin-top: 42px;
+    color: $color-primary;
+    font-family: $sans;
+    font-size: 24px;
+    line-height: 1.33;
+    margin-bottom: 22px;
+  }
+  h2,h3,h4,h5{
+    font-family: $sans;
+  }
+  h3{
+    font-size: 18px;
+  }
+  p, ul, ol{
+    line-height: 1.72;
+  }
+  p + h3{
+    margin-top: 3rem;
+  }
+  ul, ol{
+    padding-left: 30px;
+  }
+  ul li{
+    list-style: none;
+    position: relative;
+    strong{
+      color: $color-secondary;
+    }
+    &:before{
+      content: "-";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: -25px;
+    }
+  }
+  li + li{
+    margin-top: 1.5rem;
+  }
+  .footnotes{
+    color: $color-gray;
+    border-top: 1px solid $color-gray;
+    margin-top: 1rem;
+    padding: 1rem 0; 
+    &,p{
+      font-size: 14px;
+    }
+  }
+}
+.breadcrumb, .breadcrumb a{
+  color: #BEBEBE;
+  font-size: 14px;
+  line-height: 1;
+}
+.breadcrumb a{
+  font-weight: 700;
+}
+.download-icon:before{
+  content: '\2193';
+  display: inline;
+  font-weight: 800;
+  font-size: 22px;
+}
+.category-description, .tabs__content .grid--full p, ,.tabs__content .grid--70 p, .tabs__content ul{
+  color: $color-secondary;
+  font-family: $sans;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}

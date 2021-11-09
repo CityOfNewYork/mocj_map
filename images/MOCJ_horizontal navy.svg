@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1876px" height="447px" viewBox="0 0 1876 447" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>MOCJ_horizontal navy</title>
+    <desc>Created with Sketch.</desc>
+    <g id="MOCJ_horizontal-navy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="Fill-1" fill="#FFFFFF" points="278 384 182 288 182 365 163 384 82 384 63 365 63 89 83 69 162 69 259 166 259 89 279 69 359 69 378 88 378 365 359 384"></polygon>
+        <polygon id="Fill-2" fill="#FFFFFF" points="593.999 365 575 384 494 384 475 365 475 306 378 209 378 88 397 69 477 69 496 88 496 128 534.525 166.565 574 128 574 88 593.006 69 673 69 692 88 691.999 208 594 306"></polygon>
+        <polygon id="Fill-3" fill="#FFFFFF" points="750 384 691 325 691 127 750 69 948 69 1006 127 1006 189 988 207 888 207 888 188 810 188 810 266 888 265.999 888 246 987 246 1006 265 1006 326 948 384"></polygon>
+        <text id="Criminal-" font-family="Helvetica-Bold, Helvetica" font-size="187.085" font-weight="bold" letter-spacing="-0.0005" fill="#FFFFFF">
+            <tspan x="1068.0601" y="199.242">Criminal </tspan>
+        </text>
+        <text id="Justice" font-family="Helvetica-Bold, Helvetica" font-size="186.476" font-weight="bold" fill="#FFFFFF">
+            <tspan x="1069.39" y="378.523">Justice</tspan>
+        </text>
+    </g>
+</svg>

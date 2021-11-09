@@ -1,0 +1,99 @@
+// List & table styles
+
+.list--lg {
+  padding-inline-start: 0;
+
+  list-style: none;
+  margin-top: 3rem;
+  li {
+    color: $color-primary;
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+
+    h3 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: $color-secondary;
+      margin-top: 0;
+    }
+
+    p, p a {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.6rem;
+    }
+
+    a { display: block; }
+  }
+}
+
+
+table {
+  margin: 1rem 0 50px;
+  width: 100%;
+
+  thead {
+    td {
+      color: $color-secondary;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding-bottom: 0.5rem;
+
+      @media (min-width: $break-md) {
+        font-size: 1.25rem;
+        line-height: 1.4rem;
+      }
+    }
+  }
+
+  tbody {
+    td {
+      color: $color-secondary;
+      padding: 0.25rem 0;
+      @extend .type--body;
+
+      &:first-of-type {
+        color: $color-gray;
+      }
+    }
+  }
+}
+.property-header{
+  color: $color-secondary;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding-bottom: 0.5rem;
+  margin-top: 2rem;
+  @media (min-width: $break-md) {
+    font-size: 1.25rem;
+    line-height: 1.4rem;
+    }
+}
+.address{
+  line-height: 1.25rem;
+  color: $color-secondary;
+  font-size: 0.8rem;
+}
+table.info{
+  font-size: 0.8rem;
+  list-style: none;
+  
+  td.val{
+    font-size: 0.8rem;
+    color: $color-dark-blue;
+    text-align: left;
+    width: 50%;
+  }
+  td.info-label{
+    font-size: 0.8rem;
+    padding: 0.1rem 0;
+    color: #9B9B9B;
+  }
+  td{
+    line-height: 1rem;
+  }
+}

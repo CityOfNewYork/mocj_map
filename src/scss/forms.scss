@@ -1,0 +1,13 @@
+.form--search {
+  display: none;
+
+  input[type="text"] {
+    border: 0;
+    color: $color-secondary;
+  }
+
+  @media (min-width: $break-md) {
+    display: block;
+  }
+}
+

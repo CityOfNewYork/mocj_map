@@ -1,0 +1,103 @@
+// Carousel / slider styles
+
+.mocj-slider {
+  margin-bottom: 1rem;
+  opacity: 0;
+  padding: 0 1rem;
+  transition: opacity 0.3s;
+  overflow: hidden;
+
+  .module { width: 100% }
+
+  @media (min-width: $break-md) {
+    margin-bottom: 0rem;
+    padding: 0 3rem;
+
+    .module {
+      padding-left: 1rem;
+      width: 33.33%
+    }
+  }
+  .flickity-prev-next-button.next {
+    right: 0;
+
+    @media (min-width: $break-lg) {
+      // right: -1rem;
+    }
+
+    .flickity-button-icon {
+      left: auto;
+      right: 0;
+    }
+  }
+  .flickity-prev-next-button.previous {
+    left: 0;
+
+    @media (min-width: $break-lg) {
+      // left: -1rem;
+    }
+
+    .flickity-button-icon {
+      left: 0;
+    }
+  }
+  .flickity-button {
+     background-color: transparent;
+     // .flickity-button-icon {
+     //    top: 20%;
+     //    left: 20%;
+     //  }
+      &:hover {
+        background-color: transparent;
+      }
+  }
+}
+
+/* general flickity questions */
+
+.flickity-button {
+    
+    padding: 0;
+    .flickity-button-icon {
+      height: 40%;
+      width: 40%;
+      top: 30%;
+      left: 30%;
+      * { fill: $color-charcoal; }
+    }
+  }
+.flickity-page-dots{
+  display: none;
+
+  @media (min-width: $break-md) {
+    display: block;
+  }
+}
+.flickity-page-dots .dot{
+
+  background-color: $color-secondary;
+  opacity: 0.25;
+  &.is-selected{
+    background-color: $color-secondary;
+  }
+}
+.previous.flickity-prev-next-button .flickity-button-icon{
+  left: 30%;
+}
+
+
+.wp-block-blockgallery-carousel {
+
+  margin-bottom: 2rem;
+
+ .blockgallery--figure{
+    padding: 0 0.2rem;
+  }
+  .blockgallery--item
+  {
+    opacity: 0.3;
+    &.is-selected{
+      opacity: 1;
+    }
+  }
+}
