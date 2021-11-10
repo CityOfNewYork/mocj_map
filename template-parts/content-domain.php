@@ -66,14 +66,16 @@
 	  <?php echo $subdomain['description']; ?>
 	</div>
 
-	<div class="js-accordion">
+	<div class="domain__subdomain-data">
 	  <?php foreach ($subdomain['subdomain_data'] as $data) { ?>
-	    <p>
-	      <?php echo $data['title']; ?>
-	    </p>
+	    <div class="domain__accordion js-accordion">
+	      <p class="js-trigger">
+		<?php echo $data['title']; ?>
+	      </p>
 
-	    <div>
-	      <?php echo $data['description']; ?>
+	      <div class="domain__accordion-content js-accordion-content" style="height:0;">
+		<?php echo $data['description']; ?>
+	      </div>
 	    </div>
 	  <?php } ?>
 	</div>
