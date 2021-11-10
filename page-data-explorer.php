@@ -85,11 +85,31 @@ get_header();
     view.setColumns([quarterColumn, 7]);
 
     // console.log("view: ", view);
+    
+    const chartOpts = {
+      title: 'Graph of ' + indicator_id + ' in site ' + smart_site,
+      legend: {
+        position: 'none',
+      },
+      pointsVisible: true,
+      hAxis: {
+        title: 'Quarter',
+        titleTextStyle: {
+          bold: true,
+          italic: false
+        }
+      },
+      vAxis: {
+        title: 'Count',
+        titleTextStyle: {
+          bold: true,
+          italic: false
+        }
+      }
+    };
 
     const chart = new google.visualization.LineChart(document.getElementById('csv'));
-    chart.draw(view, {
-      'title': 'Graph of ' + indicator_id + ' in site ' + smart_site,
-    });
+    chart.draw(view, chartOpts);
   }
 </script>
 
