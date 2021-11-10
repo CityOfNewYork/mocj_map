@@ -24,40 +24,63 @@
 
   <?php the_content(); ?>
 
-  <ul class="domain__subdomain-list">
-    <?php
-      $subdomains = get_field('subdomain');
-      foreach ($subdomains as $subdomain) { ?>
-    <li class="domain__subdomain-list-item" role="tab">
-      <?php echo $subdomain['title']; ?>
-    </li>
-      <?php } ?>
-  </ul>
+  <div class="js-tabs">
 
-  <?php
-  foreach ($subdomains as $subdomain) { ?>
-    <div class="domain__subdomain" role="tabpanel">
-      <p class="domain__subdomain-title">
-	<?php echo $subdomain['title']; ?>
-      </p>
-
-      <div class="domain__subdomain-description">
-	<?php echo $subdomain['description']; ?>
-      </div>
-
-      <div class="js-accordion">
-	<?php foreach ($subdomain['subdomain_data'] as $data) { ?>
-	  <p>
-	    <?php echo $data['title']; ?>
-	  </p>
-
-	  <div>
-	    <?php echo $data['description']; ?>
-	  </div>
+    <ul class="domain__subdomain-list" role="tablist">
+      <?php
+	$subdomains = get_field('subdomain');
+	foreach ($subdomains as $i => $subdomain) { ?>
+	  <li role="presentation">
+	    <a
+	      href="tabpanel-<?php echo $i; ?>"
+	      id="subdomain-<?php echo $i; ?>-tab"
+	      class="domain__subdomain-list-item js-tabs-tab"
+	      role="tab"
+	      aria-controls="subdomain-<?php echo $i; ?>"
+	      <?php if ($i === 0) : ?>
+	      aria-selected="true"
+	      <?php endif; ?>
+	    >
+	      <?php echo $subdomain['title']; ?>
+	    </a>
+	  </li>
 	<?php } ?>
+    </ul>
+
+    <?php
+    foreach ($subdomains as $i => $subdomain) { ?>
+      <div
+	id="subdomain-<?php echo $i; ?>"
+	class="domain__subdomain js-tabs-tabpanel"
+	role="tabpanel"
+	aria-labelledby="subdomain-<?php echo $i; ?>-tab"
+	<?php if ($i !== 0) : ?>
+	aria-hidden="true"
+	<?php endif; ?>
+      >
+	<p class="domain__subdomain-title">
+	  <?php echo $subdomain['title']; ?>
+	</p>
+
+	<div class="domain__subdomain-description">
+	  <?php echo $subdomain['description']; ?>
+	</div>
+
+	<div class="js-accordion">
+	  <?php foreach ($subdomain['subdomain_data'] as $data) { ?>
+	    <p>
+	      <?php echo $data['title']; ?>
+	    </p>
+
+	    <div>
+	      <?php echo $data['description']; ?>
+	    </div>
+	  <?php } ?>
+	</div>
       </div>
-    </div>
-  <?php } ?>
+    <?php } ?>
+
+  </div>
 
   </article>
 </main>

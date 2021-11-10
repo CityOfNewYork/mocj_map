@@ -5,12 +5,32 @@
 .domain__subdomain-list {
   display: flex;
   list-style-type: none;
-  padding: 0;
+  padding: 0 !important; // Overriding .article-layout
 }
 
 .domain__subdomain-list-item {
+  display: block;
+  color: $color-secondary;
   border-radius: 9999em;
-  border: 1px solid blue;
+  border: 1px solid $color-secondary;
   margin-right: 1rem;
   padding: 0.5em 1em;
+
+  &[aria-selected=true] {
+    background: $color-secondary;
+    color: $color-white;
+  }
+
+  &:focus-visible,
+  &:hover {
+    outline: 2px solid $color-secondary;
+    background: $color-light-blue;
+    color: $color-secondary;
+  }
+}
+
+.domain__subdomain {
+  &[aria-hidden=true] {
+    display: none;
+  }
 }
