@@ -1,7 +1,9 @@
 .domain__subdomain-list {
   display: flex;
+  flex-wrap: wrap;
   list-style-type: none;
-  padding: 0 !important; // Overriding .article-layout
+  padding: 0;
+  margin: 45px 0 75px 0;
 }
 
 .domain__subdomain-list-item {
@@ -9,27 +11,56 @@
   color: $color-secondary;
   border-radius: 9999em;
   border: 1px solid $color-secondary;
-  margin-right: 1rem;
-  padding: 0.5em 1em;
+  margin-right: 16px;
+  padding: #{(5/9)}em #{(16.5/18)}em;
+  line-height: 1.6;
 
   &[aria-selected=true] {
     background: $color-secondary;
     color: $color-white;
   }
 
-  &:focus-visible,
+  &:focus,
   &:hover {
     outline: 2px solid $color-secondary;
     background: $color-light-blue;
     color: $color-secondary;
   }
+
+  // libsass chokes on this
+  @supports selector(:focus-visible) {
+    &:focus {
+      outline: unset;
+      background: unset;
+      color: unset;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-secondary;
+      background: $color-light-blue;
+      color: $color-secondary;
+    }
+  }
+
+  :last-child > & {
+    margin-right: 0;
+  }
 }
 
 .domain__subdomain {
   display: grid;
+  column-gap: 80px;
+
   grid-template:
-   'title data' auto
-   'description data' auto / 1fr 300px;
+   'title'  auto
+   'description' auto
+   'data' auto / 1fr;
+
+  @media screen and (min-width: $break-md) {
+    grid-template:
+     'title data' auto
+     'description data' 1fr / minmax(50%, 1fr) minmax(auto, 420px);
+  }
 
   &[aria-hidden=true] {
     display: none;
@@ -37,8 +68,12 @@
 }
 
 .domain__subdomain-title {
-  font-size: 40px;
+  font-size: #{(28 / 18)}rem;
+  font-family: $serif;
+  font-weight: 700;
+  line-height: 1.6;
   grid-area: title;
+  margin-bottom: 5px;
 }
 
 .domain__subdomain-description {
@@ -47,6 +82,28 @@
 
 .domain__subdomain-data {
   grid-area: data;
+}
+
+.domain__accordion {
+  border-bottom: 1px solid $color-secondary;
+}
+
+.domain__accordion-title {
+  margin: 20px 0;
+  font-size: #{(20/18)}rem;
+  font-weight: 700;
+  line-height: 1.6;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+
+  &::after {
+    content: '+';
+
+    .domain__accordion.open & {
+      content: '-';
+    }
+  }
 }
 
 .domain__accordion-content {

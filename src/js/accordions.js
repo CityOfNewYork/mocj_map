@@ -56,7 +56,7 @@ const toggleAccordions = (e) => {
   let totalHeight = 0
   el.parentElement.classList.toggle('open')
 
-  totalHeight = el.scrollHeight
+  totalHeight = el.nextElementSibling.scrollHeight
   // check if current is a sub-accordion
   if (el.classList.contains('sub-accordion__trigger')) {
     subAccordions(el, totalHeight)
@@ -69,7 +69,7 @@ const toggleAccordions = (e) => {
       for (let i = 0; i < childAccordions.length; i++) {
         let child = childAccordions[i]
         let childContent = child.nextElementSibling;
-        let childHeight = child.scrollHeight
+        let childHeight = child.nextElementSibling.scrollHeight
         subAccordions(child, childHeight)
         if (childContent.parentElement.classList.contains('open')) {
           childContent.style.height = `${childHeight}px`
