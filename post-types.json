@@ -240,7 +240,7 @@
     "has_archive_string": "",
     "exclude_from_search": "false",
     "capability_type": "post",
-    "hierarchical": "false",
+    "hierarchical": "true",
     "rewrite": "true",
     "rewrite_slug": "",
     "rewrite_withfront": "true",

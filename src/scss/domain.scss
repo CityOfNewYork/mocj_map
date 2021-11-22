@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 .domain__subdomain-list {
   display: flex;
   flex-wrap: wrap;
@@ -12,7 +14,7 @@
   border-radius: 9999em;
   border: 1px solid $color-secondary;
   margin-right: 16px;
-  padding: #{(5/9)}em #{(16.5/18)}em;
+  padding: #{math.div(5, 9)}em #{math.div(16.5, 18)}em;
   line-height: 1.6;
 
   &[aria-selected=true] {
@@ -68,7 +70,7 @@
 }
 
 .domain__subdomain-title {
-  font-size: #{(28 / 18)}rem;
+  font-size: #{math.div(28, 18)}rem;
   font-family: $serif;
   font-weight: 700;
   line-height: 1.6;
@@ -89,8 +91,9 @@
 }
 
 .domain__accordion-title {
+  position: relative;
   margin: 20px 0;
-  font-size: #{(20/18)}rem;
+  font-size: #{math.div(20, 18)}rem;
   font-weight: 700;
   line-height: 1.6;
   cursor: pointer;
@@ -98,10 +101,19 @@
   justify-content: space-between;
 
   &::after {
-    content: '+';
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: url('../images/icon--plus.svg');
+    background-repeat: no-repeat;
+    background-position: right center;
 
     .domain__accordion.open & {
-      content: '-';
+      background-image: url('../images/icon--minus.svg');
     }
   }
 }

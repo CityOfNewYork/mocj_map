@@ -22,6 +22,12 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.svg$/,
+        use: {
+          loader: "svg-url-loader",
+        },
+      },
+      {
         test: /\.scss$/,
         use: [
           MiniCssExtractPlugin.loader,
@@ -42,6 +48,7 @@ module.exports = {
             loader: "sass-loader",
             options: {
               implementation: require("sass"),
+              sourceMap: true,
             },
           },
         ]
