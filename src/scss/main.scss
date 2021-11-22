@@ -1,3 +1,9 @@
+/*
+Theme Name: MOCJ
+Version: 1.1
+Test Domain: mocj
+*/
+
 @import url("https://use.typekit.net/mda2jot.css");
 
 // Base
@@ -21,5 +27,9 @@
 @import './carousel';
 @import './pillars';
 @import './priority-areas';
+@import './quote-carousel';
 @import './slideout';
+@import './domain';
+@import './domain-cta';
+@import './secondary-nav';
 

@@ -1,3 +1,5 @@
 node_modules
 main.js
 style.css
+*.map
+.DS_Store

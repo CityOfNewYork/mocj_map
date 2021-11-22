@@ -66,11 +66,12 @@ body {
     padding: 2rem 1rem;
   }
   @media (min-width: $break-xl) {
-   padding: 1rem 1rem; 
+   padding: 1rem 1rem;
   }
 }
 
 .container {
+  overflow: auto;
   max-width: $max-width;
   margin: 0 auto;
   padding-left: 2rem;
@@ -119,7 +120,7 @@ body {
 }
 
 .grid--half {
-  
+
   .container {
     width: 100%;
     padding-left: 0;
@@ -215,7 +216,7 @@ body {
 .grid--full {
   width: 100%;
   margin: 0 auto;
-  
+
   &.type--body, .category-full-content, .priority-categories{
     width: 100%;
     margin: 0 auto;
@@ -224,7 +225,7 @@ body {
     }
   }
 
-  // max-width: 1000px; 
+  // max-width: 1000px;
 }
 .grid--70 {
   width: 100%;
@@ -357,7 +358,7 @@ a.module {
     margin: 1.45rem 0 0;
   }
 
-  .module-copy { 
+  .module-copy {
     font-size: 1rem;
     line-height: 1.4;
   }
@@ -391,7 +392,7 @@ a.module {
   border-radius: 50%;
   background-size: cover;
   background-position: 50% 50%;
-  background-color: #eee; 
+  background-color: #eee;
 }
 
 .tabs__content .contact__info p{
@@ -418,7 +419,7 @@ a.module {
 .contact__title { margin: 0; }
 .contact__phone {
   padding: 0;
-  margin: 0; 
+  margin: 0;
 }
 
 .contact__title,
@@ -435,16 +436,16 @@ a.module {
 // BG image hero
 .hero {
   align-items: center;
-  background-color: white;  
+  background-color: white;
   color: $color-white;
   display: flex;
   flex-direction: column;
-  max-height: 360px;
-  height: 33vh;
+  padding: 100px 0;
+  min-height: 33vh;
   justify-content: center;
   position: relative;
   width: 100%;
-  
+
   .home &{
     max-height: 520px;
     height: 520px;
@@ -459,12 +460,12 @@ a.module {
     font-weight: 700;
     line-height: 1.14;
     padding-left: 2rem;
-    padding-right: 2rem; 
+    padding-right: 2rem;
     @media (min-width: $break-md) {
       font-size: 2.8rem;
     }
   }
-  
+
   &:after {
     background-color: rgba(0,0,0,0.3);
     bottom: 0;
@@ -497,6 +498,19 @@ a.module {
     background-color: $color-primary;
   }
 }
+
+.hero-content .hero__description a {
+  padding: 0;
+  font-weight: inherit;
+  display: inline;
+  background-color: transparent;
+  text-decoration: underline;
+
+  &:hover {
+    background-color: transparent;
+  }
+}
+
 .hero .hero-content{
     z-index: 2;
     width: 80%;
@@ -519,11 +533,11 @@ a.module {
     a{
       margin-top: 2rem;
     }
-    
+
     @media (min-width: $break-md) {
        h2{
         font-size: 2rem;
-      } 
+      }
       p{
         font-size: 1rem;
       }
@@ -542,7 +556,7 @@ a.module {
   // background-blend-mode: multiply, luminosity;
   // filter: grayscale(100%);
   background-color: #0191C9;
-  background-size: cover; 
+  background-size: cover;
   background-position: 50% 50%;
   //background-color: #0191C9;
 }
@@ -553,7 +567,7 @@ a.module {
 
 .pillar-link{
   width: 100%;
-  padding: 1rem; 
+  padding: 1rem;
   svg{
     width: 100%;
   }
@@ -692,8 +706,8 @@ a.module {
   padding-bottom: 3rem;
 
 
-  
-  h4{ 
+
+  h4{
     font-family: $serif;
     margin: 0;
     font-size: 1.5rem;
@@ -716,7 +730,7 @@ a.module {
     color: $color-secondary;
     font-size: 1.333rem;
     margin-top: 0;
-  } 
+  }
 }
 
 
@@ -731,7 +745,7 @@ a.module {
   a{
     width: 33%;
     .grid--30 &{
-      width: 100%; 
+      width: 100%;
     }
   }
   @media (min-width: $break-lg) {
@@ -757,8 +771,8 @@ a.module {
   width: 100%;
   a {
     border-bottom: 1px solid $color-secondary;
-    
-    
+
+
   }
   h2{
     transition: 0.5s;
@@ -768,16 +782,16 @@ a.module {
   & > a{
     position: relative;
     display: block;
-    
+
     width: 100%;
     text-align: center;
     transition: 0.5s;
-    
+
     &:hover{
       h2{
         color: $color-primary;
       }
-    } 
+    }
   }
   @media (min-width: $break-md) {
     flex-direction: row;
@@ -791,10 +805,10 @@ a.module {
     a{
       border-bottom: none;
     }
-    a + a{ 
+    a + a{
       &:before{
         content: '';
-        
+
         border-left: 1px solid $color-gray;
         height: 50%;
         position: absolute;
@@ -833,7 +847,7 @@ a.module {
 
   overflow: scroll;
   display: flex;
-  
+
   .content-column{
     flex-grow: 1;
     width: 60%;
@@ -880,7 +894,7 @@ a.module {
         width: 140px;
         min-width: 140px;
         height: auto;
-        padding-bottom: 0; 
+        padding-bottom: 0;
       }
       .module__bottom{
         margin-left: 1rem;
@@ -901,7 +915,7 @@ a.module {
   justify-content: flex-start;
   a{
     width: 100%;
-    padding: 1rem; 
+    padding: 1rem;
     @media (min-width: $break-md){
       width: 33%;
     }
@@ -963,7 +977,7 @@ img.aligncenter { display: block; margin-left: auto; margin-right: auto; }
     }
   }
   @media (max-width: 767px) {
-    
+
     font-size: 0.75rem;
     a{
       line-height: 1.25;
@@ -1007,7 +1021,7 @@ h2.team-name{
 }
 .people-grid{
   margin-top: 3rem;
-  display: flex; 
+  display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -1086,7 +1100,7 @@ h2.team-name{
     }
   }
   @media (min-width: $break-sm) {
-    display: grid;  
+    display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 1rem;
     & > div{

@@ -1,0 +1,124 @@
+@use 'sass:math';
+
+.domain__subdomain-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+  padding: 0;
+  margin: 45px 0 75px 0;
+}
+
+.domain__subdomain-list-item {
+  display: block;
+  color: $color-secondary;
+  border-radius: 9999em;
+  border: 1px solid $color-secondary;
+  margin-right: 16px;
+  padding: #{math.div(5, 9)}em #{math.div(16.5, 18)}em;
+  line-height: 1.6;
+
+  &[aria-selected=true] {
+    background: $color-secondary;
+    color: $color-white;
+  }
+
+  &:focus,
+  &:hover {
+    outline: 2px solid $color-secondary;
+    background: $color-light-blue;
+    color: $color-secondary;
+  }
+
+  // libsass chokes on this
+  @supports selector(:focus-visible) {
+    &:focus {
+      outline: unset;
+      background: unset;
+      color: unset;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-secondary;
+      background: $color-light-blue;
+      color: $color-secondary;
+    }
+  }
+
+  :last-child > & {
+    margin-right: 0;
+  }
+}
+
+.domain__subdomain {
+  display: grid;
+  column-gap: 80px;
+
+  grid-template:
+   'title'  auto
+   'description' auto
+   'data' auto / 1fr;
+
+  @media screen and (min-width: $break-md) {
+    grid-template:
+     'title data' auto
+     'description data' 1fr / minmax(50%, 1fr) minmax(auto, 420px);
+  }
+
+  &[aria-hidden=true] {
+    display: none;
+  }
+}
+
+.domain__subdomain-title {
+  font-size: #{math.div(28, 18)}rem;
+  font-family: $serif;
+  font-weight: 700;
+  line-height: 1.6;
+  grid-area: title;
+  margin-bottom: 5px;
+}
+
+.domain__subdomain-description {
+  grid-area: description;
+}
+
+.domain__subdomain-data {
+  grid-area: data;
+}
+
+.domain__accordion {
+  border-bottom: 1px solid $color-secondary;
+}
+
+.domain__accordion-title {
+  position: relative;
+  margin: 20px 0;
+  font-size: #{math.div(20, 18)}rem;
+  font-weight: 700;
+  line-height: 1.6;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: url('../images/icon--plus.svg');
+    background-repeat: no-repeat;
+    background-position: right center;
+
+    .domain__accordion.open & {
+      background-image: url('../images/icon--minus.svg');
+    }
+  }
+}
+
+.domain__accordion-content {
+  overflow: hidden;
+  transition: height 0.2s;
+}

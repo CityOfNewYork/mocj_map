@@ -1,3 +1,8 @@
+:root {
+  --font-sans: #{$sans};
+  --font-serif: #{$serif};
+}
+
 a {
   color: $color-primary;
   text-decoration: none;
@@ -18,7 +23,7 @@ h2{
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   font-smoothing: antialiased;
-  margin: 30px 0; 
+  margin: 30px 0;
 }
 h2{
   font-size: 2rem;
@@ -116,7 +121,7 @@ h4 {
 .section-header {
   h1, h2{
     color: $color-secondary;
-    margin-bottom: 10px;    
+    margin-bottom: 10px;
     @extend .type--header;
   }
 
@@ -235,7 +240,7 @@ blockquote {
 #tab-map-programs{
   ul{
     margin: 0;
-    padding-left: 1.5rem; 
+    padding-left: 1.5rem;
     li + li{
       margin-top: 1.5em;
     }

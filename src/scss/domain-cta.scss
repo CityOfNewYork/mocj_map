@@ -1,0 +1,18 @@
+.domain-cta {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  font-size: 20px;
+  margin: 56px auto;
+  background-color: $color-med-blue;
+  color: $color-white;
+  padding: 18px 100px;
+  border-radius: 9999em;
+  transition: background-color 0.3s, color 0.3s;
+
+  &:focus,
+  &:hover {
+    background-color: $color-dark-blue;
+    color: $color-white;
+  }
+}
