@@ -13,7 +13,8 @@
   color: $color-secondary;
   border-radius: 9999em;
   border: 1px solid $color-secondary;
-  margin-right: 16px;
+  margin-right: 12px;
+  margin-bottom: 12px;
   padding: #{math.div(5, 9)}em #{math.div(16.5, 18)}em;
   line-height: 1.6;
 
