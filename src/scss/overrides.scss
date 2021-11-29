@@ -1,0 +1,4 @@
+// Block gallery plugin can lead to distorted images
+.blockgallery--item img {
+  height: auto;
+}
