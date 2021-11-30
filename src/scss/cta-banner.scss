@@ -1,0 +1,25 @@
+.cta-banner {
+  padding: 100px 0;
+  width: 100vw;
+  text-align: center;
+
+  .container & {
+    position: relative;
+    left: calc((100vw - 100%) / -2);
+    z-index: 2;
+  }
+
+  .domain-cta {
+    margin-bottom: 0;
+  }
+}
+
+.cta-banner__title {
+  margin-top: 0;
+  font-size: 38px;
+  font-weight: 700;
+}
+
+.cta-banner__description {
+  font-size: 18px;
+}
