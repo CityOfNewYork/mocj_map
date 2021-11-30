@@ -46,7 +46,9 @@ a {
   }
 }
 
-p {
+p,
+ul,
+ol {
   font-family: $sans;
   @extend .type--body;
 }
