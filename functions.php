@@ -504,12 +504,26 @@ function tweek_mce( $init ) {
 }
 add_filter('tiny_mce_before_init', 'tweek_mce');
 
+// Initialize TinyMCE table plugin
+function add_the_table_plugin( $plugins ) {
+	$plugins['table'] = get_template_directory_uri() . '/tinymce-plugins/table/plugin.min.js';
+	return $plugins;
+}
+add_filter( 'mce_external_plugins', 'add_the_table_plugin' );
+
+// Add table button to TinyMCE buttons
+function mce_table_button( $buttons ) {
+	array_push( $buttons, 'table' );
+	return $buttons;
+}
+// Register our callback to the appropriate filter
+add_filter( 'mce_buttons', 'mce_table_button' );
+
 add_filter( 'acf/fields/wysiwyg/toolbars', function ( $toolbars ) {
 	array_unshift( $toolbars['Full'][2], 'fontsizeselect' );
 	array_unshift( $toolbars['Full'][2], 'fontselect' );
 	return $toolbars;
 } );
-
 
 // Domain Content Custom Fields
 if( function_exists('acf_add_local_field_group') ):
