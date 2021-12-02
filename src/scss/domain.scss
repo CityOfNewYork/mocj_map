@@ -20,9 +20,12 @@
 
   &:focus,
   &:hover {
-    outline: 2px solid $color-secondary;
     background: $color-light-blue;
     color: $color-secondary;
+  }
+
+  &:focus {
+    outline: 2px solid $color-secondary;
   }
 
   @supports selector(:focus-visible) {
