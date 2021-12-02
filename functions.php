@@ -524,7 +524,7 @@ acf_add_local_field_group(array(
 			'name' => 'thumb',
 			'type' => 'image',
 			'instructions' => '',
-			'required' => 0,
+			'required' => 1,
 			'conditional_logic' => 0,
 			'wrapper' => array(
 				'width' => '',
@@ -605,7 +605,7 @@ acf_add_local_field_group(array(
 					'name' => 'subdomain_data',
 					'type' => 'repeater',
 					'instructions' => '',
-					'required' => 0,
+					'required' => 1,
 					'conditional_logic' => 0,
 					'wrapper' => array(
 						'width' => '',
