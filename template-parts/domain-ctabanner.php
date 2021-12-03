@@ -17,9 +17,17 @@ $cta = $ctabanner['cta'];
     <?php echo $ctabanner['description']; ?>
   </p>
 
+<?php
+if ($cta) {
+?>
+
   <a href="<?php echo $cta['url']; ?>" class="domain-cta domain-cta--white" target="<?php echo $cta['target']; ?>">
     <?php echo $cta['title']; ?>
   </a>
+
+<?php
+}
+?>
 
   </div>
 
