@@ -126,3 +126,34 @@
   overflow: hidden;
   transition: height 0.2s;
 }
+
+// Override too-broad table styles in lists.scss
+.domain {
+  table {
+    margin: initial;
+    width: initial;
+
+    thead {
+      td {
+        color: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+
+        @media (min-width: $break-md) {
+          font-size: inherit;
+          line-height: inherit;
+        }
+      }
+    }
+
+    tbody {
+      td {
+        color: inherit;
+
+        &:first-of-type {
+          color: inherit;
+        }
+      }
+    }
+  }
+}
