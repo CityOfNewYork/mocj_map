@@ -9,8 +9,6 @@ const cacheEls = () => {
 const initCarousels = () => {
 
   els.carousel.each(function(){
-    console.log(jQuery(this));
-
     let flkty = new Flickity(this, {
       cellAlign: 'left',
       contain: true,
@@ -44,7 +42,7 @@ const init = () => {
     //     loadCount++
     //     // cached image load
     //     if (loadCount === els.imgs.length) {
-         
+
     //     }
     //   }
 
