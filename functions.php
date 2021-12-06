@@ -646,7 +646,7 @@ acf_add_local_field_group(array(
 					'name' => 'subdomain_data',
 					'type' => 'repeater',
 					'instructions' => '',
-					'required' => 1,
+					'required' => 0,
 					'conditional_logic' => 0,
 					'wrapper' => array(
 						'width' => '',
