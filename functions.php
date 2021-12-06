@@ -558,8 +558,8 @@ acf_add_local_field_group(array(
 		),
 		array(
 			'key' => 'field_61ae0d9486d9a',
-			'label' => 'Subtitle',
-			'name' => 'subtitle',
+			'label' => 'Short Title',
+			'name' => 'short_title',
 			'type' => 'text',
 			'instructions' => '',
 			'required' => 0,
@@ -954,6 +954,8 @@ acf_add_local_field_group(array(
 ));
 
 endif;
+
+
 
 // Hero content
 if( function_exists('acf_add_local_field_group') ):
