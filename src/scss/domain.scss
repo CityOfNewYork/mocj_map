@@ -128,7 +128,12 @@
 
   a {
     color: inherit;
-    text-decoration: underlin;
+    text-decoration: underline;
+
+    &:focus,
+    &:hover {
+      color: $color-med-blue;
+    }
   }
 }
 
