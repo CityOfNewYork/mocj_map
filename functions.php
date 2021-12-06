@@ -557,6 +557,25 @@ acf_add_local_field_group(array(
 			'mime_types' => '',
 		),
 		array(
+			'key' => 'field_61ae0d9486d9a',
+			'label' => 'Subtitle',
+			'name' => 'subtitle',
+			'type' => 'text',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'maxlength' => '',
+		),
+		array(
 			'key' => 'field_618566b3f4ad2',
 			'label' => 'Subdomains',
 			'name' => 'subdomains',
@@ -926,7 +945,7 @@ acf_add_local_field_group(array(
 	),
 	'menu_order' => 0,
 	'position' => 'normal',
-	'style' => 'seamless',
+	'style' => 'default',
 	'label_placement' => 'top',
 	'instruction_placement' => 'label',
 	'hide_on_screen' => '',
@@ -935,7 +954,6 @@ acf_add_local_field_group(array(
 ));
 
 endif;
-
 
 // Hero content
 if( function_exists('acf_add_local_field_group') ):
