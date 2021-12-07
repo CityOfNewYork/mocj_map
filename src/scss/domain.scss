@@ -125,6 +125,16 @@
 .domain__accordion-content {
   overflow: hidden;
   transition: height 0.2s;
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+
+    &:focus,
+    &:hover {
+      color: $color-med-blue;
+    }
+  }
 }
 
 // Override too-broad table styles in lists.scss
