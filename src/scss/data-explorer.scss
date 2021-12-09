@@ -1,0 +1,74 @@
+.main-header-container {
+    overflow: hidden;
+    width: 100%;
+    min-height: 634px;
+    // background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('../images/pierre-jeanneret-QL_DdWFUsFc-unplash.png');
+    color: #FFFFFF;
+}
+
+#data-container {
+    /* display: none; */
+}
+
+#chart-container {
+    /* display: none; */
+}
+
+#data-render {
+    /* display: none; */
+    position: relative;
+    background-color: rgba(48, 79, 94, 0.8);
+}
+
+.print-bttn {
+    position: absolute;
+    background: none;
+    border: none;
+    outline: none;
+    top: 20px;
+    right: 20px;
+    color: #FFFFFF;
+}
+
+.section-data {
+    font-size: 0.8rem;
+}
+
+#accordion .card {
+    border: none;
+}
+
+#accordion .card .collapse {
+    /* position: absolute;
+    top: 2.3rem; */
+}
+
+#accordion .card .card-body {
+    padding: 0rem;
+}
+
+#accordion .btn-domain-header {
+    width: 100%;
+    background-color: #FFFFFF;
+    border-color: #C4C4C4;
+}
+
+.dropdown-header {
+    font-size: 1.1rem;
+}
+
+.sub-domain-option {
+    margin-left: 1rem;
+    color: #074556;
+}
+
+.map-footer {
+    background-color: #074556;
+}
+
+.map-footer > h2 ,
+.map-footer > h4 ,
+.map-footer > p {
+    color: #FFFFFF;
+}
+
