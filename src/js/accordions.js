@@ -17,7 +17,7 @@ const cacheEls = () => {
   els.triggerLg = document.querySelectorAll('.js-trigger-alt')
 }
 
-const initLgAccordions = (e) => {
+const toggleLgAccordions = (e) => {
   e.preventDefault()
   console.log('large init');
   let el = e.target;
@@ -25,7 +25,7 @@ const initLgAccordions = (e) => {
   let totalHeight = 0;
 
   for (let i = 0; i < content.children.length; i++) {
-    totalHeight += content.children[i].offsetHeight;
+    totalHeight += content.children[i].scrollHeight;
 
     let styles = window.getComputedStyle(content.children[i])
     let margin = parseFloat(styles['marginTop']) + parseFloat(styles['marginBottom'])
@@ -49,32 +49,18 @@ const initLgAccordions = (e) => {
     el.innerText = 'Read More'
   }
 }
-const setHeight = (el)  => {
-  let totalHeight = 0
-  let content = el.nextElementSibling
-  for (let i = 0; i < content.children.length; i++) {
-    totalHeight += content.children[i].offsetHeight;
 
-    let styles = window.getComputedStyle(content.children[i])
-    let margin = parseFloat(styles['marginTop']) + parseFloat(styles['marginBottom'])
-    totalHeight += margin
-  }
-  return totalHeight
-}
-
-const initAccordions = (e) => {
+const toggleAccordions = (e) => {
   let el = e.target;
   let content = el.nextElementSibling
   let totalHeight = 0
-  console.log('reg init');
   el.parentElement.classList.toggle('open')
 
-  totalHeight = setHeight(el)
+  totalHeight = el.nextElementSibling.scrollHeight
   // check if current is a sub-accordion
   if (el.classList.contains('sub-accordion__trigger')) {
     subAccordions(el, totalHeight)
   }
-
 
   //init with sub-accordions open
   if(!el.classList.contains('loaded')){
@@ -83,52 +69,53 @@ const initAccordions = (e) => {
       for (let i = 0; i < childAccordions.length; i++) {
         let child = childAccordions[i]
         let childContent = child.nextElementSibling;
-        let childHeight = setHeight(child) 
+        let childHeight = child.nextElementSibling.scrollHeight
         subAccordions(child, childHeight)
         if (childContent.parentElement.classList.contains('open')) {
           childContent.style.height = `${childHeight}px`
-          totalHeight += parseInt(childContent.style.height) 
+          totalHeight += parseInt(childContent.style.height)
         } else {
           childContent.style.height = 0
         }
-        console.log('total', i, totalHeight)
       }
     }
   }
 
   if (el.parentElement.classList.contains('open')) {
-    console.info('setHeight', totalHeight, content);
     content.style.height = `${totalHeight}px`
   } else {
     content.style.height = 0
   }
 
   el.classList.add('loaded')
-  
+
 }
 
 const subAccordions = (el, totalHeight) => {
-  let parentAccord = closest(el, '.accordion__content')
+  let parentAccord = closest(el, '.js-accordion-content')
 
   if (el.parentElement.classList.contains('open')) {
-    parentAccord.style.height = `${parentAccord.offsetHeight + totalHeight}px`
-    // console.info('open child', parentAccord.offsetHeight , parentAccord.style.height)
+    parentAccord.style.height = `${parentAccord.scrollHeight + totalHeight}px`
     initGraphs(el)
   } else {
-    parentAccord.style.height = `${parentAccord.offsetHeight - totalHeight}px`
+    parentAccord.style.height = parentAccord.scrollHeight;
     resetGraphs(el)
   }
 }
 
 const init = () => {
-  
   cacheEls()
+
   if (els.accordion) {
-    addEvent(els.trigger, 'click', initAccordions)
+    els.accordion.forEach((accordion) => {
+      accordion.querySelector('.js-accordion-content').style.height = '0';
+    });
+
+    addEvent(els.trigger, 'click', toggleAccordions)
   }
 
   if (els.triggerLg) {
-    addEvent(els.triggerLg, 'click', initLgAccordions)
+    addEvent(els.triggerLg, 'click', toggleLgAccordions)
   }
 }
 

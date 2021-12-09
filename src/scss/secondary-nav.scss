@@ -1,0 +1,22 @@
+.secondary-nav {
+  background-color: $color-dark-blue;
+  font-size: 12px;
+
+  ul {
+    display: flex;
+    list-style-type: none;
+  }
+
+  a {
+    font-weight: 700;
+    display: block;
+    padding: 18px 0 12px 0;
+    color: $color-white;
+    margin-right: 48px;
+    border-bottom: 6px solid transparent;
+  }
+
+  .current_page_item a {
+    border-bottom-color: $color-med-blue;
+  }
+}

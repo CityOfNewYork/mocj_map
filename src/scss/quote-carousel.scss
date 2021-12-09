@@ -1,0 +1,28 @@
+.quote-carousel {
+  margin: 100px 0;
+}
+
+.quote-carousel__quote {
+  width: 100%;
+  text-align: center;
+  font-family: $serif;
+  font-size: 26px;
+  line-height: 1.6;
+  font-weight: normal;
+  padding-right: 80px;
+  padding-left: 80px;
+  padding-top: 55px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-image: url('../images/icon--quote.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 55px;
+    height: 55px;
+  }
+}

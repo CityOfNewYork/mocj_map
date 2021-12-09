@@ -1,3 +1,11 @@
+/*
+Theme Name: MOCJ 1.7
+Version: 1.7
+Author: Velir
+Author URI: https://www.velir.com/
+Text Domain: mocj
+*/
+
 @import url("https://use.typekit.net/mda2jot.css");
 
 // Base
@@ -19,7 +27,14 @@
 @import './lists';
 @import './graphs';
 @import './carousel';
+@import './cta-banner';
+@import './overrides';
 @import './pillars';
 @import './priority-areas';
+@import './quote-carousel';
 @import './slideout';
+@import './domain';
+@import './domain-cta';
+@import './domain-richtext';
+@import './secondary-nav';
 

@@ -495,3 +495,512 @@ add_action('init', 'remove_comment_support', 100);
 function remove_comment_support() {
 remove_post_type_support( 'page', 'comments' );
 }
+
+function tweek_mce( $init ) {
+	$init['content_style'] = "body { font-family: 'Mercury Display A','Mercury Display B', Times, serif; }";
+	$init['font_formats'] = "aktiv-grotesk=aktiv-grotesk,sans-serif;Mercury Display A='Mercury Display A','Mercury Display B',Times,serif;";
+	$init['fontsize_formats'] = "14px 16px 18px 24px";
+	return $init;
+}
+add_filter('tiny_mce_before_init', 'tweek_mce');
+
+// Initialize TinyMCE table plugin
+function add_the_table_plugin( $plugins ) {
+	$plugins['table'] = get_template_directory_uri() . '/tinymce-plugins/table/plugin.min.js';
+	return $plugins;
+}
+add_filter( 'mce_external_plugins', 'add_the_table_plugin' );
+
+// Add table button to TinyMCE buttons
+function mce_table_button( $buttons ) {
+	array_push( $buttons, 'table' );
+	return $buttons;
+}
+// Register our callback to the appropriate filter
+add_filter( 'mce_buttons', 'mce_table_button' );
+
+add_filter( 'acf/fields/wysiwyg/toolbars', function ( $toolbars ) {
+	array_unshift( $toolbars['Full'][2], 'fontsizeselect' );
+	array_unshift( $toolbars['Full'][2], 'fontselect' );
+	return $toolbars;
+} );
+
+// Domain Content Custom Fields
+if( function_exists('acf_add_local_field_group') ):
+
+acf_add_local_field_group(array(
+	'key' => 'group_6185669d36979',
+	'title' => 'Domain Content',
+	'fields' => array(
+		array(
+			'key' => 'field_618edd9a524ee',
+			'label' => 'Thumbnail Image',
+			'name' => 'thumb',
+			'type' => 'image',
+			'instructions' => '',
+			'required' => 1,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'return_format' => 'id',
+			'preview_size' => 'medium',
+			'library' => 'all',
+			'min_width' => '',
+			'min_height' => '',
+			'min_size' => '',
+			'max_width' => '',
+			'max_height' => '',
+			'max_size' => '',
+			'mime_types' => '',
+		),
+		array(
+			'key' => 'field_61ae0d9486d9a',
+			'label' => 'Short Title',
+			'name' => 'short_title',
+			'type' => 'text',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'maxlength' => '',
+		),
+		array(
+			'key' => 'field_618566b3f4ad2',
+			'label' => 'Subdomains',
+			'name' => 'subdomains',
+			'type' => 'repeater',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => 'foobar',
+				'id' => '',
+			),
+			'collapsed' => '',
+			'min' => 0,
+			'max' => 0,
+			'layout' => 'table',
+			'button_label' => 'Add Subdomain',
+			'sub_fields' => array(
+				array(
+					'key' => 'field_618566d0f4ad3',
+					'label' => 'Title',
+					'name' => 'title',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 1,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_618566e9f4ad4',
+					'label' => 'Description',
+					'name' => 'description',
+					'type' => 'wysiwyg',
+					'instructions' => '',
+					'required' => 1,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'tabs' => 'all',
+					'toolbar' => 'basic',
+					'media_upload' => 0,
+					'delay' => 0,
+				),
+				array(
+					'key' => 'field_61856700f4ad5',
+					'label' => 'Subdomain Data',
+					'name' => 'subdomain_data',
+					'type' => 'repeater',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'collapsed' => '',
+					'min' => 0,
+					'max' => 0,
+					'layout' => 'row',
+					'button_label' => 'Add Data',
+					'sub_fields' => array(
+						array(
+							'key' => 'field_61856715f4ad6',
+							'label' => 'Title',
+							'name' => 'title',
+							'type' => 'text',
+							'instructions' => '',
+							'required' => 1,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'maxlength' => '',
+						),
+						array(
+							'key' => 'field_6185674bf4ad7',
+							'label' => 'Description',
+							'name' => 'description',
+							'type' => 'wysiwyg',
+							'instructions' => '',
+							'required' => 1,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+							'tabs' => 'all',
+							'toolbar' => 'full',
+							'media_upload' => 0,
+							'delay' => 0,
+						),
+					),
+				),
+			),
+		),
+		array(
+			'key' => 'field_6196b35d16838',
+			'label' => 'Call to Action',
+			'name' => 'cta',
+			'type' => 'link',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'return_format' => 'array',
+		),
+		array(
+			'key' => 'field_619690997a37d',
+			'label' => 'Components',
+			'name' => 'components',
+			'type' => 'repeater',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'collapsed' => '',
+			'min' => 0,
+			'max' => 0,
+			'layout' => 'row',
+			'button_label' => 'Add Component',
+			'sub_fields' => array(
+				array(
+					'key' => 'field_619690ae7a37e',
+					'label' => 'Component',
+					'name' => 'component',
+					'type' => 'select',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'choices' => array(
+						'quotes' => 'Quote Carousel',
+						'richtext' => 'Rich Text',
+						'cta' => 'CTA',
+						'ctabanner' => 'CTA Banner',
+					),
+					'default_value' => array(
+					),
+					'allow_null' => 0,
+					'multiple' => 0,
+					'ui' => 0,
+					'return_format' => 'value',
+					'ajax' => 0,
+					'placeholder' => '',
+				),
+				array(
+					'key' => 'field_619690ed7a37f',
+					'label' => 'Rich Text',
+					'name' => 'richtext',
+					'type' => 'wysiwyg',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_619690ae7a37e',
+								'operator' => '==',
+								'value' => 'richtext',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'tabs' => 'all',
+					'toolbar' => 'full',
+					'media_upload' => 1,
+					'delay' => 0,
+				),
+				array(
+					'key' => 'field_6196910a7a380',
+					'label' => 'Quotes',
+					'name' => 'quotes',
+					'type' => 'repeater',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_619690ae7a37e',
+								'operator' => '==',
+								'value' => 'quotes',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'collapsed' => '',
+					'min' => 0,
+					'max' => 0,
+					'layout' => 'table',
+					'button_label' => 'Quote',
+					'sub_fields' => array(
+						array(
+							'key' => 'field_6196911a7a381',
+							'label' => 'Quote',
+							'name' => 'quote',
+							'type' => 'text',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'maxlength' => '',
+						),
+					),
+				),
+				array(
+					'key' => 'field_619692255f374',
+					'label' => 'CTA',
+					'name' => 'cta',
+					'type' => 'link',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_619690ae7a37e',
+								'operator' => '==',
+								'value' => 'cta',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'return_format' => 'array',
+				),
+				array(
+					'key' => 'field_61a64c9012443',
+					'label' => 'CTA Banner',
+					'name' => 'ctabanner',
+					'type' => 'group',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_619690ae7a37e',
+								'operator' => '==',
+								'value' => 'ctabanner',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'layout' => 'block',
+					'sub_fields' => array(
+						array(
+							'key' => 'field_61a64cbc12444',
+							'label' => 'Title',
+							'name' => 'title',
+							'type' => 'text',
+							'instructions' => '',
+							'required' => 1,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'maxlength' => '',
+						),
+						array(
+							'key' => 'field_61a64f9912445',
+							'label' => 'Description',
+							'name' => 'description',
+							'type' => 'text',
+							'instructions' => '',
+							'required' => 1,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'maxlength' => '',
+						),
+						array(
+							'key' => 'field_61a64fa112446',
+							'label' => 'CTA',
+							'name' => 'cta',
+							'type' => 'link',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'return_format' => 'array',
+						),
+					),
+				),
+			),
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'post_type',
+				'operator' => '==',
+				'value' => 'domain',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
+endif;
+
+
+
+// Hero content
+if( function_exists('acf_add_local_field_group') ):
+
+acf_add_local_field_group(array(
+	'key' => 'group_6193c1f6a6858',
+	'title' => 'Hero Details',
+	'fields' => array(
+		array(
+			'key' => 'field_6193c21558791',
+			'label' => 'Hero Description',
+			'name' => 'hero_description',
+			'type' => 'wysiwyg',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'tabs' => 'all',
+			'toolbar' => 'full',
+			'media_upload' => 0,
+			'delay' => 0,
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'post_type',
+				'operator' => '==',
+				'value' => 'domain',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
+endif;
