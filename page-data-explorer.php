@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: data explorer
+ * Template Name: Data Explorer
  * Template Post Type: Page
  */
 
@@ -9,26 +9,6 @@ get_header();
 
 <main id="main" class="site">
 
-  <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">MAP</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-	<ul class="navbar-nav">
-	  <li class="nav-item active">
-	    <a class="nav-link" href="#">What is map?<span class="sr-only">(current)</span></a>
-	  </li>
-	  <li class="nav-item"><a class="nav-link" href="#">Communities</a></li>
-	  <li class="nav-item"><a class="nav-link" href="#">Stories</a></li>
-	  <li class="nav-item"><a class="nav-link" href="#">Data explorer</a></li>
-	  <li class="nav-item"><a class="nav-link" href="#">Resources</a></li>
-	  <li class="nav-item"><a class="nav-link" href="#">Our team</a></li>
-	</ul>      
-      </div>
-    </nav>
-  </header>
   <div class="container-fluid main-header-container">
     <div class="row">
       <div class="col-5 m-5 p-5">
@@ -163,7 +143,20 @@ get_header();
     </header>
   </div>
 
-  <div id="chart-container" class="container-fluid">
+  <?php while (have_posts()) : the_post(); ?>
+
+  <div id="chart-container" class="container-fluid"
+    data-config="<?php echo get_field('config_data'); ?>"
+    data-311-complaints="<?php echo get_field('311_complaints'); ?>"
+    data-doi-evictions="<?php echo get_field('doi_evictions'); ?>"
+    data-nypd-sqf="<?php echo get_field('nypd_sqf'); ?>"
+    data-nypd-calls="<?php echo get_field('nypd_calls'); ?>"
+    data-nypd-arrests="<?php echo get_field('nypd_arrests'); ?>"
+    data-nypd-complaints="<?php echo get_field('nypd_complaints'); ?>"
+    data-nypd-shootings="<?php echo get_field('nypd_shootings'); ?>"
+    data-census-indicators="<?php echo get_field('census_indicators'); ?>"
+    data-panel-survey="<?php echo get_field('panel_survey'); ?>"
+  >
     <div class="graph-section p-3 mx-5 px-5">
       <h1 class="h1" id="domain-header"></h1>
 
@@ -175,36 +168,7 @@ get_header();
     </div>
   </div>
 
-  <div class="card text-white map-footer mb-3">
-    <div class="card-footer">
-      <div class="row">
-	<div class="col">
-	  <div class="row">
-	    <div class="col-2">
-	      <h2 class="h2 text-bolder">NYC</h2>
-	    </div>
-	    <div class="col-2">
-	      <div class="row flex-column">
-		<h4 class="col">Crimminal</h4>
-		<h4 class="col">Justice</h4>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	<div class="col text-right">
-	  <div class="row flex-column">
-	    <p class="col">Neighborhood</p>
-	    <h2 class="col">Stat</h2>
-	  </div>
-	</div>
-      </div>
-    </div>
-  </div>
-
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <?php endwhile; ?>
 
 </main><!-- #main -->
 
