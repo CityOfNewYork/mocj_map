@@ -80,7 +80,11 @@ get_header();
     </div>
   </div>
 
-  <div id="data-container" class="container-fluid">
+  <div id="data-container"
+    data-community="<?php echo get_field('community_data'); ?>"
+    data-demography="<?php echo get_field('demographic_data'); ?>"
+    class="container-fluid"
+  >
     <header class="row p-3 mx-5 px-5">
       <div class="col-7 title p-0">
 	<p class="font-weight-bold" id="community-title"></p>
@@ -145,9 +149,10 @@ get_header();
 
   <?php while (have_posts()) : the_post(); ?>
 
-  <div id="chart-container" class="container-fluid"
+  <div id="chart-container"
     data-config="<?php echo get_field('config_data'); ?>"
     data-311-complaints="<?php echo get_field('311_complaints'); ?>"
+    data-citywide="<?php echo get_field('citywide'); ?>"
     data-doi-evictions="<?php echo get_field('doi_evictions'); ?>"
     data-nypd-sqf="<?php echo get_field('nypd_sqf'); ?>"
     data-nypd-calls="<?php echo get_field('nypd_calls'); ?>"
@@ -160,11 +165,46 @@ get_header();
     <div class="graph-section p-3 mx-5 px-5">
       <h1 class="h1" id="domain-header"></h1>
 
-      <!-- CSV Graph Data -->
-      <div id="csv-admin"></div>
-      <div id="census-chart"></div>
-      <div id="census-chart-two"></div>
-      <div id="csv-survey"></div>
+      <!-- CSV Graph Data -->        
+      <!-- Admin data visualization -->
+      <div id="admin-container" class="container chart-container my-5 py-5">
+      </div>
+
+      <!-- Census data visualization -->
+      <div id="census-container" class="container chart-container my-5 py-5">
+	<div class="row">
+	  <div class="col-4">
+	    <h1 class="h1">Census</h1>
+	    <p class="text-bold text-right">
+	      Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati, ipsam sunt eos vitae vel tenetur cumque et totam quasi, nemo quibusdam architecto doloribus dolorum alias aperiam nostrum beatae! Aspernatur, adipisci!
+	    </h4>
+	  </div>
+	  <div class="col">
+	    <div id="census-chart"></div>
+	  </div>
+	</div>
+	<hr>
+      </div>
+      
+      <!-- Survey data visualization -->
+      <div id="survey-container" class="container chart-container my-5 py-5">
+	<div class="row">
+	  <div class="col-4">
+	    <h1 class="h1">Survey</h1>
+	    <p class="text-bold text-right">
+	      Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati, ipsam sunt eos vitae vel tenetur cumque et totam quasi, nemo quibusdam architecto doloribus dolorum alias aperiam nostrum beatae! Aspernatur, adipisci!
+	    </h4>
+	  </div>
+	  <div class="col">
+	    <div class="d-flex justify-content-end mx-5 col-8">
+	      <select class="custom-select" id="survey-dropdown">
+	      </select>
+	    </div>
+	    <div id="survey-chart"></div>
+	  </div>
+	</div>
+      </div>
+
     </div>
   </div>
 

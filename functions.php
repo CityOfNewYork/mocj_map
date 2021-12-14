@@ -440,8 +440,6 @@ function mocj_scripts() {
 
 	wp_enqueue_script( 'mocj-script', get_template_directory_uri() . '/main.js?v=0.5', array ( ), 1.1, true);
 
-	wp_enqueue_script( 'data-explorer', get_template_directory_uri() . '/js/data-explorer.js', array ( ), false, true);
-
 	wp_enqueue_script( 'mocj-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
 
 	wp_enqueue_script( 'mocj-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20151215', true );
@@ -532,6 +530,12 @@ add_filter( 'acf/fields/wysiwyg/toolbars', function ( $toolbars ) {
 	array_unshift( $toolbars['Full'][2], 'fontselect' );
 	return $toolbars;
 } );
+
+function mocj_allow_json_uploads($mime_types) {
+  $mime_types['json'] = 'text/plain';
+  return $mime_types;
+}
+add_filter('upload_mimes', 'mocj_allow_json_uploads', 1, 1);
 
 // Domain Content Custom Fields
 if( function_exists('acf_add_local_field_group') ):
