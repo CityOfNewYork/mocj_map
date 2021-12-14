@@ -21,6 +21,7 @@ p {
     width: 100%;
     min-height: 634px;
     // background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('../images/pierre-jeanneret-QL_DdWFUsFc-unplash.png');
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
     color: #FFFFFF;
 }
 
@@ -31,10 +32,6 @@ p {
 #community-dropdown {
     padding: .8rem 1rem;
     height: 56px;
-}
-
-#community-title {
-    text-transform: uppercase;
 }
 
 #data-container,
@@ -58,8 +55,6 @@ p {
 #data-render {
     display: none;
     position: relative;
-    background-color: rgba(48, 79, 94, 0.8);
-    padding: 4rem;
 }
 
 .print-bttn {
@@ -70,10 +65,6 @@ p {
     top: 20px;
     right: 20px;
     color: #FFFFFF;
-}
-
-.section-data {
-    font-size: 0.8rem;
 }
 
 #accordion {
@@ -105,7 +96,6 @@ p {
 }
 
 #accordion .btn-domain-header {
-    width: 100%;
     background-color: #FFFFFF;
     border-color: #C4C4C4;
 }
@@ -134,6 +124,91 @@ p {
     color: #FFFFFF;
 }
 
-.h1-bolder {
-    font-weight: 700;
+.data-explorer__row {
+  display: flex;
+
+  &:nth-child(even) {
+    background: $color-light-blue;
+  }
+}
+
+.data-explorer__content {
+  width: 20%;
+}
+
+.data-explorer__chart {
+  min-height: 500px;
+  flex-grow: 1;
+}
+
+.data-explorer__header {
+  display: flex;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('../../images/unsplash.png');
+  font-size: 16px;
+  line-height: 1.4;
+  color: $color-white;
+}
+
+.data-explorer__header-content {
+  padding: 4rem;
+  flex-basis: 50%;
+}
+
+.data-explorer__header-data {
+  flex-basis: 50%;
+  background-color: rgba(48, 79, 94, 0.8);
+  padding: 4rem;
+}
+
+.data-explorer__demo-section {
+  flex-basis: 50%;
+}
+
+.data-explorer__demo-table {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.data-explorer__demo-title {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.data-explorer__demo-data-cell {
+  display: flex;
+
+  p {
+    line-height: inherit;
+    margin-bottom: 0.75em;
+  }
+}
+
+.data-explorer__demo-data-cell-label {
+  font-weight: 700;
+  margin-right: 0.5em;
+}
+
+.data-explorer__header-title {
+  font-size: 50px;
+  strong {
+    color: inherit;
+  }
+}
+
+.data-explorer__category-selector {
+  display: flex;
+  background: $color-light-gray;
+}
+
+.data-explorer__category-title {
+  flex-basis: 50%;
+}
+
+.data-explorer__category-selector {
+  flex-basis: 50%;
+}
+
+.data-explorer__chart-title {
+  font-size: 30px;
+  font-weight: 700;
 }

@@ -28,6 +28,15 @@ module.exports = {
         },
       },
       {
+        test: /\.png$/,
+        use: {
+          loader: "file-loader",
+          options: {
+            esModule: false,
+          }
+        },
+      },
+      {
         test: /\.scss$/,
         use: [
           MiniCssExtractPlugin.loader,
