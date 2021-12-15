@@ -12,14 +12,20 @@ get_header();
   <div class="container-fluid">
     <div class="data-explorer__header">
       <div class="data-explorer__header-content">
-	  <div class="data-explorer__header-title"><strong>SMART</strong> TOOL</div>
-	  <p>Our Data Explorer allows people to view information across seven domains, related to each of the MAP site neighborhoods. Each domain shows an aspect of residents’ life within the community.</p>
-	  <p>Created by the Mayor’s Office for Criminal Justice, in partnership with SAFELab, JJREC, NIS,  and NORC [other credits]</p>
+	<div class="data-explorer__header-title"><strong>NEIGHBORHOOD</strong> NAVIGATOR</div>
+	<p>Our Data Explorer allows people to view information across seven domains, related to each of the MAP site neighborhoods. Each domain shows an aspect of residents’ life within the community.</p>
+	<p>Created by the Mayor’s Office for Criminal Justice, in partnership with SAFELab, JJREC, NIS,  and NORC [other credits]</p>
+
 	<div class="data-management">
-	  <div>Choose a Community</div>
-	  <select class="custom-select" id="community-dropdown">
-	    <option selected>Select a Community</option>
-	  </select>
+	  <div class="community-chooser">
+	    <div>Choose a Community</div>
+	    <select class="custom-select" id="community-dropdown">
+	      <option selected>Select a Community</option>
+	    </select>
+	  </div>
+	  <div class="community-map">
+	    <?php get_template_part( 'template-parts/svg/boroughs' ); ?>
+	  </div>
 	</div>
       </div>
       <div class="data-explorer__header-data">
@@ -150,6 +156,8 @@ get_header();
       
       <!-- Survey data visualization -->
       <div id="survey-container" class="chart-container">
+	<select class="custom-select" id="survey-dropdown">
+	</select>
       </div>
 
     </div>

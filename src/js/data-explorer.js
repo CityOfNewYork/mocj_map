@@ -32,6 +32,7 @@ const adminChartGraphContainer = document.getElementById('admin-chart');
 const censusChartGraphContainer = document.getElementById('census-chart');
 const surveyChartGraphContainer = document.getElementById('survey-chart');
 const surveyDropdown = document.getElementById('survey-dropdown');
+const boroughMap = document.getElementById('borough-map');
 
 const demographyDataFile = dataContainer.dataset.demography;
 const communityDataFile = dataContainer.dataset.community;
@@ -67,6 +68,8 @@ communityDropdown.addEventListener('change', (e) => {
   communityTitle.innerText = domainSelected;
   dataRenderDiv.style.display = 'flex';
   dataContainer.style.display = 'flex';
+  boroughMap.setAttribute('class', '');
+  boroughMap.classList.add('community-' + communityCode);
 });
 
 // Render Community population data
@@ -363,7 +366,7 @@ function createObjFromData(obj) {
     const labeledDataRow = {};
 
     for (let i = 0; i < obj.label.length; i++) {
-      labeledDataRow[obj.label[i]] = dataItem[i];
+      labeledDataRow[obj.label[i]] = removeUnnecessaryChar(dataItem[i]);
     }
 
     return labeledDataRow;
@@ -562,19 +565,25 @@ function drawChartAdmin(subdomainObj) {
   }
 
   let options = {
+    colors: [
+      '#016789',
+      '#DEAA00',
+      '#7ACFE5',
+    ],
     legend: {
       position: 'bottom',
     },
-    pointsVisible: true,
     hAxis: {
+      baselineColor: '#aaaaaa',
       title: 'Quarter',
       titleTextStyle: {
         bold: true,
         italic: false,
       },
+      showTextEvery: 4,
+      slantedText: true,
     },
     vAxis: {
-      title: 'Count',
       titleTextStyle: {
         bold: true,
         italic: false,

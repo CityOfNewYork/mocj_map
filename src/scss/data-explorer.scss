@@ -70,7 +70,7 @@ p {
 #accordion {
     position: absolute;
     min-width: 300px;
-    width: 100%;
+    // width: 100%;
 }
 
 #accordion .card {
@@ -211,4 +211,32 @@ p {
 .data-explorer__chart-title {
   font-size: 30px;
   font-weight: 700;
+}
+
+#borough-map {
+  &.community-1A .brooklyn,
+  &.community-5B .brooklyn,
+  &.community-6B .brooklyn,
+  &.community-14D .brooklyn,
+  &.community-7B .brooklyn,
+  &.community-8B .bronx,
+  &.community-9C .bronx,
+  &.community-12C .bronx,
+  &.community-4A .manhattan,
+  &.community-11C .manhattan,
+  &.community-13D .manhattan,
+  &.community-2A .queens,
+  &.community-10C .queens,
+  &.community-15D .queens,
+  &.community-3A .staten-island {
+    fill: #7acfe5 !important;
+  }
+}
+
+.data-management {
+  display: flex;
+}
+
+.community-chooser {
+  flex-grow: 1;
 }
