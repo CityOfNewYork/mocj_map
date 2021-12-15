@@ -635,7 +635,6 @@ function drawChartCensus(obj) {
     },
     title: response.domain,
     backgroundColor: "transparent",
-    chartArea: {width: "50%"},
     isStacked: true,
     hAxis: {
       title: response.domain + " - " + response.sud_domain,
@@ -655,30 +654,38 @@ function drawChartSurvey(subdomainObj) {
   console.log("DRAWCHARTSURVEY param: ", subdomainObj);
   const data = subdomainObj.data;
   const chartId = subdomainObj.id;
-  let demoGroups = [];
+  let demoLevels = [];
+  let demographics = [];
   let chartOptions = document.getElementById(`chart-options-${chartId}`);
   let chartArea = document.getElementById(`chart-${chartId}`);
+  const paragraph = document.getElementById(`chart-content-p-${chartId}`);
   let selectedDemo = "";
 
   // Only do this stuff if we have demographic data
   if (data[0].demographic) {
     // Get an array of unique demographic groups
     data.forEach(item => {
-      if (demoGroups.findIndex(group => group.demographic_level === item.demographic_level) === -1) {
-        demoGroups.push({demographic: item.demographic, demographic_level: item.demographic_level});
+      if (demoLevels.findIndex(group => group.demographic_level === item.demographic_level) === -1) {
+        demoLevels.push({demographic: item.demographic, demographic_level: item.demographic_level});
+      }
+      if (demographics.indexOf(item.demographic) === -1) {
+        demographics.push(item.demographic);
       }
     });
 
+    // console.log("DEMO LEVELS: ", demoLevels);
+    // console.log("DEMOGRAPHICS: ", demographics);
+
     // Start by choosing the first demographic group
-    selectedDemo = demoGroups[0].demographic_level;
+    selectedDemo = demographics[0];
 
     let demoDropdown = document.createElement("select");
     demoDropdown.setAttribute("id", `demo-dropdown-${chartId}`);
 
-    demoGroups.forEach(demoGroup => {
+    demographics.forEach(demo => {
       let demoOption = document.createElement("option");
-      demoOption.innerText = `${demoGroup.demographic}: ${demoGroup.demographic_level}`;
-      demoOption.setAttribute("value", demoGroup.demographic_level);
+      demoOption.innerText = demo;
+      demoOption.setAttribute("value", demo);
       demoDropdown.appendChild(demoOption);
     });
 
@@ -699,7 +706,7 @@ function drawChartSurvey(subdomainObj) {
       "#7ACFE5",
     ],
     legend: {
-      position: "none",
+      position: "bottom",
     },
     chartArea: {
       width: "80%",
@@ -718,19 +725,57 @@ function drawChartSurvey(subdomainObj) {
 
   const redrawSurveyChart = () => {
     const dataTable = new google.visualization.DataTable();
-
-    dataTable.addColumn("string", "Wave");
-    dataTable.addColumn("number", "Score");
-
+    let combinedValues = [];
     let dataArrayMapped = [];
+    let waves = [];
 
-    data.forEach(item => {
-      if (chartId === Number(item.indicator_id) && selectedDemo === item.demographic_level) {
-        dataArrayMapped.push([item.wave, +item.value]);
+    // Get only the data that matches our chart ID and selected demographic
+    const filteredData = data.filter(item => { return (chartId === Number(item.indicator_id) && selectedDemo === item.demographic );});
+
+    // Create an array of unique waves within our filtered data
+    filteredData.forEach(data => {
+      if (waves.indexOf(data.wave) === -1) {
+        waves.push(data.wave);
       }
     });
 
-    dataTable.addRows([ ...dataArrayMapped ]);
+    // Add string column for "wave 1," "wave 2", etc.
+    dataTable.addColumn("string", "Wave");
+
+    // Add DataTable columns for each demographic level that's within our
+    // chosen demographic
+    demoLevels.forEach(level => {
+      if (level.demographic === selectedDemo) {
+        dataTable.addColumn("number", level.demographic_level);
+      }
+    });
+
+    // Create an array of values for each demo level, within each wave,
+    // then add it to the array to be added to the DataTable
+    // e.g.: ["Wave 1", 0.5, 0.2, 0.9]
+    waves.forEach(wave => {
+      let waveValues = [];
+
+      demoLevels.forEach(level => {
+        filteredData.filter(
+          dataItem => { return (dataItem.wave === wave && dataItem.demographic_level === level.demographic_level); }
+        ).map(dataItem => {
+          waveValues.push(Number(dataItem.value));
+        });
+      });
+
+      dataArrayMapped.push([wave, ...waveValues]);
+    });
+
+    filteredData.forEach(item => {
+      if (chartId === Number(item.indicator_id) && selectedDemo === item.demographic) {
+        if (item.description) {
+          paragraph.innerText = item.description;
+        }
+      }
+    });
+
+    dataTable.addRows([...dataArrayMapped]);
 
     chart.draw(dataTable, options);
   };
