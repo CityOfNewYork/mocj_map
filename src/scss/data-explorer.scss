@@ -125,7 +125,10 @@ p {
 }
 
 .data-explorer__row {
-  display: flex;
+  padding: 40px 0;
+  display: grid;
+  grid-template: 'g d' auto
+    'g c' auto / auto 1fr;
 
   &:nth-child(even) {
     background: $color-light-blue;
@@ -134,11 +137,17 @@ p {
 
 .data-explorer__content {
   width: 20%;
+  grid-area: g
 }
 
 .data-explorer__chart {
+  grid-area: c;
   min-height: 500px;
   flex-grow: 1;
+}
+
+.data-explorer__options {
+  grid-area: d;
 }
 
 .data-explorer__header {
