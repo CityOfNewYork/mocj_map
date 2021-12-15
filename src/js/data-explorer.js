@@ -250,8 +250,8 @@ async function domainDataBuilder(subDomain) {
   }
 }
 
-// Create divs to house the Admin data charts
-// We fill these in later with drawChartAdmin
+// Create divs to house data charts
+// We fill these in later with drawChart[xxx]
 // @param {object} data - arrayOf({
 //     indicatorID: {number},
 //     indicatorName: {string},
@@ -265,28 +265,33 @@ function chartElementDivBuilder(data, container) {
   chartElement.setAttribute("class", "container data-explorer__row");
   container.appendChild(chartElement);
 
+  // Place to hold text content (title, description) for the chart
   const chartContent = document.createElement("div");
   chartContent.setAttribute("id", `chart-content-${data.indicatorID}`);
-  chartContent.setAttribute("class", "data-explorer__content");
+  chartContent.classList.add("data-explorer__content");
 
+  // Place to hold any options or dropdowns for the chart
   const chartOptions = document.createElement("div");
   chartOptions.setAttribute("id", `chart-options-${data.indicatorID}`);
-  chartOptions.setAttribute("class", "data-explorer__options");
+  chartOptions.classList.add("data-explorer__options");
 
+  // Place to hold the graph itself
   const chartGraph = document.createElement("div");
   chartGraph.setAttribute("id", `chart-${data.indicatorID}`);
-  chartGraph.setAttribute("class", "data-explorer__chart");
+  chartGraph.classList.add("data-explorer__chart");
 
   chartElement.appendChild(chartContent);
   chartElement.appendChild(chartOptions);
   chartElement.appendChild(chartGraph);
 
   const header = document.createElement("div");
-  const paragraph = document.createElement("p");
   header.setAttribute("id", `chart-content-h1-${data.indicatorID}`);
   header.classList.add("data-explorer__chart-title");
   header.innerText = `${data.indicatorName}`;
+
+  const paragraph = document.createElement("p");
   paragraph.setAttribute("id", `chart-content-p-${data.indicatorID}`);
+
   chartContent.appendChild(header);
   chartContent.appendChild(paragraph);
 }
@@ -577,6 +582,9 @@ function drawChartAdmin(subdomainObj) {
       "#DEAA00",
       "#7ACFE5",
     ],
+    chartArea: {
+      width: "80%",
+    },
     legend: {
       position: "bottom",
     },
@@ -619,6 +627,9 @@ function drawChartCensus(obj) {
       "#DEAA00",
       "#7ACFE5",
     ],
+    chartArea: {
+      width: "80%",
+    },
     legend: {
       position: "bottom",
     },
@@ -687,16 +698,23 @@ function drawChartSurvey(subdomainObj) {
       "#DEAA00",
       "#7ACFE5",
     ],
+    legend: {
+      position: "none",
+    },
+    chartArea: {
+      width: "80%",
+    },
     backgroundColor: "transparent",
     vAxis: {
+      format: "percent",
       viewWindow: {
         max: 1,
-        min: 1,
-      },
+        min: 0,
+      }
     },
   };
 
-  const chart = new google.charts.Bar(chartArea);
+  const chart = new google.visualization.ColumnChart(chartArea);
 
   const redrawSurveyChart = () => {
     const dataTable = new google.visualization.DataTable();

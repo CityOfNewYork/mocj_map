@@ -128,7 +128,7 @@ p {
   padding: 40px 0;
   display: grid;
   grid-template: 'g d' auto
-    'g c' auto / auto 1fr;
+    'g c' auto / 30% 1fr;
 
   &:nth-child(even) {
     background: $color-light-blue;
@@ -136,7 +136,6 @@ p {
 }
 
 .data-explorer__content {
-  width: 20%;
   grid-area: g
 }
 
