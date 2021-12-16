@@ -79,51 +79,8 @@ get_header();
 	<div>
 	  <p>Select a data category:</p>
 	</div>
-	<div>
-	  <div id="accordion">
-	    <div class="card">
-	      <div class="card-body" id="headingOne">
-		<button id="dropdown-placeholder" class="btn btn-light btn-domain-header" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-		  Housing Security
-		</button>
-	      </div>
-	  
-	      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-		<div class="card-body">
-		  <div class="dropdown-header">Build Environment</div>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Environmental Infrastructure">Environmental Infrastructure</button>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Environmental Quality">Environmental Quality</button>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Indoor Environmental Quality">Indoor Environmental Quality</button>
-		  <div class="dropdown-header">Economic Readiness</div>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Educational Attainment">Educational Attainment</button>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Youth">Youth</button>
-		  <div class="dropdown-header">Economic Security</div>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Food Insecurity">Food Insecurity</button>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Health Security">Health Security</button>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Housing Security">Housing Security</button>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Job Security &amp; Quality">Job Security &amp; Quality</button>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Poverty">Poverty</button>
-		  <div class="dropdown-header">Physical Security</div>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Other Crimes">Other Crimes</button>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Overall Safety">Overall Safety</button>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Police Misconduct and Force">Police Misconduct and Force</button>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Police Presence&#47;Interactions">Police Presence&#47;Interactions</button>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Violent Crime">Violent Crime</button>
-		  <div class="dropdown-header">Public Security</div>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Connectivity">Connectivity</button>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Health">Health</button>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Public Assistance">Public Assistance</button>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Transit">Transit</button>
-		  <div class="dropdown-header">Social Structure</div>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Culture">Culture</button>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Organized Social Connections">Organized Social Connections</button>
-		  <button class="sub-domain-option dropdown-item" type="button" value="Political Power">Political Power</button>
-		</div>
-	      </div>
-	    </div>
-
-	  </div>
-	</div>
+	<select id="domain-select">
+	</select>
       </div>
     </div>
   </div>
@@ -156,8 +113,6 @@ get_header();
       
       <!-- Survey data visualization -->
       <div id="survey-container" class="chart-container">
-	<select class="custom-select" id="survey-dropdown">
-	</select>
       </div>
 
     </div>
