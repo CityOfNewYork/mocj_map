@@ -382,6 +382,8 @@ const drawChartFromSubdomainData = async (obj) => {
       citywideData = [ ...dataObj.data ];
     }
 
+    const labeledData = labelData({ labels: labels, data: dataArray });
+
     const dataObj = createSubdomainObject({ labels: labels, data: dataArray, indicatorId: indicatorId, type: type, source: fileRef });
     const filteredData = filterData(dataObj);
 
@@ -422,6 +424,22 @@ function removeUnnecessaryChar(string) {
   return trim;
 }
 
+const labelData = (labelsData) => {
+  const { data, labels } = labelsData;
+
+  const labeledData = data.map((dataItem, i) => {
+    const labeledDataRow = {};
+
+    for (let i = 0; i < labels.length; i++) {
+      labeledDataRow[labels[i]] = removeUnnecessaryChar(dataItem[i]);
+    }
+
+    return labeledDataRow;
+  });
+
+  return labeledData;
+};
+
 /**
  * Create a subdomain object with an array of objects for its data object,
  * from an array of labels and of data objects
@@ -439,15 +457,7 @@ function createSubdomainObject(obj) {
   // console.log("CREATESUBDOMAINOBJECT: ", obj);
   const { data, labels, indicatorId, type, source } = obj;
 
-  const labeledData = data.map((dataItem, i) => {
-    const labeledDataRow = {};
-
-    for (let i = 0; i < labels.length; i++) {
-      labeledDataRow[labels[i]] = removeUnnecessaryChar(dataItem[i]);
-    }
-
-    return labeledDataRow;
-  });
+  const labeledData = labelData({ data: data, labels: labels});
 
   const subdomainObj = new SubdomainObject(labeledData, indicatorId, type, source);
 
