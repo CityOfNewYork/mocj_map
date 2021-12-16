@@ -69,18 +69,6 @@ let citywideData = [];
 let selectedDomain = "";
 let selectedCommunity = "";
 
-// The SubdomainObject class
-// This contains the data, the id, and the type of data (admin, census, or
-// survey)
-class SubdomainObject {
-  constructor(data, id, type, source) {
-    this.data = data; // An array of indexed data objects
-    this.indicatorId = id; // An indicator ID
-    this.type = type; // The type of data: admin, survey, census
-    this.source = source; // The source reference, e.g. "311Complaints"
-  }
-}
-
 google.charts.load("current", { packages: ["corechart", "line", "bar"] });
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -354,9 +342,6 @@ function chartElementDivBuilder(data, container) {
  * Take an object of this format:
  * {data: {}, id: "8815", type: "admin"}
  * and draw a chart from it in the chart container with the corresponding ID
- *
- * @requiredby domainDataBuilder
- * @param {object}
  */
 const drawChartFromSubdomainData = async (obj) => {
   // console.log("PROCESSSUBDOMAINDATAFILE param: ", obj);
@@ -437,43 +422,36 @@ const labelData = (labelsData) => {
 };
 
 /**
- * Filter the data in a Subdomain object so that it only contains data matching
- * the currently chosen community and domain
- *
- * @param {SubdomainObject} subdomainObj
- * @returns {SubdomainObject}
+ * Filter the data in an object according to selected community, domain, and
+ * relevant chart type
  */
-function filterData(subdomainObj) {
-  // console.log("PROCESSDATA param: ", subdomainObj);
-  const { data, indicatorId, type } = subdomainObj;
-  let dataFiltered = {};
-
-  // const filteredSubdomainObj = new SubdomainObject({}, indicatorId, type, source);
+function filterData(object) {
+  const { data, indicatorId, type } = object;
+  let newFilteredData = {};
 
   // Filter data by matching the desired smart site and selected domain; exclude
   // city type data
   const filteredData = data.filter((dataItem) => {
-    return (dataItem.smart_site === selectedCommunity && dataItem.sub_domain === selectedDomain && type !== "city");
+    return (dataItem.smart_site === selectedCommunity && dataItem.sub_domain === selectedDomain);
   });
 
   // If this is admin data, need to filter by "Rate"-type data, and by indicator
   // ID, since we're drawing multiple charts
   if (type === "admin") {
-    dataFiltered = filteredData.filter((dataItem) => {
+    newFilteredData = filteredData.filter((dataItem) => {
       return (Number(dataItem.indicator_id) === indicatorId && dataItem.data_type === "Rate" );
     });
   // If this is census data, need to filter by indicator ID, since we draw
   // multiple charts
   } else if (type === "census") {
-    dataFiltered = filteredData.filter((dataItem) => {
+    newFilteredData = filteredData.filter((dataItem) => {
       return (Number(dataItem.indicator_id) === indicatorId);
     });
   } else {
-    dataFiltered=filteredData;
+    newFilteredData = filteredData;
   }
 
-  // console.log("PROCESSDATA return: ", filteredSubdomainObj);
-  return dataFiltered;
+  return newFilteredData;
 }
 
 /**
@@ -481,8 +459,6 @@ function filterData(subdomainObj) {
  * chartElementDivBuilder
  *
  * Only needs data, id, and source in object param
- *
- * @parm {SubdomainObject} subdomainObj
  */
 function drawChartAdmin(subdomainObj) {
   // console.log("DRAWCHARTADMIN param: ", subdomainObj);
