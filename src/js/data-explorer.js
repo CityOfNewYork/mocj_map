@@ -1,10 +1,10 @@
 /**
  * domainDataBuilder
- *   drawChartsFromSubdomainData
+ *   drawChartFromSubdomainData
  *     filterData
- *       drawChartAdmin
- *       drawChartCensus
- *       drawChartSurvey
+ *     drawChartAdmin
+ *     drawChartCensus
+ *     drawChartSurvey
  *
  * https://developers.google.com/chart/interactive/docs/reference
  * https://developers.google.com/chart/interactive/docs/gallery/linechart
@@ -204,8 +204,13 @@ async function fetchJsonFile(file)  {
   }
 })();
 
-// Build the charts
-// @param {string} subDomain - The subdomain name, e.g. "Food Insecurity"
+/**
+ * Build the charts
+ * Take a string for a subdomain (e.g. "Housing Security") and draw all related
+ * charts
+ *
+ * @param {string} subDomain - The subdomain name, e.g. "Food Insecurity"
+ */
 async function domainDataBuilder(subDomain) {
   // console.log("DOMAINDATABUILDER param: ", subDomain);
   const configData = await fetchJsonFile(chartContainer.dataset.config);
@@ -218,33 +223,36 @@ async function domainDataBuilder(subDomain) {
   if (subDomainData.admin) {
     subDomainData.admin.forEach(dataItem => {
       chartElementDivBuilder(dataItem, adminChartContainer);
-      drawChartsFromSubdomainData({data: subDomainData.admin, id: dataItem.indicatorID, type: "admin"});
+      drawChartFromSubdomainData({data: subDomainData.admin, id: dataItem.indicatorID, type: "admin"});
     });
   }
 
   if (subDomainData.census) {
     subDomainData.census.forEach(dataItem => {
       chartElementDivBuilder(dataItem, censusChartContainer);
-      drawChartsFromSubdomainData({data: subDomainData.census, id: dataItem.indicatorID, type: "census"});
+      drawChartFromSubdomainData({data: subDomainData.census, id: dataItem.indicatorID, type: "census"});
     });
   }
 
   if (subDomainData.survey) {
     subDomainData.survey.forEach(dataItem => {
       chartElementDivBuilder(dataItem, surveyChartContainer);
-      drawChartsFromSubdomainData({data: subDomainData.survey, id: dataItem.indicatorID, type: "survey"});
+      drawChartFromSubdomainData({data: subDomainData.survey, id: dataItem.indicatorID, type: "survey"});
     });
   }
 }
 
-// Create divs to house data charts
-// We fill these in later with drawChart[xxx]
-// @param {object} data - arrayOf({
-//     indicatorID: {number},
-//     indicatorName: {string},
-//     source: {number},
-//     fileRef: {string},
-//   })}
+/**
+ * Create divs to house data charts
+ * We fill these in later with drawChart[xxx]
+ *
+ * @param {object} data - arrayOf({
+ *     indicatorID: {number},
+ *     indicatorName: {string},
+ *     source: {number},
+ *     fileRef: {string},
+ *   })}
+ */
 function chartElementDivBuilder(data, container) {
   // console.log("CHARTELEMENTDIVBUILDER param: ", data);
   const chartElement = document.createElement("div");
@@ -283,9 +291,15 @@ function chartElementDivBuilder(data, container) {
   chartContent.appendChild(paragraph);
 }
 
-// @requiredby chartElementDivBuilder, domainDataBuilder
-// @param {object}
-const drawChartsFromSubdomainData = async (obj) => {
+/**
+ * Take an object of this format:
+ * {data: {}, id: "8815", type: "admin"}
+ * and draw a chart from it in the chart container with the corresponding ID
+ *
+ * @requiredby domainDataBuilder
+ * @param {object}
+ */
+const drawChartFromSubdomainData = async (obj) => {
   // console.log("PROCESSSUBDOMAINDATAFILE param: ", obj);
   const data = obj.data;
   let filePath = "";
@@ -323,14 +337,14 @@ const drawChartsFromSubdomainData = async (obj) => {
       console.error("No data available");
     }
 
-    // Also draw the citywide data if we're looking at Admin data
+    // Also set the citywide data if we're doing an admin chart; this gets drawn
+    // in drawChartAdmin
     if (obj.type === "admin") {
       const cityWideRequest = await fetchTextFile(filePath);
       const citywideLabels = removeUnnecessaryChar(cityWideRequest.split("\n")[0]).split(",");
       const city = csvDataIntoArray(cityWideRequest);
       const dataObj = createSubdomainObject({labels: citywideLabels, data: city, id: obj.id , type: "city", source: fileRef });
-      const newData = filterData(dataObj);
-      google.charts.setOnLoadCallback(() => drawChartAdmin(newData));
+      citywideData = [ ...dataObj.data ];
     }
   }
 };
@@ -396,9 +410,7 @@ function filterData(subdomainObj) {
     return (data.smart_site === selectedCommunity && data.sub_domain === selectedDomain && subdomainObj.type !== "city");
   });
 
-  if (subdomainObj.type === "city") {
-    citywideData = [ ...subdomainObj.data ];
-  } else if (subdomainObj.type === "admin") {
+  if (subdomainObj.type === "admin") {
     const dataFiltered = filteredData.filter((data) => {
       return (Number(data.indicator_id) === subdomainObj.id && data.data_type === "Rate" );
     });
@@ -416,10 +428,13 @@ function filterData(subdomainObj) {
   return filteredSubdomainObj;
 }
 
-// Draw the admin data chart in the existing div we created with
-// chartElementDivBuilder
-//
-// @parm {SubdomainObject} subdomainObj
+/**
+ *
+ * Draw the admin data chart in the existing div we created with
+ * chartElementDivBuilder
+ *
+ * @parm {SubdomainObject} subdomainObj
+ */
 function drawChartAdmin(subdomainObj) {
   // console.log("DRAWCHARTADMIN param: ", subdomainObj);
   adminChartContainer.style.display = "block";
@@ -433,7 +448,7 @@ function drawChartAdmin(subdomainObj) {
   let dataArrayMapped = [];
   let quarters = [];
 
-  if (data[0].description) {
+  if (data[0] && data[0].description) {
     paragraph.innerText = data[0].description;
   }
 
@@ -481,10 +496,6 @@ function drawChartAdmin(subdomainObj) {
   data.forEach(item => {
     if (data[0].indicator_id === item.indicator_id ) {
       communityValues.push(item.value);
-      // quarterIndex++;
-      // if (quarterIndex % 5 === 0) {
-      //   quarterIndex = 1;
-      // }
 
       const labels = yearQuarterLabels[subdomainObj.source];
       const year = item[labels.year];
@@ -716,7 +727,7 @@ function drawChartSurvey(subdomainObj) {
 
     filteredData.forEach(item => {
       if (chartId === Number(item.indicator_id) && selectedDemo === item.demographic) {
-        if (item.description) {
+        if (item && item.description) {
           paragraph.innerText = item.description;
         }
       }
