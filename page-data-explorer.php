@@ -19,8 +19,8 @@ get_header();
 	<div class="data-management">
 	  <div class="community-chooser">
 	    <div>Choose a Community</div>
-	    <select class="custom-select" id="community-dropdown">
-	      <option selected>Select a Community</option>
+	    <select id="community-dropdown">
+	      <option disabled selected hidden>Select a Community</option>
 	    </select>
 	  </div>
 	  <div class="community-map">
@@ -37,7 +37,7 @@ get_header();
 	    <div class="data-explorer__demo-title">Total Population</div>
 	      <div class="">
 		<div id="total-population"></div>
-		<!-- <p>Inhabitants</p> -->
+		<p>Inhabitants</p>
 	      </div>
 	  </div>
 	  <div class="data-explorer__demo-section">
@@ -75,13 +75,10 @@ get_header();
     </div>
 
     <div class="data-explorer__category-selector">
-      <div>
-	<div>
-	  <p>Select a data category:</p>
-	</div>
-	<select id="domain-select">
-	</select>
-      </div>
+      <p>Select a data category:</p>
+      <select id="domain-select">
+	<option disabled selected hidden>Select a Domain</option>
+      </select>
     </div>
   </div>
 

@@ -10,62 +10,18 @@
  * https://developers.google.com/chart/interactive/docs/gallery/linechart
  */
 
-// TODO function to fetch the CSV file when user selects the Domain dropdown
-// const domainDropdown = document.getElementById("domain-dropdown");
-
 const communityDropdown = document.getElementById("community-dropdown");
-const subdomainButton = document.querySelectorAll(".sub-domain-option");
 const communityTitle = document.getElementById("community-title");
 const raceData = document.getElementById("race-data");
 const ageData = document.getElementById("age-data");
 const dataRenderDiv = document.getElementById("data-render");
 const dataContainer = document.getElementById("data-container");
 const chartContainer = document.getElementById("chart-container");
-const dropdownPlaceholder = document.getElementById("dropdown-placeholder");
-const collapseSubDomainDropdown = document.getElementById("collapseOne");
 const adminChartContainer = document.getElementById("admin-container");
 const censusChartContainer = document.getElementById("census-container");
 const surveyChartContainer = document.getElementById("survey-container");
-const adminChartGraphContainer = document.getElementById("admin-chart");
-const censusChartGraphContainer = document.getElementById("census-chart");
-const surveyChartGraphContainer = document.getElementById("survey-chart");
 const domainSelect = document.getElementById("domain-select");
 const boroughMap = document.getElementById("borough-map");
-
-let domains = {};
-let configData = {};
-
-// Load config data
-window.addEventListener("DOMContentLoaded", async () => {
-  configData = await fetchJsonFile(chartContainer.dataset.config);
-
-  // Build the domains/subdomains object for reference
-  Object.keys(configData).forEach(key => {
-    const domain = configData[key].domain;
-    const subDomain = configData[key].subDomain;
-
-    if (subDomain && domain && !(domain in domains)) {
-      domains[domain] = [subDomain];
-    } else if (domain && subDomain && domains[domain].indexOf(subDomain) === -1) {
-      domains[domain].push(subDomain);
-    }
-  });
-
-  // Build the domain dropdown
-  Object.keys(domains).forEach(key => {
-    let domainOptGroup = document.createElement("optgroup");
-    domainOptGroup.setAttribute("label", key);
-
-    domains[key].forEach(subdomain => {
-      let subdomainOption = document.createElement("option");
-      subdomainOption.innerText = subdomain;
-      subdomainOption.setAttribute("value", subdomain);
-      domainOptGroup.appendChild(subdomainOption);
-    });
-
-    domainSelect.appendChild(domainOptGroup);
-  });
-});
 
 const yearQuarterLabels = {
   "nypdCalls": {
@@ -105,12 +61,13 @@ const yearQuarterLabels = {
 const demographyDataFile = dataContainer.dataset.demography;
 const communityDataFile = dataContainer.dataset.community;
 
+let domains = {};
+let configData = {};
+
 let citywideData = [];
 
 let selectedDomain = "";
 let selectedCommunity = "";
-
-google.charts.load("current", { packages: ["corechart", "line", "bar"] });
 
 // The SubdomainObject class
 // This contains the data, the id, and the type of data (admin, census, or
@@ -118,28 +75,67 @@ google.charts.load("current", { packages: ["corechart", "line", "bar"] });
 class SubdomainObject {
   constructor(data, id, type, source) {
     this.data = data; // An array of indexed data objects
-    this.id = id; // An indicator ID
+    this.indicatorId = id; // An indicator ID
     this.type = type; // The type of data: admin, survey, census
     this.source = source; // The source reference, e.g. "311Complaints"
   }
 }
 
-// Update community data on Community dropdown selected
-communityDropdown.addEventListener("change", () => {
-  handleCommunityChange();
+google.charts.load("current", { packages: ["corechart", "line", "bar"] });
+
+window.addEventListener("DOMContentLoaded", async () => {
+  // Load config data
+  configData = await fetchJsonFile(chartContainer.dataset.config);
+
+  // Build the domains/subdomains object for reference
+  Object.keys(configData).forEach(key => {
+    const domain = configData[key].domain;
+    const subDomain = configData[key].subDomain;
+
+    if (subDomain && domain && !(domain in domains)) {
+      domains[domain] = [subDomain];
+    } else if (domain && subDomain && domains[domain].indexOf(subDomain) === -1) {
+      domains[domain].push(subDomain);
+    }
+  });
+
+  // Build the domain dropdown
+  Object.keys(domains).forEach(key => {
+    let domainOptGroup = document.createElement("optgroup");
+    domainOptGroup.setAttribute("label", key);
+
+    domains[key].forEach(subdomain => {
+      let subdomainOption = document.createElement("option");
+      subdomainOption.innerText = subdomain;
+      subdomainOption.setAttribute("value", subdomain);
+      domainOptGroup.appendChild(subdomainOption);
+    });
+
+    domainSelect.appendChild(domainOptGroup);
+  });
 });
 
-const handleCommunityChange = () => {
-  selectedDomain = communityDropdown.options[communityDropdown.selectedIndex].text;
+// Update community data on Community dropdown selected
+communityDropdown.addEventListener("change", () => {
   selectedCommunity = communityDropdown.options[communityDropdown.selectedIndex].value;
   removeDemographyData();
   renderDemographyData(communityDropdown.value);
-  communityTitle.innerText = selectedDomain;
   dataRenderDiv.style.display = "flex";
   dataContainer.style.display = "flex";
+
+  // Add current community class to the borough SVG
   boroughMap.setAttribute("class", "");
   boroughMap.classList.add("community-" + selectedCommunity);
-};
+
+  domainDataBuilder(); // This is where the charts themselves get built
+});
+
+// Update domain data on subdomain dropdown selected
+domainSelect.addEventListener("change", () => {
+  selectedDomain = domainSelect.value;
+  removeGraphs();
+  domainDataBuilder(); // This is where the charts themselves get built
+});
 
 // Render Community population data
 const renderDemographyData = async (smart_site) => {
@@ -195,19 +191,17 @@ const renderDemographyData = async (smart_site) => {
 };
 
 function removeDemographyData() {
-  if (document.getElementById("race-population")) {
-    const totalPopulation = document.getElementById("total-population");
-    const femalePercentage = document.getElementById("female-percentage");
-    const malePercentage = document.getElementById("male-percentage");
-    const racePopulation = document.getElementById("race-population");
-    const agePopulation = document.getElementById("age-population");
-    totalPopulation.innerText = "";
-    femalePercentage.innerText = "";
-    malePercentage.innerText = "";
-    communityTitle.innerText = "";
-    racePopulation.remove();
-    agePopulation.remove();
-  }
+  const totalPopulation = document.getElementById("total-population");
+  const femalePercentage = document.getElementById("female-percentage");
+  const malePercentage = document.getElementById("male-percentage");
+  const racePopulation = document.getElementById("race-population");
+  const agePopulation = document.getElementById("age-population");
+  totalPopulation.innerText = "";
+  femalePercentage.innerText = "";
+  malePercentage.innerText = "";
+  communityTitle.innerText = "";
+  racePopulation.remove();
+  agePopulation.remove();
 }
 
 const createChildElementData = dataArray => {
@@ -224,13 +218,6 @@ const createChildElementData = dataArray => {
   return dataChildContainer;
 };
 
-// Update domain data on subdomain dropdown selected
-domainSelect.addEventListener("change", e => {
-  selectedDomain = domainSelect.value;
-  removeGraphs();
-  domainDataBuilder(); // This is where the charts themselves get built
-});
-
 function removeGraphs() {
   adminChartContainer.style.display = "none";
   adminChartContainer.innerHTML = "";
@@ -244,6 +231,7 @@ function removeGraphs() {
 
 /**
  * Fetch text file (like a CSV) and return data
+ *
  * @param {string} file - File path for CSV config file
  * @returns {string} file - Escaped string of CSV file contents
  */
@@ -253,9 +241,11 @@ async function fetchTextFile(file)  {
   return data;
 }
 
-// Fetch JSON config file and return data
-// @param {string} file - File path for json config file
-// @returns {json}
+/** Fetch JSON config file and return data
+ *
+ * @param {string} file - File path for json config file
+ * @returns {json}
+ */
 async function fetchJsonFile(file)  {
   const response = await fetch(file);
   const data = await response.json();
@@ -279,10 +269,11 @@ async function fetchJsonFile(file)  {
 
 /**
  * Build the charts
+ *
  * Take the current value of selectedDomain (e.g. "Housing Security") and draw
  * all related charts
  */
-async function domainDataBuilder() {
+function domainDataBuilder() {
   // An object with domain (string), subdomain (string), admin (array), census
   // (array), and survey (array)
   const subDomainData = configData[selectedDomain];
@@ -290,21 +281,21 @@ async function domainDataBuilder() {
   if (subDomainData.admin) {
     subDomainData.admin.forEach(dataItem => {
       chartElementDivBuilder(dataItem, adminChartContainer);
-      drawChartFromSubdomainData({data: subDomainData.admin, id: dataItem.indicatorID, type: "admin"});
+      drawChartFromSubdomainData({data: subDomainData.admin, indicatorId: dataItem.indicatorID, type: "admin"});
     });
   }
 
   if (subDomainData.census) {
     subDomainData.census.forEach(dataItem => {
       chartElementDivBuilder(dataItem, censusChartContainer);
-      drawChartFromSubdomainData({data: subDomainData.census, id: dataItem.indicatorID, type: "census"});
+      drawChartFromSubdomainData({data: subDomainData.census, indicatorId: dataItem.indicatorID, type: "census"});
     });
   }
 
   if (subDomainData.survey) {
     subDomainData.survey.forEach(dataItem => {
       chartElementDivBuilder(dataItem, surveyChartContainer);
-      drawChartFromSubdomainData({data: subDomainData.survey, id: dataItem.indicatorID, type: "survey"});
+      drawChartFromSubdomainData({data: subDomainData.survey, indicatorId: dataItem.indicatorID, type: "survey"});
     });
   }
 }
@@ -368,9 +359,11 @@ function chartElementDivBuilder(data, container) {
  */
 const drawChartFromSubdomainData = async (obj) => {
   // console.log("PROCESSSUBDOMAINDATAFILE param: ", obj);
-  const data = obj.data;
+  const { data, indicatorId, type } = obj;
+
   let filePath = "";
   let fileRef = "";
+
   if (data.length > 0) {
     data.forEach(item => {
       filePath = chartContainer.dataset[item.fileRef];
@@ -383,12 +376,12 @@ const drawChartFromSubdomainData = async (obj) => {
 
     // Set the citywide data if we're doing an admin chart; this gets drawn
     // in drawChartAdmin
-    if (obj.type === "admin") {
-      const dataObj = createSubdomainObject({labels: labels, data: dataArray, id: obj.id , type: "city", source: fileRef });
+    if (type === "admin") {
+      const dataObj = createSubdomainObject({labels: labels, data: dataArray, indicatorId: indicatorId , type: "city", source: fileRef });
       citywideData = [ ...dataObj.data ];
     }
 
-    const dataObj = createSubdomainObject({ labels: labels, data: dataArray, id: obj.id, type: obj.type, source: fileRef });
+    const dataObj = createSubdomainObject({ labels: labels, data: dataArray, indicatorId: indicatorId, type: type, source: fileRef });
     const filteredData = filterData(dataObj);
 
     // If we have data, draw a chart with it
@@ -437,21 +430,25 @@ function removeUnnecessaryChar(string) {
  *   labels:
  *   id:
  *   type:
+ *   source:
  * }
  * @returns {SubdomainObject} A subdomain object
  */
 function createSubdomainObject(obj) {
-  const labeledData = obj.data.map((dataItem, i) => {
+  console.log("CREATESUBDOMAINOBJECT: ", obj);
+  const { data, labels, indicatorId, type, source } = obj;
+
+  const labeledData = data.map((dataItem, i) => {
     const labeledDataRow = {};
 
-    for (let i = 0; i < obj.labels.length; i++) {
-      labeledDataRow[obj.labels[i]] = removeUnnecessaryChar(dataItem[i]);
+    for (let i = 0; i < labels.length; i++) {
+      labeledDataRow[labels[i]] = removeUnnecessaryChar(dataItem[i]);
     }
 
     return labeledDataRow;
   });
 
-  const subdomainObj = new SubdomainObject(labeledData, obj.id, obj.type, obj.source);
+  const subdomainObj = new SubdomainObject(labeledData, indicatorId, type, source);
 
   // console.log("createSubdomainObject return: ", subdomainObj);
   return subdomainObj;
@@ -466,27 +463,28 @@ function createSubdomainObject(obj) {
  */
 function filterData(subdomainObj) {
   // console.log("PROCESSDATA param: ", subdomainObj);
-  const dataResponse = subdomainObj.data;
-  const filteredSubdomainObj = new SubdomainObject({}, subdomainObj.id, subdomainObj.type, subdomainObj.source);
+  const { data, indicatorId, type, source } = subdomainObj;
+
+  const filteredSubdomainObj = new SubdomainObject({}, indicatorId, type, source);
 
   // Filter data by matching the desired smart site and selected domain; exclude
   // city type data
-  const filteredData = dataResponse.filter((data) => {
-    return (data.smart_site === selectedCommunity && data.sub_domain === selectedDomain && subdomainObj.type !== "city");
+  const filteredData = data.filter((dataItem) => {
+    return (dataItem.smart_site === selectedCommunity && dataItem.sub_domain === selectedDomain && type !== "city");
   });
 
   // If this is admin data, need to filter by "Rate"-type data, and by indicator
   // ID, since we're drawing multiple charts
-  if (subdomainObj.type === "admin") {
-    const dataFiltered = filteredData.filter((data) => {
-      return (Number(data.indicator_id) === subdomainObj.id && data.data_type === "Rate" );
+  if (type === "admin") {
+    const dataFiltered = filteredData.filter((dataItem) => {
+      return (Number(dataItem.indicator_id) === indicatorId && dataItem.data_type === "Rate" );
     });
     filteredSubdomainObj.data=dataFiltered;
   // If this is census data, need to filter by indicator ID, since we draw
   // multiple charts
-  } else if (subdomainObj.type === "census") {
-    const dataFiltered = filteredData.filter((data) => {
-      return (Number(data.indicator_id) === subdomainObj.id);
+  } else if (type === "census") {
+    const dataFiltered = filteredData.filter((dataItem) => {
+      return (Number(dataItem.indicator_id) === indicatorId);
     });
     filteredSubdomainObj.data=dataFiltered;
   } else {
@@ -501,15 +499,18 @@ function filterData(subdomainObj) {
  * Draw the admin data chart in the existing div we created with
  * chartElementDivBuilder
  *
+ * Only needs data, id, and source in object param
+ *
  * @parm {SubdomainObject} subdomainObj
  */
 function drawChartAdmin(subdomainObj) {
   // console.log("DRAWCHARTADMIN param: ", subdomainObj);
+  const { data, indicatorId, source } = subdomainObj;
+
   adminChartContainer.style.display = "block";
+
   const dataTable = new google.visualization.DataTable();
-  const data = subdomainObj.data;
-  const chartId = subdomainObj.id;
-  const paragraph = document.getElementById(`chart-content-p-${chartId}`);
+  const paragraph = document.getElementById(`chart-content-p-${indicatorId}`);
   let cityArrayMatch = [];
   let communityValues = [];
   let citywideValues = [];
@@ -522,7 +523,7 @@ function drawChartAdmin(subdomainObj) {
 
   if (data[0]) {
     cityArrayMatch = citywideData.filter((item) => {
-      return (Number(item.indicator_id) === chartId && item.smart_site === "Citywide" && item.data_type === "Rate" );
+      return (Number(item.indicator_id) === indicatorId && item.smart_site === "Citywide" && item.data_type === "Rate" );
     });
   }
 
@@ -530,7 +531,7 @@ function drawChartAdmin(subdomainObj) {
     if (data[0].indicator_id === item.indicator_id ) {
       communityValues.push(item.value);
 
-      const labels = yearQuarterLabels[subdomainObj.source];
+      const labels = yearQuarterLabels[source];
       const year = item[labels.year];
       const quarter = item[labels.quarter];
 
@@ -595,21 +596,22 @@ function drawChartAdmin(subdomainObj) {
     backgroundColor: "transparent",
   };
 
-  let chart = new google.visualization.LineChart(document.getElementById(`chart-${chartId}`));
+  let chart = new google.visualization.LineChart(document.getElementById(`chart-${indicatorId}`));
   chart.draw(dataTable, options);
 }
 
 function drawChartCensus(subdomainObj) {
   // console.log("DRAWCHARTCENSUS param: ", subdomainObj);
-  const chartId = subdomainObj.id;
-  const response = subdomainObj.data;
+  const { data, indicatorId, type } = subdomainObj;
 
   censusChartContainer.style.display = "block";
 
   const dataTable = new google.visualization.arrayToDataTable([
-    ["string", response[0].indicator],
-    [response[0].indicator, +response[0].value]
+    ["string", data[0].indicator],
+    [data[0].indicator, +data[0].value]
   ]);
+
+  console.log("CENSUS DATA: ", data);
 
   const options = {
     colors: [
@@ -623,11 +625,11 @@ function drawChartCensus(subdomainObj) {
     legend: {
       position: "bottom",
     },
-    title: response.domain,
+    title: data.domain,
     backgroundColor: "transparent",
     isStacked: true,
     hAxis: {
-      title: response.domain + " - " + response.sud_domain,
+      title: `${data[0].domain} - ${data[0].sub_domain}`,
       minValue: 0,
       maxValue: 100,
     },
@@ -636,7 +638,7 @@ function drawChartCensus(subdomainObj) {
     }
   };
 
-  let chart = new google.visualization.BarChart(document.getElementById(`chart-${chartId}`));
+  let chart = new google.visualization.BarChart(document.getElementById(`chart-${indicatorId}`));
   chart.draw(dataTable, options);
 }
 
@@ -644,12 +646,11 @@ function drawChartSurvey(subdomainObj) {
   // console.log("DRAWCHARTSURVEY param: ", subdomainObj);
   surveyChartContainer.style.display = "block";
 
-  const data = subdomainObj.data;
-  const chartId = subdomainObj.id;
+  const { data, indicatorId, type } = subdomainObj;
 
-  const chartOptions = document.getElementById(`chart-options-${chartId}`);
-  const chartArea = document.getElementById(`chart-${chartId}`);
-  const paragraph = document.getElementById(`chart-content-p-${chartId}`);
+  const chartOptions = document.getElementById(`chart-options-${indicatorId}`);
+  const chartArea = document.getElementById(`chart-${indicatorId}`);
+  const paragraph = document.getElementById(`chart-content-p-${indicatorId}`);
 
   let demographics = []; // Major groups ("Age", "Race", etc.()
   let demoLevels = []; // Subgroups ("18-34", etc.)
@@ -671,7 +672,7 @@ function drawChartSurvey(subdomainObj) {
     selectedDemo = demographics[0];
 
     let demoDropdown = document.createElement("select");
-    demoDropdown.setAttribute("id", `demo-dropdown-${chartId}`);
+    demoDropdown.setAttribute("id", `demo-dropdown-${indicatorId}`);
 
     demographics.forEach(demo => {
       let demoOption = document.createElement("option");
@@ -687,7 +688,7 @@ function drawChartSurvey(subdomainObj) {
 
     chartOptions.appendChild(demoDropdown);
   } else {
-    console.log("No demographic data for survey " + chartId);
+    console.log("No demographic data for survey " + indicatorId);
   }
 
   const options = {
@@ -721,7 +722,7 @@ function drawChartSurvey(subdomainObj) {
     let waves = [];
 
     // Get only the data that matches our chart ID and selected demographic
-    const filteredData = data.filter(item => { return (chartId === Number(item.indicator_id) && selectedDemo === item.demographic );});
+    const filteredData = data.filter(item => { return (indicatorId === Number(item.indicator_id) && selectedDemo === item.demographic );});
 
     // Create an array of unique waves within our filtered data
     filteredData.forEach(data => {
@@ -759,7 +760,7 @@ function drawChartSurvey(subdomainObj) {
     });
 
     filteredData.forEach(item => {
-      if (chartId === Number(item.indicator_id) && selectedDemo === item.demographic) {
+      if (indicatorId === Number(item.indicator_id) && selectedDemo === item.demographic) {
         if (item && item.description) {
           paragraph.innerText = item.description;
         }
