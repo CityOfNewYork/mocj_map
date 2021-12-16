@@ -219,9 +219,6 @@ function removeGraphs() {
 
 /**
  * Fetch text file (like a CSV) and return data
- *
- * @param {string} file - File path for CSV config file
- * @returns {string} file - Escaped string of CSV file contents
  */
 async function fetchTextFile(file)  {
   const response = await fetch(file);
@@ -231,9 +228,6 @@ async function fetchTextFile(file)  {
 
 /**
  * Fetch JSON file and return data
- *
- * @param {string} file - File path for json config file
- * @returns {json}
  */
 async function fetchJsonFile(file)  {
   const response = await fetch(file);
@@ -257,48 +251,8 @@ async function fetchJsonFile(file)  {
 })();
 
 /**
- * Build the charts
- *
- * Take the current value of selectedDomain (e.g. "Housing Security") and draw
- * all related charts
- */
-function domainDataBuilder() {
-  // An object with domain (string), subdomain (string), admin (array), census
-  // (array), and survey (array)
-  const subDomainData = configData[selectedDomain];
-
-  if (subDomainData.admin) {
-    subDomainData.admin.forEach(dataItem => {
-      chartElementDivBuilder(dataItem, adminChartContainer);
-      drawChartFromSubdomainData({data: subDomainData.admin, indicatorId: dataItem.indicatorID, type: "admin"});
-    });
-  }
-
-  if (subDomainData.census) {
-    subDomainData.census.forEach(dataItem => {
-      chartElementDivBuilder(dataItem, censusChartContainer);
-      drawChartFromSubdomainData({data: subDomainData.census, indicatorId: dataItem.indicatorID, type: "census"});
-    });
-  }
-
-  if (subDomainData.survey) {
-    subDomainData.survey.forEach(dataItem => {
-      chartElementDivBuilder(dataItem, surveyChartContainer);
-      drawChartFromSubdomainData({data: subDomainData.survey, indicatorId: dataItem.indicatorID, type: "survey"});
-    });
-  }
-}
-
-/**
  * Create divs to house data charts
  * We fill these in later with drawChart[xxx]
- *
- * @param {object} data - arrayOf({
- *     indicatorID: {number},
- *     indicatorName: {string},
- *     source: {number},
- *     fileRef: {string},
- *   })}
  */
 function chartElementDivBuilder(data, container) {
   // console.log("CHARTELEMENTDIVBUILDER param: ", data);
@@ -339,8 +293,41 @@ function chartElementDivBuilder(data, container) {
 }
 
 /**
+ * Build the charts
+ *
+ * Take the current value of selectedDomain (e.g. "Housing Security") and draw
+ * all related charts
+ */
+function domainDataBuilder() {
+  // An object with domain (string), subdomain (string), admin (array), census
+  // (array), and survey (array)
+  const subDomainData = configData[selectedDomain];
+
+  if (subDomainData.admin) {
+    subDomainData.admin.forEach(dataItem => {
+      chartElementDivBuilder(dataItem, adminChartContainer);
+      drawChartFromSubdomainData({data: subDomainData.admin, indicatorId: dataItem.indicatorID, type: "admin"});
+    });
+  }
+
+  if (subDomainData.census) {
+    subDomainData.census.forEach(dataItem => {
+      chartElementDivBuilder(dataItem, censusChartContainer);
+      drawChartFromSubdomainData({data: subDomainData.census, indicatorId: dataItem.indicatorID, type: "census"});
+    });
+  }
+
+  if (subDomainData.survey) {
+    subDomainData.survey.forEach(dataItem => {
+      chartElementDivBuilder(dataItem, surveyChartContainer);
+      drawChartFromSubdomainData({data: subDomainData.survey, indicatorId: dataItem.indicatorID, type: "survey"});
+    });
+  }
+}
+
+/**
  * Take an object of this format:
- * {data: {}, id: "8815", type: "admin"}
+ * {data: {}, indicatorId: "8815", type: "admin"}
  * and draw a chart from it in the chart container with the corresponding ID
  */
 const drawChartFromSubdomainData = async (obj) => {
@@ -366,11 +353,11 @@ const drawChartFromSubdomainData = async (obj) => {
     // Filter the data by indicator ID, based on type
     const filteredData = filterData({ data: labeledData, indicatorId: indicatorId, type: type });
 
-    const dataObj = { data: filteredData, indicatorId: indicatorId, type: type, source: fileRef };
+    const dataObj = { data: filteredData, indicatorId: indicatorId, source: fileRef };
 
     // If we have data, draw a chart with it
     if (filteredData && filteredData.length > 0) {
-      switch (dataObj.type) {
+      switch (type) {
         case "admin":
           google.charts.setOnLoadCallback(() => drawChartAdmin(dataObj));
           break;
@@ -468,6 +455,7 @@ function drawChartAdmin(subdomainObj) {
 
   const dataTable = new google.visualization.DataTable();
   const paragraph = document.getElementById(`chart-content-p-${indicatorId}`);
+
   let cityArrayMatch = [];
   let communityValues = [];
   let citywideValues = [];
@@ -672,7 +660,6 @@ function drawChartSurvey(subdomainObj) {
 
   const redrawSurveyChart = () => {
     const dataTable = new google.visualization.DataTable();
-    let combinedValues = [];
     let dataArrayMapped = [];
     let waves = [];
 
