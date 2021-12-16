@@ -115,7 +115,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   });
 });
 
-// Update community data on Community dropdown selected
+// Update community data and charts when Community dropdown selected
 communityDropdown.addEventListener("change", () => {
   selectedCommunity = communityDropdown.options[communityDropdown.selectedIndex].value;
   removeDemographyData();
@@ -130,7 +130,7 @@ communityDropdown.addEventListener("change", () => {
   domainDataBuilder(); // This is where the charts themselves get built
 });
 
-// Update domain data on subdomain dropdown selected
+// Update charts when domain dropdown selected
 domainSelect.addEventListener("change", () => {
   selectedDomain = domainSelect.value;
   removeGraphs();
@@ -241,7 +241,8 @@ async function fetchTextFile(file)  {
   return data;
 }
 
-/** Fetch JSON config file and return data
+/**
+ * Fetch JSON file and return data
  *
  * @param {string} file - File path for json config file
  * @returns {json}
@@ -435,7 +436,7 @@ function removeUnnecessaryChar(string) {
  * @returns {SubdomainObject} A subdomain object
  */
 function createSubdomainObject(obj) {
-  console.log("CREATESUBDOMAINOBJECT: ", obj);
+  // console.log("CREATESUBDOMAINOBJECT: ", obj);
   const { data, labels, indicatorId, type, source } = obj;
 
   const labeledData = data.map((dataItem, i) => {
@@ -602,7 +603,7 @@ function drawChartAdmin(subdomainObj) {
 
 function drawChartCensus(subdomainObj) {
   // console.log("DRAWCHARTCENSUS param: ", subdomainObj);
-  const { data, indicatorId, type } = subdomainObj;
+  const { data, indicatorId } = subdomainObj;
 
   censusChartContainer.style.display = "block";
 
@@ -610,8 +611,6 @@ function drawChartCensus(subdomainObj) {
     ["string", data[0].indicator],
     [data[0].indicator, +data[0].value]
   ]);
-
-  console.log("CENSUS DATA: ", data);
 
   const options = {
     colors: [
@@ -646,7 +645,7 @@ function drawChartSurvey(subdomainObj) {
   // console.log("DRAWCHARTSURVEY param: ", subdomainObj);
   surveyChartContainer.style.display = "block";
 
-  const { data, indicatorId, type } = subdomainObj;
+  const { data, indicatorId } = subdomainObj;
 
   const chartOptions = document.getElementById(`chart-options-${indicatorId}`);
   const chartArea = document.getElementById(`chart-${indicatorId}`);
