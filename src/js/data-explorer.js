@@ -375,29 +375,25 @@ const drawChartFromSubdomainData = async (obj) => {
     const labels = removeUnnecessaryChar(dataRequest.split("\n")[0]).split(",");
     const dataArray = csvDataIntoArray(dataRequest);
 
-    // Set the citywide data if we're doing an admin chart; this gets drawn
-    // in drawChartAdmin
-    if (type === "admin") {
-      const dataObj = createSubdomainObject({labels: labels, data: dataArray, indicatorId: indicatorId , type: "city", source: fileRef });
-      citywideData = [ ...dataObj.data ];
-    }
-
     const labeledData = labelData({ labels: labels, data: dataArray });
+    citywideData = labeledData;
 
-    const dataObj = createSubdomainObject({ labels: labels, data: dataArray, indicatorId: indicatorId, type: type, source: fileRef });
-    const filteredData = filterData(dataObj);
+    // Filter the data by indicator ID, based on type
+    const filteredData = filterData({ data: labeledData, indicatorId: indicatorId, type: type });
+
+    const dataObj = { data: filteredData, indicatorId: indicatorId, type: type, source: fileRef };
 
     // If we have data, draw a chart with it
-    if (filteredData.data.length > 0) {
-      switch (filteredData.type) {
+    if (filteredData && filteredData.length > 0) {
+      switch (dataObj.type) {
         case "admin":
-          google.charts.setOnLoadCallback(() => drawChartAdmin(filteredData));
+          google.charts.setOnLoadCallback(() => drawChartAdmin(dataObj));
           break;
         case "census":
-          google.charts.setOnLoadCallback(() => drawChartCensus(filteredData));
+          google.charts.setOnLoadCallback(() => drawChartCensus(dataObj));
           break;
         case "survey":
-          google.charts.setOnLoadCallback(() => drawChartSurvey(filteredData));
+          google.charts.setOnLoadCallback(() => drawChartSurvey(dataObj));
           break;
         default:
           break;
@@ -441,31 +437,6 @@ const labelData = (labelsData) => {
 };
 
 /**
- * Create a subdomain object with an array of objects for its data object,
- * from an array of labels and of data objects
- *
- * @param {object} obj - {
- *   data:
- *   labels:
- *   id:
- *   type:
- *   source:
- * }
- * @returns {SubdomainObject} A subdomain object
- */
-function createSubdomainObject(obj) {
-  // console.log("CREATESUBDOMAINOBJECT: ", obj);
-  const { data, labels, indicatorId, type, source } = obj;
-
-  const labeledData = labelData({ data: data, labels: labels});
-
-  const subdomainObj = new SubdomainObject(labeledData, indicatorId, type, source);
-
-  // console.log("createSubdomainObject return: ", subdomainObj);
-  return subdomainObj;
-}
-
-/**
  * Filter the data in a Subdomain object so that it only contains data matching
  * the currently chosen community and domain
  *
@@ -474,9 +445,10 @@ function createSubdomainObject(obj) {
  */
 function filterData(subdomainObj) {
   // console.log("PROCESSDATA param: ", subdomainObj);
-  const { data, indicatorId, type, source } = subdomainObj;
+  const { data, indicatorId, type } = subdomainObj;
+  let dataFiltered = {};
 
-  const filteredSubdomainObj = new SubdomainObject({}, indicatorId, type, source);
+  // const filteredSubdomainObj = new SubdomainObject({}, indicatorId, type, source);
 
   // Filter data by matching the desired smart site and selected domain; exclude
   // city type data
@@ -487,23 +459,21 @@ function filterData(subdomainObj) {
   // If this is admin data, need to filter by "Rate"-type data, and by indicator
   // ID, since we're drawing multiple charts
   if (type === "admin") {
-    const dataFiltered = filteredData.filter((dataItem) => {
+    dataFiltered = filteredData.filter((dataItem) => {
       return (Number(dataItem.indicator_id) === indicatorId && dataItem.data_type === "Rate" );
     });
-    filteredSubdomainObj.data=dataFiltered;
   // If this is census data, need to filter by indicator ID, since we draw
   // multiple charts
   } else if (type === "census") {
-    const dataFiltered = filteredData.filter((dataItem) => {
+    dataFiltered = filteredData.filter((dataItem) => {
       return (Number(dataItem.indicator_id) === indicatorId);
     });
-    filteredSubdomainObj.data=dataFiltered;
   } else {
-    filteredSubdomainObj.data=filteredData;
+    dataFiltered=filteredData;
   }
 
   // console.log("PROCESSDATA return: ", filteredSubdomainObj);
-  return filteredSubdomainObj;
+  return dataFiltered;
 }
 
 /**
