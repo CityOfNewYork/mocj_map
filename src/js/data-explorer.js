@@ -342,10 +342,8 @@ const drawChartFromSubdomainData = async (obj) => {
     const filePath = chartContainer.dataset[fileRef];
 
     const dataRequest = await fetchTextFile(filePath);
-    const labels = removeUnnecessaryChar(dataRequest.split("\n")[0]).split(",");
-    const dataArray = csvDataIntoArray(dataRequest);
+    const labeledData = labelData(dataRequest);
 
-    const labeledData = labelData({ labels: labels, data: dataArray });
     citywideData = labeledData;
 
     // Filter the data by indicator ID, based on type
@@ -392,9 +390,10 @@ function removeUnnecessaryChar(string) {
   return trim;
 }
 
-// Add labels to raw data and return as an indexed object
+// Take a CSV string and create an object with headers as keys
 const labelData = (labelsData) => {
-  const { data, labels } = labelsData;
+  const labels = removeUnnecessaryChar(labelsData.split("\n")[0]).split(",");
+  const data = csvDataIntoArray(labelsData);
 
   const labeledData = data.map((dataItem, i) => {
     const labeledDataRow = {};
