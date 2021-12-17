@@ -1,6 +1,7 @@
 /**
  * domainDataBuilder
  *   drawChartFromSubdomainData
+ *     labelData
  *     filterData
  *     drawChartAdmin
  *     drawChartCensus
@@ -334,14 +335,9 @@ const drawChartFromSubdomainData = async (obj) => {
   // console.log("PROCESSSUBDOMAINDATAFILE param: ", obj);
   const { data, indicatorId, type } = obj;
 
-  let filePath = "";
-  let fileRef = "";
-
   if (data.length > 0) {
-    data.forEach(item => {
-      filePath = chartContainer.dataset[item.fileRef];
-      fileRef = item.fileRef;
-    });
+    const fileRef = data[0].fileRef;
+    const filePath = chartContainer.dataset[fileRef];
 
     const dataRequest = await fetchTextFile(filePath);
     const labels = removeUnnecessaryChar(dataRequest.split("\n")[0]).split(",");
@@ -353,26 +349,28 @@ const drawChartFromSubdomainData = async (obj) => {
     // Filter the data by indicator ID, based on type
     const filteredData = filterData({ data: labeledData, indicatorId: indicatorId, type: type });
 
-    const dataObj = { data: filteredData, indicatorId: indicatorId, source: fileRef };
+    const domainObj = { data: filteredData, indicatorId: indicatorId, source: fileRef };
 
     // If we have data, draw a chart with it
     if (filteredData && filteredData.length > 0) {
       switch (type) {
         case "admin":
-          google.charts.setOnLoadCallback(() => drawChartAdmin(dataObj));
+          google.charts.setOnLoadCallback(() => drawChartAdmin(domainObj));
           break;
         case "census":
-          google.charts.setOnLoadCallback(() => drawChartCensus(dataObj));
+          google.charts.setOnLoadCallback(() => drawChartCensus(domainObj));
           break;
         case "survey":
-          google.charts.setOnLoadCallback(() => drawChartSurvey(dataObj));
+          google.charts.setOnLoadCallback(() => drawChartSurvey(domainObj));
           break;
         default:
           break;
       }
     } else {
-      console.error("No data available");
+      console.error("No matching data");
     }
+  } else {
+    console.error("No data available");
   }
 };
 
@@ -392,6 +390,7 @@ function removeUnnecessaryChar(string) {
   return trim;
 }
 
+// Add labels to raw data and return as an indexed object
 const labelData = (labelsData) => {
   const { data, labels } = labelsData;
 
@@ -447,9 +446,9 @@ function filterData(object) {
  *
  * Only needs data, id, and source in object param
  */
-function drawChartAdmin(subdomainObj) {
-  // console.log("DRAWCHARTADMIN param: ", subdomainObj);
-  const { data, indicatorId, source } = subdomainObj;
+function drawChartAdmin(domainObj) {
+  // console.log("DRAWCHARTADMIN param: ", domainObj);
+  const { data, indicatorId, source } = domainObj;
 
   adminChartContainer.style.display = "block";
 
@@ -545,9 +544,9 @@ function drawChartAdmin(subdomainObj) {
   chart.draw(dataTable, options);
 }
 
-function drawChartCensus(subdomainObj) {
-  // console.log("DRAWCHARTCENSUS param: ", subdomainObj);
-  const { data, indicatorId } = subdomainObj;
+function drawChartCensus(domainObj) {
+  // console.log("DRAWCHARTCENSUS param: ", domainObj);
+  const { data, indicatorId } = domainObj;
 
   censusChartContainer.style.display = "block";
 
@@ -585,11 +584,11 @@ function drawChartCensus(subdomainObj) {
   chart.draw(dataTable, options);
 }
 
-function drawChartSurvey(subdomainObj) {
-  // console.log("DRAWCHARTSURVEY param: ", subdomainObj);
+function drawChartSurvey(domainObj) {
+  // console.log("DRAWCHARTSURVEY param: ", domainObj);
   surveyChartContainer.style.display = "block";
 
-  const { data, indicatorId } = subdomainObj;
+  const { data, indicatorId } = domainObj;
 
   const chartOptions = document.getElementById(`chart-options-${indicatorId}`);
   const chartArea = document.getElementById(`chart-${indicatorId}`);
