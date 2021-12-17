@@ -180,17 +180,19 @@ const renderDemographyData = async (smart_site) => {
 };
 
 function removeDemographyData() {
-  const totalPopulation = document.getElementById("total-population");
-  const femalePercentage = document.getElementById("female-percentage");
-  const malePercentage = document.getElementById("male-percentage");
-  const racePopulation = document.getElementById("race-population");
-  const agePopulation = document.getElementById("age-population");
-  totalPopulation.innerText = "";
-  femalePercentage.innerText = "";
-  malePercentage.innerText = "";
-  communityTitle.innerText = "";
-  racePopulation.remove();
-  agePopulation.remove();
+  if (document.getElementById("race-population")) {
+    const totalPopulation = document.getElementById("total-population");
+    const femalePercentage = document.getElementById("female-percentage");
+    const malePercentage = document.getElementById("male-percentage");
+    const racePopulation = document.getElementById("race-population");
+    const agePopulation = document.getElementById("age-population");
+    totalPopulation.innerText = "";
+    femalePercentage.innerText = "";
+    malePercentage.innerText = "";
+    communityTitle.innerText = "";
+    racePopulation.remove();
+    agePopulation.remove();
+  }
 }
 
 const createChildElementData = dataArray => {
