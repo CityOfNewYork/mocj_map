@@ -466,15 +466,15 @@ const drawChartAdmin = async (domainObj) => {
 
   if (cityWideData.length > 0) {
     dataTable.addColumn("string", filteredData[0].indicator_id);
-    dataTable.addColumn("number", `Site ${filteredData[0].smart_site}`);
     dataTable.addColumn("number", "Citywide");
+    dataTable.addColumn("number", `Site ${filteredData[0].smart_site}`);
 
     cityWideData.forEach(item => {
       cityWideValues.push(item.value);
     });
 
     for (let i = 0; i < communityValues.length; i++) {
-      dataArrayMapped.push([quarters[i], +communityValues[i], +cityWideValues[i]]);
+      dataArrayMapped.push([quarters[i], +cityWideValues[i], +communityValues[i]]);
     }
     dataTable.addRows([ ...dataArrayMapped ]);
 
