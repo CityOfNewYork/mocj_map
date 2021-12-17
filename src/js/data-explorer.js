@@ -295,6 +295,10 @@ function chartElementDivBuilder(data, container) {
   chartContent.appendChild(paragraph);
 }
 
+const lookupSiteNameByCode = (smartSite) => {
+  return smartSite;
+};
+
 /**
  * Build the charts
  *
@@ -581,11 +585,24 @@ function drawChartCensus(domainObj) {
   chart.draw(dataTable, options);
 }
 
-function drawChartSurvey(domainObj) {
-  // console.log("DRAWCHARTSURVEY param: ", domainObj);
-  surveyChartContainer.style.display = "block";
-
+const drawChartSurvey = async (domainObj) => {
   const { data, indicatorId } = domainObj;
+
+  // Get the demographic-separated data
+  const surveyDemoDataPath = chartContainer.dataset.panelSurveyDemo;
+  const surveyDemoData = await fetchTextFile(surveyDemoDataPath);
+  const surveyDemoLabeledData = labelData(surveyDemoData);
+  const surveyDemoFilteredData = filterData({ data: surveyDemoLabeledData, indicatorId: indicatorId, type: "survey" });
+
+  console.log("surveyDemofilteredData: ", surveyDemoFilteredData);
+
+  // Get the "all" (non demograhic-separated) data
+  const surveyAllDataPath = chartContainer.dataset.panelSurveyAll;
+  const surveyAllData = await fetchTextFile(surveyAllDataPath);
+  const surveyAllLabeledData = labelData(surveyAllData);
+  const surveyAllFilteredData = filterData({ data: surveyAllLabeledData, indicatorId: indicatorId, type: "survey" });
+
+  surveyChartContainer.style.display = "block";
 
   const chartOptions = document.getElementById(`chart-options-${indicatorId}`);
   const chartArea = document.getElementById(`chart-${indicatorId}`);
@@ -596,9 +613,10 @@ function drawChartSurvey(domainObj) {
   let selectedDemo = "";
 
   // Only do this stuff if we have demographic data
-  if (data[0].demographic) {
+  if (surveyDemoFilteredData[0].demographic) {
+    console.log("we have dat");
     // Get an array of unique demographic groups
-    data.forEach(item => {
+    surveyDemoFilteredData.forEach(item => {
       if (demoLevels.findIndex(group => group.demographic_level === item.demographic_level) === -1) {
         demoLevels.push({demographic: item.demographic, demographic_level: item.demographic_level});
       }
@@ -607,11 +625,16 @@ function drawChartSurvey(domainObj) {
       }
     });
 
-    // Start by choosing the first demographic group
-    selectedDemo = demographics[0];
+    // Start by choosing the All
+    selectedDemo = "All";
 
     let demoDropdown = document.createElement("select");
     demoDropdown.setAttribute("id", `demo-dropdown-${indicatorId}`);
+
+    let demoAllOption = document.createElement("option");
+    demoAllOption.innerText = "All";
+    demoAllOption.setAttribute("value", "All");
+    demoDropdown.appendChild(demoAllOption);
 
     demographics.forEach(demo => {
       let demoOption = document.createElement("option");
@@ -622,7 +645,12 @@ function drawChartSurvey(domainObj) {
 
     demoDropdown.addEventListener("change", e => {
       selectedDemo = demoDropdown.value;
-      redrawSurveyChart();
+
+      if (selectedDemo === "All") {
+        redrawSurveyAllChart();
+      } else {
+        redrawSurveyDemoChart();
+      }
     });
 
     chartOptions.appendChild(demoDropdown);
@@ -654,13 +682,41 @@ function drawChartSurvey(domainObj) {
 
   const chart = new google.visualization.ColumnChart(chartArea);
 
-  const redrawSurveyChart = () => {
+  // Draw the chart for "All" data (not broken down by demo)
+  const redrawSurveyAllChart = () => {
+    console.log("Redrawing all chart");
+    const dataTable = new google.visualization.DataTable();
+
+    // Get only the data that matches our chart ID and selected demographic
+    const filteredData = surveyAllFilteredData.filter(item => { return (indicatorId === Number(item.indicator_id));});
+
+    // Add string column for "wave 1," "wave 2", etc.
+    dataTable.addColumn("string", "Wave");
+    dataTable.addColumn("number", "Wave");
+
+    filteredData.forEach(item => {
+      if (item && item.description) {
+        paragraph.innerText = item.description;
+      }
+    });
+
+    const dataArrayMapped = filteredData.map(dataItem => {
+      return [dataItem.wave, Number(dataItem.value)];
+    });
+
+    dataTable.addRows([...dataArrayMapped]);
+
+    chart.draw(dataTable, options);
+  };
+
+  // Draw the chart for demographic-specific data
+  const redrawSurveyDemoChart = () => {
     const dataTable = new google.visualization.DataTable();
     let dataArrayMapped = [];
     let waves = [];
 
     // Get only the data that matches our chart ID and selected demographic
-    const filteredData = data.filter(item => { return (indicatorId === Number(item.indicator_id) && selectedDemo === item.demographic );});
+    const filteredData = surveyDemoFilteredData.filter(item => { return (indicatorId === Number(item.indicator_id) && selectedDemo === item.demographic );});
 
     // Create an array of unique waves within our filtered data
     filteredData.forEach(data => {
@@ -710,5 +766,5 @@ function drawChartSurvey(domainObj) {
     chart.draw(dataTable, options);
   };
 
-  redrawSurveyChart();
-}
+  redrawSurveyAllChart();
+};

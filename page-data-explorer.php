@@ -94,7 +94,8 @@ get_header();
     data-nypd-complaints="<?php echo get_field('nypd_complaints'); ?>"
     data-nypd-shootings="<?php echo get_field('nypd_shootings'); ?>"
     data-census-indicators="<?php echo get_field('census_indicators'); ?>"
-    data-panel-survey="<?php echo get_field('panel_survey'); ?>"
+    data-panel-survey-all="<?php echo get_field('panel_survey'); ?>"
+    data-panel-survey-demo="<?php echo get_field('panel_survey_demo'); ?>"
   >
     <div class="graph-section">
       <div id="domain-header"></div>
