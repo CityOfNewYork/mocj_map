@@ -42,7 +42,7 @@ const yearQuarterLabels = {
   },
   "doiEvictions": {
     "year": "eviction_year",
-    "quarter": "eviction_quarters",
+    "quarter": "eviction_quarter",
   },
   "nypdSqf": {
     "year": "sqf_year",
@@ -112,6 +112,8 @@ communityDropdown.addEventListener("change", () => {
   renderDemographyData(communityDropdown.value);
   dataRenderDiv.style.display = "flex";
   dataContainer.style.display = "flex";
+
+  communityTitle.innerText = communityDropdown.options[communityDropdown.selectedIndex].text;
 
   // Add current community class to the borough SVG
   boroughMap.setAttribute("class", "");
@@ -534,7 +536,14 @@ const drawChartCensus = async (domainObj) => {
 
   chartElementDivBuilder(filteredData[0], censusChartContainer);
 
+  const paragraph = document.getElementById(`chart-content-p-${indicatorId}`);
   censusChartContainer.style.display = "block";
+
+  filteredData.forEach(item => {
+    if (item && item.description) {
+      paragraph.innerText = item.description;
+    }
+  });
 
   const dataTable = new google.visualization.arrayToDataTable([
     ["string", filteredData[0].indicator],
@@ -557,13 +566,9 @@ const drawChartCensus = async (domainObj) => {
     backgroundColor: "transparent",
     isStacked: true,
     hAxis: {
-      title: `${filteredData[0].domain} - ${filteredData[0].sub_domain}`,
       minValue: 0,
       maxValue: 100,
     },
-    vAxis: {
-      title: "Indicator"
-    }
   };
 
   let chart = new google.visualization.BarChart(document.getElementById(`chart-${indicatorId}`));
@@ -594,7 +599,7 @@ const drawChartSurvey = async (domainObj) => {
   const chartArea = document.getElementById(`chart-${indicatorId}`);
   const paragraph = document.getElementById(`chart-content-p-${indicatorId}`);
 
-  let demographics = []; // Major groups ("Age", "Race", etc.()
+  let demographics = ["All"]; // Major groups ("Age", "Race", etc.()
   let demoLevels = []; // Subgroups ("18-34", etc.)
   let selectedDemo = "";
 
@@ -613,20 +618,18 @@ const drawChartSurvey = async (domainObj) => {
     });
 
     // Start by choosing the All
-    selectedDemo = "All";
+    selectedDemo = "Age";
 
     let demoDropdown = document.createElement("select");
     demoDropdown.setAttribute("id", `demo-dropdown-${indicatorId}`);
-
-    let demoAllOption = document.createElement("option");
-    demoAllOption.innerText = "All";
-    demoAllOption.setAttribute("value", "All");
-    demoDropdown.appendChild(demoAllOption);
 
     demographics.forEach(demo => {
       let demoOption = document.createElement("option");
       demoOption.innerText = demo;
       demoOption.setAttribute("value", demo);
+      if (demo === "Age") {
+        demoOption.setAttribute("selected", true);
+      }
       demoDropdown.appendChild(demoOption);
     });
 
@@ -731,7 +734,7 @@ const drawChartSurvey = async (domainObj) => {
       demoLevels.forEach(level => {
         filteredData.filter(
           dataItem => { return (dataItem.wave === wave && dataItem.demographic_level === level.demographic_level); }
-        ).map(dataItem => {
+        ).forEach(dataItem => {
           waveValues.push(Number(dataItem.value));
         });
       });
@@ -752,5 +755,5 @@ const drawChartSurvey = async (domainObj) => {
     chart.draw(dataTable, options);
   };
 
-  redrawSurveyAllChart();
+  redrawSurveyDemoChart();
 };
