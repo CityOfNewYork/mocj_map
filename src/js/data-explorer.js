@@ -330,7 +330,7 @@ function domainDataBuilder() {
 
 /**
  * Take an object of this format:
- * {data: {}, indicatorId: "8815", type: "admin"}
+ * {data: [{},{}], indicatorId: "8815", type: "admin"}
  * and draw a chart from it in the chart container with the corresponding ID
  */
 const drawChartFromSubdomainData = async (obj) => {
