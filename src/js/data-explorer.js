@@ -338,30 +338,20 @@ const drawChartFromSubdomainData = async (obj) => {
   const { data, indicatorId, type } = obj;
 
   if (data.length > 0) {
-    const fileRef = data[0].fileRef;
-    const filePath = chartContainer.dataset[fileRef];
 
-    const dataRequest = await fetchTextFile(filePath);
-    const labeledData = labelData(dataRequest);
-
-    citywideData = labeledData;
-
-    // Filter the data by indicator ID, based on type
-    const filteredData = filterData({ data: labeledData, indicatorId: indicatorId, type: type });
-
-    const domainObj = { data: filteredData, indicatorId: indicatorId, source: fileRef };
+    const chartData = { data: data, indicatorId: indicatorId, source: data[0].fileRef };
 
     // If we have data, draw a chart with it
-    if (filteredData && filteredData.length > 0) {
+    if (data && data.length > 0) {
       switch (type) {
         case "admin":
-          google.charts.setOnLoadCallback(() => drawChartAdmin(domainObj));
+          google.charts.setOnLoadCallback(() => drawChartAdmin(chartData));
           break;
         case "census":
-          google.charts.setOnLoadCallback(() => drawChartCensus(domainObj));
+          google.charts.setOnLoadCallback(() => drawChartCensus(chartData));
           break;
         case "survey":
-          google.charts.setOnLoadCallback(() => drawChartSurvey(domainObj));
+          google.charts.setOnLoadCallback(() => drawChartSurvey(chartData));
           break;
         default:
           break;
@@ -447,9 +437,15 @@ function filterData(object) {
  *
  * Only needs data, id, and source in object param
  */
-function drawChartAdmin(domainObj) {
+const drawChartAdmin = async (domainObj) => {
   // console.log("DRAWCHARTADMIN param: ", domainObj);
   const { data, indicatorId, source } = domainObj;
+
+  const filePath = chartContainer.dataset[source];
+  const dataRequest = await fetchTextFile(filePath);
+  const labeledData = labelData(dataRequest);
+  citywideData = labeledData;
+  const filteredData = filterData({ data: labeledData, indicatorId: indicatorId, type: "admin" });
 
   adminChartContainer.style.display = "block";
 
@@ -462,18 +458,18 @@ function drawChartAdmin(domainObj) {
   let dataArrayMapped = [];
   let quarters = [];
 
-  if (data[0] && data[0].description) {
-    paragraph.innerText = data[0].description;
+  if (filteredData[0] && filteredData[0].description) {
+    paragraph.innerText = filteredData[0].description;
   }
 
-  if (data[0]) {
+  if (filteredData[0]) {
     cityArrayMatch = citywideData.filter((item) => {
       return (Number(item.indicator_id) === indicatorId && item.smart_site === "Citywide" && item.data_type === "Rate" );
     });
   }
 
-  data.forEach(item => {
-    if (data[0].indicator_id === item.indicator_id ) {
+  filteredData.forEach(item => {
+    if (filteredData[0].indicator_id === item.indicator_id ) {
       communityValues.push(item.value);
 
       const labels = yearQuarterLabels[source];
@@ -487,8 +483,8 @@ function drawChartAdmin(domainObj) {
   });
 
   if (cityArrayMatch.length > 0) {
-    dataTable.addColumn("string", data[0].indicator_id);
-    dataTable.addColumn("number", `Site ${data[0].smart_site}`);
+    dataTable.addColumn("string", filteredData[0].indicator_id);
+    dataTable.addColumn("number", `Site ${filteredData[0].smart_site}`);
     dataTable.addColumn("number", "Citywide");
 
     cityArrayMatch.forEach(item => {
@@ -501,7 +497,7 @@ function drawChartAdmin(domainObj) {
     dataTable.addRows([ ...dataArrayMapped ]);
 
   } else {
-    dataTable.addColumn("string", data.indicator);
+    dataTable.addColumn("string", filteredData.indicator);
     dataTable.addColumn("number", "Values");
 
     for (let i = 0; i < communityValues.length; i++) {
@@ -543,7 +539,7 @@ function drawChartAdmin(domainObj) {
 
   let chart = new google.visualization.LineChart(document.getElementById(`chart-${indicatorId}`));
   chart.draw(dataTable, options);
-}
+};
 
 function drawChartCensus(domainObj) {
   // console.log("DRAWCHARTCENSUS param: ", domainObj);
