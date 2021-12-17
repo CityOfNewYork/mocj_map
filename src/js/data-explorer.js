@@ -260,23 +260,23 @@ async function fetchJsonFile(file)  {
 function chartElementDivBuilder(data, container) {
   // console.log("CHARTELEMENTDIVBUILDER param: ", data);
   const chartElement = document.createElement("div");
-  chartElement.setAttribute("id", `chart-container-${data.indicatorID}`);
+  chartElement.setAttribute("id", `chart-container-${data.indicator_id}`);
   chartElement.setAttribute("class", "container data-explorer__row");
   container.appendChild(chartElement);
 
   // Place to hold text content (title, description) for the chart
   const chartContent = document.createElement("div");
-  chartContent.setAttribute("id", `chart-content-${data.indicatorID}`);
+  chartContent.setAttribute("id", `chart-content-${data.indicator_id}`);
   chartContent.classList.add("data-explorer__content");
 
   // Place to hold any options or dropdowns for the chart
   const chartOptions = document.createElement("div");
-  chartOptions.setAttribute("id", `chart-options-${data.indicatorID}`);
+  chartOptions.setAttribute("id", `chart-options-${data.indicator_id}`);
   chartOptions.classList.add("data-explorer__options");
 
   // Place to hold the graph itself
   const chartGraph = document.createElement("div");
-  chartGraph.setAttribute("id", `chart-${data.indicatorID}`);
+  chartGraph.setAttribute("id", `chart-${data.indicator_id}`);
   chartGraph.classList.add("data-explorer__chart");
 
   chartElement.appendChild(chartContent);
@@ -284,12 +284,12 @@ function chartElementDivBuilder(data, container) {
   chartElement.appendChild(chartGraph);
 
   const header = document.createElement("div");
-  header.setAttribute("id", `chart-content-h1-${data.indicatorID}`);
+  header.setAttribute("id", `chart-content-h1-${data.indicator_id}`);
   header.classList.add("data-explorer__chart-title");
-  header.innerText = `${data.indicatorName}`;
+  header.innerText = `${data.indicator}`;
 
   const paragraph = document.createElement("p");
-  paragraph.setAttribute("id", `chart-content-p-${data.indicatorID}`);
+  paragraph.setAttribute("id", `chart-content-p-${data.indicator_id}`);
 
   chartContent.appendChild(header);
   chartContent.appendChild(paragraph);
@@ -312,21 +312,18 @@ function domainDataBuilder() {
 
   if (subDomainData.admin) {
     subDomainData.admin.forEach(dataItem => {
-      chartElementDivBuilder(dataItem, adminChartContainer);
       drawChartFromSubdomainData({data: subDomainData.admin, indicatorId: dataItem.indicatorID, type: "admin"});
     });
   }
 
   if (subDomainData.census) {
     subDomainData.census.forEach(dataItem => {
-      chartElementDivBuilder(dataItem, censusChartContainer);
       drawChartFromSubdomainData({data: subDomainData.census, indicatorId: dataItem.indicatorID, type: "census"});
     });
   }
 
   if (subDomainData.survey) {
     subDomainData.survey.forEach(dataItem => {
-      chartElementDivBuilder(dataItem, surveyChartContainer);
       drawChartFromSubdomainData({data: subDomainData.survey, indicatorId: dataItem.indicatorID, type: "survey"});
     });
   }
@@ -361,10 +358,10 @@ const drawChartFromSubdomainData = async (obj) => {
           break;
       }
     } else {
-      console.error("No matching data");
+      console.warn("No matching data");
     }
   } else {
-    console.error("No data available");
+    console.warn("No data available");
   }
 };
 
@@ -422,14 +419,10 @@ function filterData(object) {
     newFilteredData = filteredData.filter((dataItem) => {
       return (Number(dataItem.indicator_id) === indicatorId && dataItem.data_type === "Rate" );
     });
-  // If this is census data, need to filter by indicator ID, since we draw
-  // multiple charts
-  } else if (type === "census") {
+  } else {
     newFilteredData = filteredData.filter((dataItem) => {
       return (Number(dataItem.indicator_id) === indicatorId);
     });
-  } else {
-    newFilteredData = filteredData;
   }
 
   return newFilteredData;
@@ -450,6 +443,8 @@ const drawChartAdmin = async (domainObj) => {
   const labeledData = labelData(dataRequest);
   citywideData = labeledData;
   const filteredData = filterData({ data: labeledData, indicatorId: indicatorId, type: "admin" });
+
+  chartElementDivBuilder(filteredData[0], adminChartContainer);
 
   adminChartContainer.style.display = "block";
 
@@ -545,15 +540,22 @@ const drawChartAdmin = async (domainObj) => {
   chart.draw(dataTable, options);
 };
 
-function drawChartCensus(domainObj) {
+const drawChartCensus = async (domainObj) => {
   // console.log("DRAWCHARTCENSUS param: ", domainObj);
-  const { data, indicatorId } = domainObj;
+  const { data, indicatorId, source } = domainObj;
+
+  const filePath = chartContainer.dataset[source];
+  const dataRequest = await fetchTextFile(filePath);
+  const labeledData = labelData(dataRequest);
+  const filteredData = filterData({ data: labeledData, indicatorId: indicatorId, type: "census" });
+
+  chartElementDivBuilder(filteredData[0], censusChartContainer);
 
   censusChartContainer.style.display = "block";
 
   const dataTable = new google.visualization.arrayToDataTable([
-    ["string", data[0].indicator],
-    [data[0].indicator, +data[0].value]
+    ["string", filteredData[0].indicator],
+    [filteredData[0].indicator, +filteredData[0].value]
   ]);
 
   const options = {
@@ -568,11 +570,11 @@ function drawChartCensus(domainObj) {
     legend: {
       position: "bottom",
     },
-    title: data.domain,
+    title: filteredData.domain,
     backgroundColor: "transparent",
     isStacked: true,
     hAxis: {
-      title: `${data[0].domain} - ${data[0].sub_domain}`,
+      title: `${filteredData[0].domain} - ${filteredData[0].sub_domain}`,
       minValue: 0,
       maxValue: 100,
     },
@@ -583,9 +585,10 @@ function drawChartCensus(domainObj) {
 
   let chart = new google.visualization.BarChart(document.getElementById(`chart-${indicatorId}`));
   chart.draw(dataTable, options);
-}
+};
 
 const drawChartSurvey = async (domainObj) => {
+  // console.log("DRAWCHARTSURVEY param: ", domainObj);
   const { data, indicatorId } = domainObj;
 
   // Get the demographic-separated data
@@ -594,13 +597,13 @@ const drawChartSurvey = async (domainObj) => {
   const surveyDemoLabeledData = labelData(surveyDemoData);
   const surveyDemoFilteredData = filterData({ data: surveyDemoLabeledData, indicatorId: indicatorId, type: "survey" });
 
-  console.log("surveyDemofilteredData: ", surveyDemoFilteredData);
-
   // Get the "all" (non demograhic-separated) data
   const surveyAllDataPath = chartContainer.dataset.panelSurveyAll;
   const surveyAllData = await fetchTextFile(surveyAllDataPath);
   const surveyAllLabeledData = labelData(surveyAllData);
   const surveyAllFilteredData = filterData({ data: surveyAllLabeledData, indicatorId: indicatorId, type: "survey" });
+
+  chartElementDivBuilder(surveyAllFilteredData[0], surveyChartContainer);
 
   surveyChartContainer.style.display = "block";
 
@@ -614,7 +617,8 @@ const drawChartSurvey = async (domainObj) => {
 
   // Only do this stuff if we have demographic data
   if (surveyDemoFilteredData[0].demographic) {
-    console.log("we have dat");
+    // console.log("we have data for ", indicatorId);
+
     // Get an array of unique demographic groups
     surveyDemoFilteredData.forEach(item => {
       if (demoLevels.findIndex(group => group.demographic_level === item.demographic_level) === -1) {
@@ -655,7 +659,7 @@ const drawChartSurvey = async (domainObj) => {
 
     chartOptions.appendChild(demoDropdown);
   } else {
-    console.log("No demographic data for survey " + indicatorId);
+    console.warn("No demographic data for survey " + indicatorId);
   }
 
   const options = {
@@ -684,7 +688,6 @@ const drawChartSurvey = async (domainObj) => {
 
   // Draw the chart for "All" data (not broken down by demo)
   const redrawSurveyAllChart = () => {
-    console.log("Redrawing all chart");
     const dataTable = new google.visualization.DataTable();
 
     // Get only the data that matches our chart ID and selected demographic
@@ -692,7 +695,7 @@ const drawChartSurvey = async (domainObj) => {
 
     // Add string column for "wave 1," "wave 2", etc.
     dataTable.addColumn("string", "Wave");
-    dataTable.addColumn("number", "Wave");
+    dataTable.addColumn("number", "Score");
 
     filteredData.forEach(item => {
       if (item && item.description) {
