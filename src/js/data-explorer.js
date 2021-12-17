@@ -116,6 +116,7 @@ communityDropdown.addEventListener("change", () => {
   boroughMap.setAttribute("class", "");
   boroughMap.classList.add("community-" + selectedCommunity);
 
+  removeGraphs();
   domainDataBuilder(); // This is where the charts themselves get built
 });
 
@@ -210,6 +211,7 @@ const createChildElementData = dataArray => {
 };
 
 function removeGraphs() {
+  // console.log("REMOVING GRAPHS");
   adminChartContainer.style.display = "none";
   adminChartContainer.innerHTML = "";
 
@@ -224,6 +226,7 @@ function removeGraphs() {
  * Fetch text file (like a CSV) and return data
  */
 async function fetchTextFile(file)  {
+  // console.log("FETCHING FILE: ", file);
   const response = await fetch(file);
   const data = await response.text();
   return data;
@@ -416,9 +419,16 @@ function filterData(object) {
   // If this is admin data, need to filter by "Rate"-type data, and by indicator
   // ID, since we're drawing multiple charts
   if (type === "admin") {
-    newFilteredData = filteredData.filter((dataItem) => {
-      return (Number(dataItem.indicator_id) === indicatorId && dataItem.data_type === "Rate" );
-    });
+    // Only filter by rate data if we *have* rate data
+    if (filteredData.findIndex(dataItem => { return dataItem.data_type === "Rate"; }) === -1) {
+      newFilteredData = filteredData.filter((dataItem) => {
+        return (Number(dataItem.indicator_id) === indicatorId);
+      });
+    } else {
+      newFilteredData = filteredData.filter((dataItem) => {
+        return (Number(dataItem.indicator_id) === indicatorId && dataItem.data_type === "Rate" );
+      });
+    }
   } else {
     newFilteredData = filteredData.filter((dataItem) => {
       return (Number(dataItem.indicator_id) === indicatorId);
@@ -441,8 +451,13 @@ const drawChartAdmin = async (domainObj) => {
   const filePath = chartContainer.dataset[source];
   const dataRequest = await fetchTextFile(filePath);
   const labeledData = labelData(dataRequest);
-  citywideData = labeledData;
   const filteredData = filterData({ data: labeledData, indicatorId: indicatorId, type: "admin" });
+
+  let cityWideData = [];
+  let communityValues = [];
+  let cityWideValues = [];
+  let dataArrayMapped = [];
+  let quarters = [];
 
   chartElementDivBuilder(filteredData[0], adminChartContainer);
 
@@ -451,20 +466,22 @@ const drawChartAdmin = async (domainObj) => {
   const dataTable = new google.visualization.DataTable();
   const paragraph = document.getElementById(`chart-content-p-${indicatorId}`);
 
-  let cityArrayMatch = [];
-  let communityValues = [];
-  let citywideValues = [];
-  let dataArrayMapped = [];
-  let quarters = [];
-
+  // Add description paragraph to chart area if we have one
   if (filteredData[0] && filteredData[0].description) {
     paragraph.innerText = filteredData[0].description;
   }
 
+  // Populate citywide data
   if (filteredData[0]) {
-    cityArrayMatch = citywideData.filter((item) => {
-      return (Number(item.indicator_id) === indicatorId && item.smart_site === "Citywide" && item.data_type === "Rate" );
-    });
+    if (filteredData[0].data_type === "Rate") {
+      cityWideData = labeledData.filter((item) => {
+        return (Number(item.indicator_id) === indicatorId && item.smart_site === "Citywide" && item.data_type === "Rate" );
+      });
+    } else {
+      cityWideData = labeledData.filter((item) => {
+        return (Number(item.indicator_id) === indicatorId && item.smart_site === "Citywide");
+      });
+    }
   }
 
   filteredData.forEach(item => {
@@ -481,17 +498,17 @@ const drawChartAdmin = async (domainObj) => {
     }
   });
 
-  if (cityArrayMatch.length > 0) {
+  if (cityWideData.length > 0) {
     dataTable.addColumn("string", filteredData[0].indicator_id);
     dataTable.addColumn("number", `Site ${filteredData[0].smart_site}`);
     dataTable.addColumn("number", "Citywide");
 
-    cityArrayMatch.forEach(item => {
-      citywideValues.push(item.value);
+    cityWideData.forEach(item => {
+      cityWideValues.push(item.value);
     });
 
     for (let i = 0; i < communityValues.length; i++) {
-      dataArrayMapped.push([quarters[i], +communityValues[i], +citywideValues[i]]);
+      dataArrayMapped.push([quarters[i], +communityValues[i], +cityWideValues[i]]);
     }
     dataTable.addRows([ ...dataArrayMapped ]);
 
