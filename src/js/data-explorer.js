@@ -1,11 +1,14 @@
 /**
  * domainDataBuilder
- *   drawChartFromSubdomainData
+ *   drawChartAdmin
  *     labelData
  *     filterData
- *     drawChartAdmin
- *     drawChartCensus
- *     drawChartSurvey
+ *   drawChartCensus
+ *     labelData
+ *     filterData
+ *   drawChartSurvey
+ *     labelData
+ *     filterData
  *
  * https://developers.google.com/chart/interactive/docs/reference
  * https://developers.google.com/chart/interactive/docs/gallery/linechart
@@ -64,8 +67,6 @@ const communityDataFile = dataContainer.dataset.community;
 
 let domains = {};
 let configData = {};
-
-let citywideData = [];
 
 let selectedDomain = "";
 let selectedCommunity = "";
@@ -309,64 +310,29 @@ const lookupSiteNameByCode = (smartSite) => {
  * all related charts
  */
 function domainDataBuilder() {
-  // An object with domain (string), subdomain (string), admin (array), census
-  // (array), and survey (array)
   const subDomainData = configData[selectedDomain];
 
   if (subDomainData.admin) {
     subDomainData.admin.forEach(dataItem => {
-      drawChartFromSubdomainData({data: subDomainData.admin, indicatorId: dataItem.indicatorID, type: "admin"});
+      const chartData = { data: subDomainData.survey, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
+      google.charts.setOnLoadCallback(() => drawChartAdmin(chartData));
     });
   }
 
   if (subDomainData.census) {
     subDomainData.census.forEach(dataItem => {
-      drawChartFromSubdomainData({data: subDomainData.census, indicatorId: dataItem.indicatorID, type: "census"});
+      const chartData = { data: subDomainData.survey, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
+      google.charts.setOnLoadCallback(() => drawChartCensus(chartData));
     });
   }
 
   if (subDomainData.survey) {
     subDomainData.survey.forEach(dataItem => {
-      drawChartFromSubdomainData({data: subDomainData.survey, indicatorId: dataItem.indicatorID, type: "survey"});
+      const chartData = { data: subDomainData.survey, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
+      google.charts.setOnLoadCallback(() => drawChartSurvey(chartData));
     });
   }
 }
-
-/**
- * Take an object of this format:
- * {data: [{},{}], indicatorId: "8815", type: "admin"}
- * and draw a chart from it in the chart container with the corresponding ID
- */
-const drawChartFromSubdomainData = async (obj) => {
-  // console.log("PROCESSSUBDOMAINDATAFILE param: ", obj);
-  const { data, indicatorId, type } = obj;
-
-  if (data.length > 0) {
-
-    const chartData = { data: data, indicatorId: indicatorId, source: data[0].fileRef };
-
-    // If we have data, draw a chart with it
-    if (data && data.length > 0) {
-      switch (type) {
-        case "admin":
-          google.charts.setOnLoadCallback(() => drawChartAdmin(chartData));
-          break;
-        case "census":
-          google.charts.setOnLoadCallback(() => drawChartCensus(chartData));
-          break;
-        case "survey":
-          google.charts.setOnLoadCallback(() => drawChartSurvey(chartData));
-          break;
-        default:
-          break;
-      }
-    } else {
-      console.warn("No matching data");
-    }
-  } else {
-    console.warn("No data available");
-  }
-};
 
 function csvDataIntoArray(str) {
   const strPcss = removeUnnecessaryChar(str);
@@ -442,11 +408,11 @@ function filterData(object) {
  * Draw the admin data chart in the existing div we created with
  * chartElementDivBuilder
  *
- * Only needs data, id, and source in object param
+ * Only needs id and source in object param
  */
 const drawChartAdmin = async (domainObj) => {
   // console.log("DRAWCHARTADMIN param: ", domainObj);
-  const { data, indicatorId, source } = domainObj;
+  const { indicatorId, source } = domainObj;
 
   const filePath = chartContainer.dataset[source];
   const dataRequest = await fetchTextFile(filePath);
@@ -559,7 +525,7 @@ const drawChartAdmin = async (domainObj) => {
 
 const drawChartCensus = async (domainObj) => {
   // console.log("DRAWCHARTCENSUS param: ", domainObj);
-  const { data, indicatorId, source } = domainObj;
+  const { indicatorId, source } = domainObj;
 
   const filePath = chartContainer.dataset[source];
   const dataRequest = await fetchTextFile(filePath);
@@ -606,7 +572,7 @@ const drawChartCensus = async (domainObj) => {
 
 const drawChartSurvey = async (domainObj) => {
   // console.log("DRAWCHARTSURVEY param: ", domainObj);
-  const { data, indicatorId } = domainObj;
+  const { indicatorId } = domainObj;
 
   // Get the demographic-separated data
   const surveyDemoDataPath = chartContainer.dataset.panelSurveyDemo;
