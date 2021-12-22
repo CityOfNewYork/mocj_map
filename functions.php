@@ -432,6 +432,12 @@ add_action( 'init', 'create_mocj_taxonomies' );
 function mocj_scripts() {
 	wp_enqueue_style( 'mocj-style', get_stylesheet_uri() . '?v=0.59');
 
+	wp_enqueue_style( 'bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' );
+
+	wp_enqueue_script( 'popper-js', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' );
+	wp_enqueue_script( 'bootstrap-js', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' );
+	wp_enqueue_script( 'google-charts-js', 'https://www.gstatic.com/charts/loader.js' );
+
 	wp_enqueue_script( 'mocj-script', get_template_directory_uri() . '/main.js?v=0.5', array ( ), 1.1, true);
 
 	wp_enqueue_script( 'mocj-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
@@ -524,6 +530,12 @@ add_filter( 'acf/fields/wysiwyg/toolbars', function ( $toolbars ) {
 	array_unshift( $toolbars['Full'][2], 'fontselect' );
 	return $toolbars;
 } );
+
+function mocj_allow_json_uploads($mime_types) {
+  $mime_types['json'] = 'text/plain';
+  return $mime_types;
+}
+add_filter('upload_mimes', 'mocj_allow_json_uploads', 1, 1);
 
 // Domain Content Custom Fields
 if( function_exists('acf_add_local_field_group') ):
