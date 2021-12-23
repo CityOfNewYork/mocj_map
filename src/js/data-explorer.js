@@ -157,6 +157,7 @@ const renderDemographyData = async (smart_site) => {
   // Race/Ethnicity population
   const raceDataDiv = document.createElement("div");
   raceDataDiv.setAttribute("id", "race-population");
+  raceDataDiv.classList.add("data-table");
 
   if (raceDataDiv.hasChildNodes()) {
     raceDataDiv.remove();
@@ -171,6 +172,8 @@ const renderDemographyData = async (smart_site) => {
   // Age Group population
   let ageDataDiv = document.createElement("div");
   ageDataDiv.setAttribute("id", "age-population");
+  ageDataDiv.classList.add("data-table");
+
   if (ageData.childNodes.length > 1) {
     ageDataDiv.remove();
     ageDataDiv = document.createElement("div");

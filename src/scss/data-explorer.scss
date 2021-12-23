@@ -52,6 +52,7 @@ p {
 }
 
 #data-render {
+    display: none;
     position: relative;
 }
 
@@ -192,6 +193,7 @@ p {
 .data-explorer__demo-data-cell-label {
   font-weight: 700;
   margin-right: 0.5em;
+  text-align: right;
 }
 
 .data-explorer__header-title {
@@ -245,4 +247,20 @@ p {
 
 .community-chooser {
   flex-grow: 1;
+}
+
+.data-table {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-auto-rows: auto;
+}
+
+.data-explorer__demo-data-cell {
+  display: contents;
+}
+
+.data-explorer__community-title {
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 16px;
 }

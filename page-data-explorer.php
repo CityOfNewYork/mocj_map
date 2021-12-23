@@ -28,11 +28,12 @@ get_header();
 	  </div>
 	</div>
       </div>
-      <div class="data-explorer__header-data">
+
+      <div class="data-explorer__header-data" id="data-render">
 	<button class="print-bttn">
 	  <p>Print PDF</p>
 	</button>
-	<div id="data-render" class="data-explorer__demo-table">
+	<div class="data-explorer__demo-table">
 	  <div class="data-explorer__demo-section">
 	    <div class="data-explorer__demo-title">Total Population</div>
 	      <div class="">
@@ -42,13 +43,15 @@ get_header();
 	  </div>
 	  <div class="data-explorer__demo-section">
 	    <div class="data-explorer__demo-title">Sex/Gender</div>
-	    <div class="data-explorer__demo-data-cell">
-	      <p id="female-percentage" class="data-explorer__demo-data-cell-label"></p>
-	      <p>Female</p>
-	    </div>
-	    <div class="data-explorer__demo-data-cell">
-	      <p id="male-percentage" class="data-explorer__demo-data-cell-label"></p>
-	      <p>Male</p>
+	    <div class="data-table">
+	      <div class="data-explorer__demo-data-cell">
+		<p id="female-percentage" class="data-explorer__demo-data-cell-label"></p>
+		<p>Female</p>
+	      </div>
+	      <div class="data-explorer__demo-data-cell">
+		<p id="male-percentage" class="data-explorer__demo-data-cell-label"></p>
+		<p>Male</p>
+	      </div>
 	    </div>
 	  </div>
 	  <div class="data-explorer__demo-section">
