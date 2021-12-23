@@ -22,7 +22,7 @@ p {
     min-height: 634px;
     // background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('../images/pierre-jeanneret-QL_DdWFUsFc-unplash.png');
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
-    color: #FFFFFF;
+    color: $color-white;
 }
 
 .title-description {
@@ -63,7 +63,7 @@ p {
     outline: none;
     top: 20px;
     right: 20px;
-    color: #FFFFFF;
+    color: $color-white;
 }
 
 #accordion {
@@ -79,7 +79,7 @@ p {
 #accordion .card .collapse {
     /* position: absolute; */
     top: 3.6rem;
-    background-color: #FFFFFF;
+    background-color: $color-white;
     border: 1px solid #C4C4C4;
     box-sizing: border-box;
     border-radius: 2px;
@@ -95,7 +95,7 @@ p {
 }
 
 #accordion .btn-domain-header {
-    background-color: #FFFFFF;
+    background-color: $color-white;
     border-color: #C4C4C4;
 }
 
@@ -120,7 +120,7 @@ p {
 .map-footer > h2 ,
 .map-footer > h4 ,
 .map-footer > p {
-    color: #FFFFFF;
+    color: $color-white;
 }
 
 .data-explorer__row {
@@ -130,7 +130,8 @@ p {
 }
 
 .data-explorer__row-content {
-  padding: 40px 0;
+  padding-top: 40px;
+  padding-bottom: 40px;
   display: grid;
   grid-template: 'g d' auto
     'g c' auto / 30% 1fr;
@@ -160,12 +161,15 @@ p {
 }
 
 .data-explorer__header-section {
+  flex-direction: column;
   flex-basis: 50%;
   display: flex;
-  justify-content: flex-end;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 100px 0;
 
   &:nth-child(2n) {
-    justify-content: flex-start;
+    align-items: flex-start;
   }
 }
 
@@ -174,13 +178,23 @@ p {
 }
 
 .data-explorer__header-content {
-  padding: 4rem;
+  padding-right: 80px;
+  padding-left: 2rem;
   max-width: calc(#{$max-width} / 2);
 }
 
 .data-explorer__header-data {
+  padding-left: 80px;
+  padding-right: 2rem;
   max-width: calc(#{$max-width} / 2);
-  padding: 4rem;
+}
+
+.data-explorer__header-data-footnote {
+  margin-left: 80px;
+  max-width: calc(#{$max-width} / 2);
+  padding-top: 16px;
+  border-top: 2px solid $color-white;
+  align-self: stretch;
 }
 
 .data-explorer__demo-section {
@@ -217,7 +231,6 @@ p {
 
 .data-explorer__demo-data-cell-label {
   font-weight: 700;
-  text-align: right;
 }
 
 .data-explorer__header-title {
@@ -227,10 +240,12 @@ p {
   }
 }
 
-.data-explorer__category-selector {
+.data-explorer__category-selector-wrapper {
+  padding: 30px 0;
   background: $color-light-gray;
 
   > .container {
+    width: 100%;
     display: flex;
   }
 }
@@ -240,7 +255,14 @@ p {
 }
 
 .data-explorer__category-selector {
+  display: flex;
   flex-basis: 50%;
+  align-items: center;
+}
+
+.data-explorer__category-selector-label {
+  margin: 0;
+  font-weight: 700;
 }
 
 .data-explorer__chart-title {
@@ -270,6 +292,7 @@ p {
 
 .data-management {
   display: flex;
+  align-items: center;
 }
 
 .community-chooser {
@@ -291,6 +314,14 @@ p {
   text-transform: uppercase;
   font-weight: 500;
   font-size: 16px;
+  line-height: 30px;
+  margin: 0;
+}
+
+.data-explorer__community-label {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 32px;
 }
 
 .data-explorer__population {

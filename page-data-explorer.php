@@ -14,7 +14,9 @@ get_header();
 
       <div class="data-explorer__header-section">
 	<div class="data-explorer__header-content">
-	  <div class="data-explorer__header-title"><strong>NEIGHBORHOOD</strong> NAVIGATOR</div>
+	  <div class="data-explorer__header-title">
+	    <?php _e('<strong>NEIGHBORHOOD</strong> NAVIGATOR', 'mocj'); ?>
+	  </div>
 	  
 	  <?php the_content(); ?>
 
@@ -34,8 +36,8 @@ get_header();
 	</div>
       </div>
 
-      <div class="data-explorer__header-section data-explorer__header-section--backdrop">
-	<div class="data-explorer__header-data" id="data-render">
+      <div class="data-explorer__header-section data-explorer__header-section--backdrop" id="data-render">
+	<div class="data-explorer__header-data">
 	  <button class="print-bttn">
 	    <p><?php _e('Print PDF', 'mocj'); ?></p>
 	  </button>
@@ -82,6 +84,7 @@ get_header();
 	    </div>
 	  </div>
 	</div>
+	<p class="data-explorer__header-data-footnote"><?php _e('* percentage of race alone, non-Hispanic', 'mocj'); ?></p>
       </div>
     </div>
   </div>
@@ -89,16 +92,16 @@ get_header();
   <div id="data-container"
     data-community="<?php echo get_field('community_data'); ?>"
     data-demography="<?php echo get_field('demographic_data'); ?>"
-    class="container-fluid data-explorer__category-selector"
+    class="container-fluid data-explorer__category-selector-wrapper"
   >
     <div class="container">
       <div class="data-explorer__category-title">
 	<p id="community-title" class="data-explorer__community-title"></p>
-	<div><?php _e('Community Administrative Data', 'mocj'); ?></div>
+	<div class="data-explorer__community-label"><?php _e('Community Administrative Data', 'mocj'); ?></div>
       </div>
 
       <div class="data-explorer__category-selector">
-	<p><?php _e('Select a data category:', 'mocj'); ?></p>
+	<p class="data-explorer__category-selector-label"><?php _e('Select a data category:', 'mocj'); ?></p>
 	<select id="domain-select">
 	  <option disabled selected hidden><?php _e('Select a Domain', 'mocj'); ?></option>
 	</select>
