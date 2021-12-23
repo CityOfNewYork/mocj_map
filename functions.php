@@ -432,10 +432,7 @@ add_action( 'init', 'create_mocj_taxonomies' );
 function mocj_scripts() {
 	wp_enqueue_style( 'mocj-style', get_stylesheet_uri() . '?v=0.59');
 
-	wp_enqueue_style( 'bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' );
-
 	wp_enqueue_script( 'popper-js', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' );
-	wp_enqueue_script( 'bootstrap-js', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' );
 	wp_enqueue_script( 'google-charts-js', 'https://www.gstatic.com/charts/loader.js' );
 
 	wp_enqueue_script( 'mocj-script', get_template_directory_uri() . '/main.js?v=0.5', array ( ), 1.1, true);
