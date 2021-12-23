@@ -67,6 +67,7 @@ const communityDataFile = dataContainer.dataset.community;
 
 let domains = {};
 let configData = {};
+let communityData = {};
 
 let selectedDomain = "";
 let selectedCommunity = "";
@@ -76,6 +77,7 @@ google.charts.load("current", { packages: ["corechart", "line", "bar"] });
 window.addEventListener("DOMContentLoaded", async () => {
   // Load config data
   configData = await fetchJsonFile(chartContainer.dataset.config);
+  communityData = await fetchJsonFile(communityDataFile);
 
   // Build the domains/subdomains object for reference
   Object.keys(configData).forEach(key => {
@@ -103,6 +105,18 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     domainSelect.appendChild(domainOptGroup);
   });
+
+  // Community dropdown builder
+  for (const community in communityData) {
+    if (Object.hasOwnProperty.call(communityData, community)) {
+      const element = communityData[community];
+      const communityOption = document.createElement("option");
+      const communityText = document.createTextNode(`${element["Suggested name"]} — ${element.borough}`);
+      communityOption.appendChild(communityText);
+      communityOption.setAttribute("value", element.smart_site);
+      communityDropdown.appendChild(communityOption);
+    }
+  }
 });
 
 // Update community data and charts when Community dropdown selected
@@ -247,21 +261,6 @@ async function fetchJsonFile(file)  {
   return data;
 }
 
-// Community dropdown builder
-(async function communityDropdownBuilder() {
-  const communityData = await fetchJsonFile(communityDataFile);
-  for (const community in communityData) {
-    if (Object.hasOwnProperty.call(communityData, community)) {
-      const element = communityData[community];
-      const communityOption = document.createElement("option");
-      const communityText = document.createTextNode(`${element["Suggested name"]} — ${element.borough}`);
-      communityOption.appendChild(communityText);
-      communityOption.setAttribute("value", element.smart_site);
-      communityDropdown.appendChild(communityOption);
-    }
-  }
-})();
-
 /**
  * Create divs to house data charts
  * We fill these in later with drawChart[xxx]
@@ -309,7 +308,10 @@ function chartElementDivBuilder(data, container) {
 }
 
 const lookupSiteNameByCode = (smartSite) => {
-  return smartSite;
+  const siteObject = communityData.filter(dataItem => {
+    return dataItem.smart_site === smartSite;
+  });
+  return siteObject[0]["Suggested name"];
 };
 
 /**
@@ -321,21 +323,21 @@ const lookupSiteNameByCode = (smartSite) => {
 function domainDataBuilder() {
   const subDomainData = configData[selectedDomain];
 
-  if (subDomainData.admin) {
+  if (subDomainData && subDomainData.admin) {
     subDomainData.admin.forEach(dataItem => {
       const chartData = { data: subDomainData.survey, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
       google.charts.setOnLoadCallback(() => drawChartAdmin(chartData));
     });
   }
 
-  if (subDomainData.census) {
+  if (subDomainData && subDomainData.census) {
     subDomainData.census.forEach(dataItem => {
       const chartData = { data: subDomainData.survey, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
       google.charts.setOnLoadCallback(() => drawChartCensus(chartData));
     });
   }
 
-  if (subDomainData.survey) {
+  if (subDomainData && subDomainData.survey) {
     subDomainData.survey.forEach(dataItem => {
       const chartData = { data: subDomainData.survey, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
       google.charts.setOnLoadCallback(() => drawChartSurvey(chartData));
@@ -474,9 +476,10 @@ const drawChartAdmin = async (domainObj) => {
   });
 
   if (cityWideData.length > 0) {
+    const siteName = lookupSiteNameByCode(filteredData[0].smart_site);
     dataTable.addColumn("string", filteredData[0].indicator_id);
     dataTable.addColumn("number", "Citywide");
-    dataTable.addColumn("number", `Site ${filteredData[0].smart_site}`);
+    dataTable.addColumn("number", siteName);
 
     cityWideData.forEach(item => {
       cityWideValues.push(item.value);
