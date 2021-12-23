@@ -12,56 +12,74 @@ get_header();
   <div class="container-fluid">
     <div class="data-explorer__header">
 
-      <div class="data-explorer__header-content">
-	<div class="data-explorer__header-title"><strong>NEIGHBORHOOD</strong> NAVIGATOR</div>
-	
-	<?php the_content(); ?>
+      <div class="data-explorer__header-section">
+	<div class="data-explorer__header-content">
+	  <div class="data-explorer__header-title"><strong>NEIGHBORHOOD</strong> NAVIGATOR</div>
+	  
+	  <?php the_content(); ?>
 
-	<div class="data-management">
-	  <div class="community-chooser">
-	    <div>Choose a Community</div>
-	    <select id="community-dropdown">
-	      <option disabled selected hidden>Select a Community</option>
-	    </select>
-	  </div>
-	  <div class="community-map">
-	    <?php get_template_part( 'template-parts/svg/boroughs' ); ?>
+	  <div class="data-management">
+	    <div class="community-chooser">
+	      <div>
+		<?php _e('View Community Administrative Data', 'mocj'); ?>
+	      </div>
+	      <select id="community-dropdown">
+		<option disabled selected hidden><?php _e('Select a Community', 'mocj'); ?></option>
+	      </select>
+	    </div>
+	    <div class="community-map">
+	      <?php get_template_part( 'template-parts/svg/boroughs' ); ?>
+	    </div>
 	  </div>
 	</div>
       </div>
 
-      <div class="data-explorer__header-data" id="data-render">
-	<button class="print-bttn">
-	  <p>Print PDF</p>
-	</button>
-	<div class="data-explorer__demo-table">
-	  <div class="data-explorer__demo-section">
-	    <div class="data-explorer__demo-title">Total Population</div>
-	      <div class="">
-		<div id="total-population"></div>
-		<p>Inhabitants</p>
+      <div class="data-explorer__header-section data-explorer__header-section--backdrop">
+	<div class="data-explorer__header-data" id="data-render">
+	  <button class="print-bttn">
+	    <p><?php _e('Print PDF', 'mocj'); ?></p>
+	  </button>
+	  <div class="data-explorer__demo-table">
+	    <div class="data-explorer__demo-section">
+	      <div class="data-explorer__demo-title">
+		<?php get_template_part( 'template-parts/svg/icon-united-states' ); ?>
+		<span><?php _e('Total Population', 'mocj'); ?></span>
 	      </div>
-	  </div>
-	  <div class="data-explorer__demo-section">
-	    <div class="data-explorer__demo-title">Sex/Gender</div>
-	    <div class="data-table">
-	      <div class="data-explorer__demo-data-cell">
-		<p id="female-percentage" class="data-explorer__demo-data-cell-label"></p>
-		<p>Female</p>
+		<div class="data-explorer__population">
+		  <div id="total-population" class="data-explorer__population-count"></div>
+		  <p class="data-explorer__population-label"><?php _e('Inhabitants', 'mocj'); ?></p>
+		</div>
+	    </div>
+	    <div class="data-explorer__demo-section">
+	      <div class="data-explorer__demo-title">
+		<?php get_template_part( 'template-parts/svg/icon-sex' ); ?>
+		<span><?php _e('Sex/Gender', 'mocj'); ?></span>
 	      </div>
-	      <div class="data-explorer__demo-data-cell">
-		<p id="male-percentage" class="data-explorer__demo-data-cell-label"></p>
-		<p>Male</p>
+	      <div class="data-table">
+		<div class="data-explorer__demo-data-cell">
+		  <p id="female-percentage" class="data-explorer__demo-data-cell-label"></p>
+		  <p><?php _e('Female', 'mocj'); ?></p>
+		</div>
+		<div class="data-explorer__demo-data-cell">
+		  <p id="male-percentage" class="data-explorer__demo-data-cell-label"></p>
+		  <p><?php _e('Male', 'mocj'); ?></p>
+		</div>
 	      </div>
 	    </div>
-	  </div>
-	  <div class="data-explorer__demo-section">
-	    <div class="data-explorer__demo-title">Race/Ethnicity</div>
-	    <div id="race-data" class="section-data"></div>
-	  </div>
-	  <div class="data-explorer__demo-section">
-	    <div class="data-explorer__demo-title">Age Group</div>
-	    <div id="age-data" class="section-data"></div>
+	    <div class="data-explorer__demo-section">
+	      <div class="data-explorer__demo-title">
+		<?php get_template_part( 'template-parts/svg/icon-ethnicity' ); ?>
+		<span><?php _e('Race/Ethnicity*', 'mocj'); ?></span>
+	      </div>
+	      <div id="race-data" class="section-data"></div>
+	    </div>
+	    <div class="data-explorer__demo-section">
+	      <div class="data-explorer__demo-title">
+		<?php get_template_part( 'template-parts/svg/icon-age-group' ); ?>
+		<span><?php _e('Age Group', 'mocj'); ?></span>
+	      </div>
+	      <div id="age-data" class="section-data"></div>
+	    </div>
 	  </div>
 	</div>
       </div>
@@ -76,13 +94,13 @@ get_header();
     <div class="container">
       <div class="data-explorer__category-title">
 	<p id="community-title" class="data-explorer__community-title"></p>
-	<div>Community Administrative Data</div>
+	<div><?php _e('Community Administrative Data', 'mocj'); ?></div>
       </div>
 
       <div class="data-explorer__category-selector">
-	<p>Select a data category:</p>
+	<p><?php _e('Select a data category:', 'mocj'); ?></p>
 	<select id="domain-select">
-	  <option disabled selected hidden>Select a Domain</option>
+	  <option disabled selected hidden><?php _e('Select a Domain', 'mocj'); ?></option>
 	</select>
       </div>
     </div>
