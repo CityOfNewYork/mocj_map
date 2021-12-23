@@ -11,10 +11,11 @@ get_header();
 
   <div class="container-fluid">
     <div class="data-explorer__header">
+
       <div class="data-explorer__header-content">
 	<div class="data-explorer__header-title"><strong>NEIGHBORHOOD</strong> NAVIGATOR</div>
-	<p>Our Data Explorer allows people to view information across seven domains, related to each of the MAP site neighborhoods. Each domain shows an aspect of residents’ life within the community.</p>
-	<p>Created by the Mayor’s Office for Criminal Justice, in partnership with SAFELab, JJREC, NIS,  and NORC [other credits]</p>
+	
+	<?php the_content(); ?>
 
 	<div class="data-management">
 	  <div class="community-chooser">
@@ -72,16 +73,18 @@ get_header();
     data-demography="<?php echo get_field('demographic_data'); ?>"
     class="container-fluid data-explorer__category-selector"
   >
-    <div class="data-explorer__category-title">
-      <p id="community-title"></p>
-      <div>Community Administrative Data</div>
-    </div>
+    <div class="container">
+      <div class="data-explorer__category-title">
+	<p id="community-title" class="data-explorer__community-title"></p>
+	<div>Community Administrative Data</div>
+      </div>
 
-    <div class="data-explorer__category-selector">
-      <p>Select a data category:</p>
-      <select id="domain-select">
-	<option disabled selected hidden>Select a Domain</option>
-      </select>
+      <div class="data-explorer__category-selector">
+	<p>Select a data category:</p>
+	<select id="domain-select">
+	  <option disabled selected hidden>Select a Domain</option>
+	</select>
+      </div>
     </div>
   </div>
 

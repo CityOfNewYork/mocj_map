@@ -254,7 +254,7 @@ async function fetchJsonFile(file)  {
     if (Object.hasOwnProperty.call(communityData, community)) {
       const element = communityData[community];
       const communityOption = document.createElement("option");
-      const communityText = document.createTextNode(`${element["Suggested name"]} -- ${element.borough}`);
+      const communityText = document.createTextNode(`${element["Suggested name"]} — ${element.borough}`);
       communityOption.appendChild(communityText);
       communityOption.setAttribute("value", element.smart_site);
       communityDropdown.appendChild(communityOption);
@@ -268,10 +268,14 @@ async function fetchJsonFile(file)  {
  */
 function chartElementDivBuilder(data, container) {
   // console.log("CHARTELEMENTDIVBUILDER param: ", data);
+  const chartWrapper = document.createElement("div");
+  chartWrapper.classList.add("data-explorer__row");
+  container.appendChild(chartWrapper);
+
   const chartElement = document.createElement("div");
   chartElement.setAttribute("id", `chart-container-${data.indicator_id}`);
-  chartElement.setAttribute("class", "container data-explorer__row");
-  container.appendChild(chartElement);
+  chartElement.setAttribute("class", "container data-explorer__row-content");
+  chartWrapper.appendChild(chartElement);
 
   // Place to hold text content (title, description) for the chart
   const chartContent = document.createElement("div");

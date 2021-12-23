@@ -124,14 +124,17 @@ p {
 }
 
 .data-explorer__row {
+  &:nth-child(even) {
+    background: $color-light-blue;
+  }
+}
+
+.data-explorer__row-content {
   padding: 40px 0;
   display: grid;
   grid-template: 'g d' auto
     'g c' auto / 30% 1fr;
 
-  &:nth-child(even) {
-    background: $color-light-blue;
-  }
 }
 
 .data-explorer__content {
@@ -204,8 +207,11 @@ p {
 }
 
 .data-explorer__category-selector {
-  display: flex;
   background: $color-light-gray;
+
+  > .container {
+    display: flex;
+  }
 }
 
 .data-explorer__category-title {
