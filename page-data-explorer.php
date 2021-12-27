@@ -123,6 +123,13 @@ get_header();
     data-census-indicators="<?php echo get_field('census_indicators'); ?>"
     data-panel-survey-all="<?php echo get_field('panel_survey'); ?>"
     data-panel-survey-demo="<?php echo get_field('panel_survey_demo'); ?>"
+    <?php
+    if (get_field('data_indicators', 'option')) {
+      foreach (get_field('data_indicators', 'option') as $data_indicator) {
+	echo ' data-', $data_indicator['indicator_id'], '="', esc_attr(json_encode(['title' => $data_indicator['title'], 'description' => $data_indicator['description']])), '"';
+      };
+    };
+    ?>
   >
     <div class="graph-section">
       <div id="domain-header"></div>

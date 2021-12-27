@@ -303,6 +303,14 @@ function chartElementDivBuilder(data, container) {
   const paragraph = document.createElement("p");
   paragraph.setAttribute("id", `chart-content-p-${data.indicator_id}`);
 
+  // Use authored indicator title and text (from Advanced Custom Fields options)
+  // if they exist
+  if (chartContainer.dataset[data.indicator_id]) {
+    const indicatorData = JSON.parse(chartContainer.dataset[data.indicator_id]);
+    header.innerText = indicatorData.title;
+    paragraph.innerText = indicatorData.description;
+  }
+
   chartContent.appendChild(header);
   chartContent.appendChild(paragraph);
 }
@@ -444,7 +452,7 @@ const drawChartAdmin = async (domainObj) => {
   const paragraph = document.getElementById(`chart-content-p-${indicatorId}`);
 
   // Add description paragraph to chart area if we have one
-  if (filteredData[0] && filteredData[0].description) {
+  if (filteredData[0] && filteredData[0].description && paragraph.innerText === "") {
     paragraph.innerText = filteredData[0].description;
   }
 
@@ -550,7 +558,7 @@ const drawChartCensus = async (domainObj) => {
   censusChartContainer.style.display = "block";
 
   filteredData.forEach(item => {
-    if (item && item.description) {
+    if (item && item.description && paragraph.innerText === "") {
       paragraph.innerText = item.description;
     }
   });
@@ -694,7 +702,7 @@ const drawChartSurvey = async (domainObj) => {
     dataTable.addColumn("number", "Score");
 
     filteredData.forEach(item => {
-      if (item && item.description) {
+      if (item && item.description && paragraph.innerText === "") {
         paragraph.innerText = item.description;
       }
     });
@@ -754,7 +762,7 @@ const drawChartSurvey = async (domainObj) => {
 
     filteredData.forEach(item => {
       if (indicatorId === Number(item.indicator_id) && selectedDemo === item.demographic) {
-        if (item && item.description) {
+        if (item && item.description && paragraph.innerText === "") {
           paragraph.innerText = item.description;
         }
       }
