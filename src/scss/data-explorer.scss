@@ -269,25 +269,51 @@ p {
 .data-explorer__chart-title {
   font-size: 30px;
   font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.data-explorer__chart-eyebrow {
+  font-size: 16px;
+  line-height: 30px;
+  font-weight: 500;
+  text-transform: uppercase;
 }
 
 #borough-map {
-  &.community-1A .brooklyn,
-  &.community-5B .brooklyn,
-  &.community-6B .brooklyn,
-  &.community-14D .brooklyn,
-  &.community-7B .brooklyn,
-  &.community-8B .bronx,
-  &.community-9C .bronx,
-  &.community-12C .bronx,
-  &.community-4A .manhattan,
-  &.community-11C .manhattan,
-  &.community-13D .manhattan,
-  &.community-2A .queens,
-  &.community-10C .queens,
-  &.community-15D .queens,
-  &.community-3A .staten-island {
-    fill: #7acfe5 !important;
+  &.community-1A #brooklyn,
+  &.community-2A #queens,
+  &.community-3A #staten-island,
+  &.community-4A #manhattan,
+  &.community-5B #brooklyn,
+  &.community-6B #brooklyn,
+  &.community-7B #brooklyn,
+  &.community-8B #bronx,
+  &.community-9C #bronx,
+  &.community-10C #queens,
+  &.community-11C #manhattan,
+  &.community-12C #bronx,
+  &.community-13D #manhattan,
+  &.community-14D #brooklyn,
+  &.community-15D #queens {
+    fill: $color-bright-blue !important;
+  }
+
+  &.community-1A #community-1A,
+  &.community-2A #community-2A,
+  &.community-3A #community-3A,
+  &.community-4A #community-4A,
+  &.community-5B #community-5B,
+  &.community-6B #community-6B,
+  &.community-7B #community-7B,
+  &.community-8B #community-8B,
+  &.community-9C #community-9C,
+  &.community-10C #community-10C,
+  &.community-11C #community-11C,
+  &.community-12C #community-12C,
+  &.community-13D #community-13D,
+  &.community-14D #community-14D,
+  &.community-15D #community-15D {
+    fill: $color-dark-blue !important;
   }
 }
 
