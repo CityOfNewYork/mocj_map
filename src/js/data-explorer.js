@@ -487,7 +487,8 @@ const drawChartAdmin = async (domainObj) => {
 
       const yearQuarter = year + " Q" + quarter;
 
-      quarters.push(yearQuarter);
+      // quarters.push(yearQuarter);
+      quarters.push(year);
     }
   });
 
