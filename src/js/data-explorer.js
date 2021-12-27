@@ -160,13 +160,20 @@ const renderDemographyData = async (smart_site) => {
 
   // Total population
   const totalPopulation = document.getElementById("total-population");
-  totalPopulation.innerText = filteredDemographyData[0][6];
+  totalPopulation.innerText = Number(filteredDemographyData[0][6]).toLocaleString("en-US");
 
   // Sex/Gender population
   const femalePercentage = document.getElementById("female-percentage");
   const malePercentage = document.getElementById("male-percentage");
-  femalePercentage.innerText = filteredDemographyData[1][6] + "%";
-  malePercentage.innerText = filteredDemographyData[2][6] + "%";
+
+  const femaleValue = Number(filteredDemographyData[1][6]);
+  const maleValue = Number(filteredDemographyData[2][6]);
+
+  const maleValueRounded = Math.round(maleValue) === maleValue ? maleValue : maleValue.toFixed(1);
+  const femaleValueRounded = Math.round(femaleValue) === femaleValue ? femaleValue : femaleValue.toFixed(1);
+
+  femalePercentage.innerText = femaleValueRounded + "%";
+  malePercentage.innerText = maleValueRounded + "%";
 
   // Race/Ethnicity population
   const raceDataDiv = document.createElement("div");
@@ -220,7 +227,9 @@ const createChildElementData = dataArray => {
   const dataChildContainer = document.createElement("div");
   const dataPercentageElem = document.createElement("p");
   const dataTitleElem = document.createElement("p");
-  dataPercentageElem.innerText = dataArray[6] + "%";
+  const dataValue = Number(dataArray[6]);
+  const dataRoundedValue = Math.round(dataValue) === dataValue ? dataValue : dataValue.toFixed(1);
+  dataPercentageElem.innerText = dataRoundedValue + "%";
   dataPercentageElem.classList.add("data-explorer__demo-data-cell-label");
   dataTitleElem.innerText = dataArray[4];
   dataChildContainer.appendChild(dataPercentageElem);
