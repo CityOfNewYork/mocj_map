@@ -295,6 +295,10 @@ function chartElementDivBuilder(data, container) {
   chartElement.appendChild(chartOptions);
   chartElement.appendChild(chartGraph);
 
+  const eyebrow = document.createElement("div");
+  eyebrow.setAttribute("id", `chart-content-eyebrow-${data.indicator_id}`);
+  eyebrow.classList.add("data-explorer__chart-eyebrow");
+
   const header = document.createElement("div");
   header.setAttribute("id", `chart-content-h1-${data.indicator_id}`);
   header.classList.add("data-explorer__chart-title");
@@ -311,6 +315,7 @@ function chartElementDivBuilder(data, container) {
     paragraph.innerText = indicatorData.description;
   }
 
+  chartContent.appendChild(eyebrow);
   chartContent.appendChild(header);
   chartContent.appendChild(paragraph);
 }
@@ -449,7 +454,10 @@ const drawChartAdmin = async (domainObj) => {
   adminChartContainer.style.display = "block";
 
   const dataTable = new google.visualization.DataTable();
+  const eyebrow = document.getElementById(`chart-content-eyebrow-${indicatorId}`);
   const paragraph = document.getElementById(`chart-content-p-${indicatorId}`);
+
+  eyebrow.innerText = "Administrative";
 
   // Add description paragraph to chart area if we have one
   if (filteredData[0] && filteredData[0].description && paragraph.innerText === "") {
@@ -554,8 +562,12 @@ const drawChartCensus = async (domainObj) => {
 
   chartElementDivBuilder(filteredData[0], censusChartContainer);
 
-  const paragraph = document.getElementById(`chart-content-p-${indicatorId}`);
   censusChartContainer.style.display = "block";
+
+  const eyebrow = document.getElementById(`chart-content-eyebrow-${indicatorId}`);
+  const paragraph = document.getElementById(`chart-content-p-${indicatorId}`);
+
+  eyebrow.innerText = "Census";
 
   filteredData.forEach(item => {
     if (item && item.description && paragraph.innerText === "") {
@@ -615,7 +627,10 @@ const drawChartSurvey = async (domainObj) => {
 
   const chartOptions = document.getElementById(`chart-options-${indicatorId}`);
   const chartArea = document.getElementById(`chart-${indicatorId}`);
+  const eyebrow = document.getElementById(`chart-content-eyebrow-${indicatorId}`);
   const paragraph = document.getElementById(`chart-content-p-${indicatorId}`);
+
+  eyebrow.innerText = "Survey";
 
   let demographics = ["All"]; // Major groups ("Age", "Race", etc.()
   let demoLevels = []; // Subgroups ("18-34", etc.)
