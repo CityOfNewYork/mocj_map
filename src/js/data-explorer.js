@@ -169,8 +169,8 @@ const renderDemographyData = async (smart_site) => {
   const femaleValue = Number(filteredDemographyData[1][6]);
   const maleValue = Number(filteredDemographyData[2][6]);
 
-  const maleValueRounded = Math.floor(maleValue.toFixed(1)) === Math.ceil(maleValue.toFixed(1)) ? Math.round(maleValue) : maleValue.toFixed(1);
-  const femaleValueRounded = Math.floor(femaleValue.toFixed(1)) === Math.ceil(femaleValue.toFixed(1)) ? Math.round(femaleValue) : femaleValue.toFixed(1);
+  const maleValueRounded = roundToOneDecimal(maleValue);
+  const femaleValueRounded = roundToOneDecimal(femaleValue);
 
   femalePercentage.innerText = femaleValueRounded + "%";
   malePercentage.innerText = maleValueRounded + "%";
@@ -228,7 +228,7 @@ const createChildElementData = dataArray => {
   const dataPercentageElem = document.createElement("p");
   const dataTitleElem = document.createElement("p");
   const dataValue = Number(dataArray[6]);
-  const dataRoundedValue = Math.floor(dataValue.toFixed(1)) === Math.ceil(dataValue.toFixed(1)) ? Math.round(dataValue) : dataValue.toFixed(1);
+  const dataRoundedValue = roundToOneDecimal(dataValue);
   dataPercentageElem.innerText = dataRoundedValue + "%";
   dataPercentageElem.classList.add("data-explorer__demo-data-cell-label");
   dataTitleElem.innerText = dataArray[4];
@@ -367,6 +367,16 @@ function domainDataBuilder() {
   }
 }
 
+// Take a number and round it to zero or one decimal places
+// Accepts a string or a number
+// 15.02 => 15
+// 15.11 => 15.1
+// 14.98 => 15
+// 14.91 => 14.9
+function roundToOneDecimal(number) {
+  return Math.ceil(Number(number).toFixed(1)) === Math.floor(Number(number).toFixed(1)) ? Math.round(Number(number)) : Number(number).toFixed(1);
+}
+
 function csvDataIntoArray(str) {
   const strPcss = removeUnnecessaryChar(str);
   const data = strPcss.slice(strPcss.indexOf("\n") + 1)
@@ -488,7 +498,8 @@ const drawChartAdmin = async (domainObj) => {
 
   filteredData.forEach(item => {
     if (filteredData[0].indicator_id === item.indicator_id ) {
-      communityValues.push(item.value);
+      itemRoundedValue = roundToOneDecimal(item.value);
+      communityValues.push(itemRoundedValue);
 
       const labels = yearQuarterLabels[source];
       const year = item[labels.year];
@@ -508,7 +519,8 @@ const drawChartAdmin = async (domainObj) => {
     dataTable.addColumn("number", siteName);
 
     cityWideData.forEach(item => {
-      cityWideValues.push(item.value);
+      itemRoundedValue = roundToOneDecimal(item.value);
+      cityWideValues.push(itemRoundedValue);
     });
 
     for (let i = 0; i < communityValues.length; i++) {
