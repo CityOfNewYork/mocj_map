@@ -1413,8 +1413,6 @@ acf_add_local_field_group(array(
 ));
 
 endif;
-||||||| c76001a
-=======
 
 // Domain Overview fields (ACF)
 if( function_exists('acf_add_local_field_group') ):
