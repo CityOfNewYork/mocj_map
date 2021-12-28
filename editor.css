@@ -1,0 +1,8 @@
+body {
+  font-family: aktiv-grotesk, sans-serif;
+  line-height: 1.75;
+}
+
+.is-style-serif {
+  font-family: "Mercury Display A","Mercury Display B", Times, serif;
+}
