@@ -169,8 +169,8 @@ const renderDemographyData = async (smart_site) => {
   const femaleValue = Number(filteredDemographyData[1][6]);
   const maleValue = Number(filteredDemographyData[2][6]);
 
-  const maleValueRounded = Math.round(maleValue) === maleValue ? maleValue : maleValue.toFixed(1);
-  const femaleValueRounded = Math.round(femaleValue) === femaleValue ? femaleValue : femaleValue.toFixed(1);
+  const maleValueRounded = Math.floor(maleValue.toFixed(1)) === Math.ceil(maleValue.toFixed(1)) ? Math.round(maleValue) : maleValue.toFixed(1);
+  const femaleValueRounded = Math.floor(femaleValue.toFixed(1)) === Math.ceil(femaleValue.toFixed(1)) ? Math.round(femaleValue) : femaleValue.toFixed(1);
 
   femalePercentage.innerText = femaleValueRounded + "%";
   malePercentage.innerText = maleValueRounded + "%";
@@ -228,7 +228,7 @@ const createChildElementData = dataArray => {
   const dataPercentageElem = document.createElement("p");
   const dataTitleElem = document.createElement("p");
   const dataValue = Number(dataArray[6]);
-  const dataRoundedValue = Math.round(dataValue) === dataValue ? dataValue : dataValue.toFixed(1);
+  const dataRoundedValue = Math.floor(dataValue.toFixed(1)) === Math.ceil(dataValue.toFixed(1)) ? Math.round(dataValue) : dataValue.toFixed(1);
   dataPercentageElem.innerText = dataRoundedValue + "%";
   dataPercentageElem.classList.add("data-explorer__demo-data-cell-label");
   dataTitleElem.innerText = dataArray[4];
