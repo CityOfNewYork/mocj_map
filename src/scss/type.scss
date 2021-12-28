@@ -89,6 +89,19 @@ h4 {
   }
 }
 
+.type--serif {
+  font-family: $serif;
+}
+
+.type--sans {
+  font-family: $sans;
+}
+
+.type--page-title {
+  font-family: $serif;
+  margin-bottom: 32px;
+}
+
 .type--header-border {
   border-top: 2px solid $color-primary;
   color: $color-primary;
@@ -250,4 +263,12 @@ blockquote {
   li{
     line-height: 1.75;
   }
+}
+
+.has-large-font-size {
+  line-height: 1.2;
+}
+
+.is-style-serif {
+  font-family: $serif;
 }
