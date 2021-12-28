@@ -540,8 +540,8 @@ const drawChartAdmin = async (domainObj) => {
 
   const options = {
     colors: [
-      "#016789",
       "#DEAA00",
+      "#016789",
       "#7ACFE5",
     ],
     chartArea: {
