@@ -664,6 +664,7 @@ const drawChartSurvey = async (domainObj) => {
     selectedDemo = "Age";
 
     let demoDropdown = document.createElement("select");
+    demoDropdown.classList.add("custom-dropdown");
     demoDropdown.setAttribute("id", `demo-dropdown-${indicatorId}`);
 
     demographics.forEach(demo => {

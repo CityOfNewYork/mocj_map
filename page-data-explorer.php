@@ -22,10 +22,10 @@ get_header();
 
 	  <div class="data-management">
 	    <div class="community-chooser">
-	      <div>
+	      <div class="community-chooser__label">
 		<?php _e('View Community Administrative Data', 'mocj'); ?>
 	      </div>
-	      <select id="community-dropdown">
+	      <select id="community-dropdown" class="custom-dropdown">
 		<option disabled selected hidden><?php _e('Select a Community', 'mocj'); ?></option>
 	      </select>
 	    </div>
@@ -102,7 +102,7 @@ get_header();
 
       <div class="data-explorer__category-selector">
 	<p class="data-explorer__category-selector-label"><?php _e('Select a data category:', 'mocj'); ?></p>
-	<select id="domain-select">
+	<select id="domain-select" class="custom-dropdown">
 	  <option disabled selected hidden><?php _e('Select a Domain', 'mocj'); ?></option>
 	</select>
       </div>
