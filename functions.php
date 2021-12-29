@@ -434,10 +434,7 @@ add_action( 'init', 'create_mocj_taxonomies' );
 function mocj_scripts() {
 	wp_enqueue_style( 'mocj-style', get_stylesheet_uri() . '?v=0.59');
 
-	wp_enqueue_style( 'bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' );
-
 	wp_enqueue_script( 'popper-js', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' );
-	wp_enqueue_script( 'bootstrap-js', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' );
 	wp_enqueue_script( 'google-charts-js', 'https://www.gstatic.com/charts/loader.js' );
 
 	wp_enqueue_script( 'mocj-script', get_template_directory_uri() . '/main.js?v=0.5', array ( ), 1.1, true);
@@ -552,7 +549,7 @@ add_action('init', function() {
   ]);
 });
 
-// Domain Content Custom Fields
+// Domain Content Custom Fields (ACF)
 if( function_exists('acf_add_local_field_group') ):
 
 acf_add_local_field_group(array(
@@ -984,7 +981,7 @@ endif;
 
 
 
-// Hero content
+// Hero content (ACF)
 if( function_exists('acf_add_local_field_group') ):
 
 acf_add_local_field_group(array(
@@ -1032,7 +1029,7 @@ acf_add_local_field_group(array(
 
 endif;
 
-// Data Explorer Content
+// Data Explorer Content (ACF)
 if( function_exists('acf_add_local_field_group') ):
 
 acf_add_local_field_group(array(
@@ -1297,6 +1294,115 @@ acf_add_local_field_group(array(
 		),
 	),
 	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
+endif;
+
+// Add Data Indicators settings (ACF)
+if( function_exists('acf_add_local_field_group') ):
+
+acf_add_local_field_group(array(
+	'key' => 'group_61ae63476e57d',
+	'title' => 'Data Indicators',
+	'fields' => array(
+		array(
+			'key' => 'field_61ae634c48316',
+			'label' => 'Data Indicators',
+			'name' => 'data_indicators',
+			'type' => 'repeater',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'collapsed' => '',
+			'min' => 0,
+			'max' => 0,
+			'layout' => 'table',
+			'button_label' => '',
+			'sub_fields' => array(
+				array(
+					'key' => 'field_61c9e98657688',
+					'label' => 'Indicator ID',
+					'name' => 'indicator_id',
+					'type' => 'number',
+					'instructions' => '',
+					'required' => 1,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'min' => '',
+					'max' => '',
+					'step' => '',
+				),
+				array(
+					'key' => 'field_61c9e98f57689',
+					'label' => 'Title',
+					'name' => 'title',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 1,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_61c9e9945768a',
+					'label' => 'Description',
+					'name' => 'description',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 1,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+			),
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'options_page',
+				'operator' => '==',
+				'value' => 'theme-options',
+			),
+		),
+	),
+	'menu_order' => 1,
 	'position' => 'normal',
 	'style' => 'default',
 	'label_placement' => 'top',

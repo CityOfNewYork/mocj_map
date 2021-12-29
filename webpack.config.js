@@ -33,6 +33,7 @@ module.exports = {
           loader: "file-loader",
           options: {
             esModule: false,
+            name: "[path][name].[ext]"
           }
         },
       },
