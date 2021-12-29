@@ -1,0 +1,11 @@
+.custom-dropdown {
+  padding: .8rem calc(16px + 10px + 16px) .8rem 1rem;
+  height: 56px;
+  appearance: none;
+  border-radius: 2px;
+  border: 1px solid $color-gray;
+  font-size: 16px;
+  background-image: url('../images/triangle-down.svg');
+  background-position: right 16px center;
+  background-repeat: no-repeat;
+}

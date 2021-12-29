@@ -67,6 +67,7 @@ const communityDataFile = dataContainer.dataset.community;
 
 let domains = {};
 let configData = {};
+let communityData = {};
 
 let selectedDomain = "";
 let selectedCommunity = "";
@@ -76,6 +77,7 @@ google.charts.load("current", { packages: ["corechart", "line", "bar"] });
 window.addEventListener("DOMContentLoaded", async () => {
   // Load config data
   configData = await fetchJsonFile(chartContainer.dataset.config);
+  communityData = await fetchJsonFile(communityDataFile);
 
   // Build the domains/subdomains object for reference
   Object.keys(configData).forEach(key => {
@@ -103,6 +105,18 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     domainSelect.appendChild(domainOptGroup);
   });
+
+  // Community dropdown builder
+  for (const community in communityData) {
+    if (Object.hasOwnProperty.call(communityData, community)) {
+      const element = communityData[community];
+      const communityOption = document.createElement("option");
+      const communityText = document.createTextNode(`${element["Suggested name"]} — ${element.borough}`);
+      communityOption.appendChild(communityText);
+      communityOption.setAttribute("value", element.smart_site);
+      communityDropdown.appendChild(communityOption);
+    }
+  }
 });
 
 // Update community data and charts when Community dropdown selected
@@ -146,17 +160,25 @@ const renderDemographyData = async (smart_site) => {
 
   // Total population
   const totalPopulation = document.getElementById("total-population");
-  totalPopulation.innerText = filteredDemographyData[0][6];
+  totalPopulation.innerText = Number(filteredDemographyData[0][6]).toLocaleString("en-US");
 
   // Sex/Gender population
   const femalePercentage = document.getElementById("female-percentage");
   const malePercentage = document.getElementById("male-percentage");
-  femalePercentage.innerText = filteredDemographyData[1][6] + "%";
-  malePercentage.innerText = filteredDemographyData[2][6] + "%";
+
+  const femaleValue = Number(filteredDemographyData[1][6]);
+  const maleValue = Number(filteredDemographyData[2][6]);
+
+  const maleValueRounded = roundToOneDecimal(maleValue);
+  const femaleValueRounded = roundToOneDecimal(femaleValue);
+
+  femalePercentage.innerText = femaleValueRounded + "%";
+  malePercentage.innerText = maleValueRounded + "%";
 
   // Race/Ethnicity population
   const raceDataDiv = document.createElement("div");
   raceDataDiv.setAttribute("id", "race-population");
+  raceDataDiv.classList.add("data-table");
 
   if (raceDataDiv.hasChildNodes()) {
     raceDataDiv.remove();
@@ -171,6 +193,8 @@ const renderDemographyData = async (smart_site) => {
   // Age Group population
   let ageDataDiv = document.createElement("div");
   ageDataDiv.setAttribute("id", "age-population");
+  ageDataDiv.classList.add("data-table");
+
   if (ageData.childNodes.length > 1) {
     ageDataDiv.remove();
     ageDataDiv = document.createElement("div");
@@ -203,7 +227,9 @@ const createChildElementData = dataArray => {
   const dataChildContainer = document.createElement("div");
   const dataPercentageElem = document.createElement("p");
   const dataTitleElem = document.createElement("p");
-  dataPercentageElem.innerText = dataArray[6] + "%";
+  const dataValue = Number(dataArray[6]);
+  const dataRoundedValue = roundToOneDecimal(dataValue);
+  dataPercentageElem.innerText = dataRoundedValue + "%";
   dataPercentageElem.classList.add("data-explorer__demo-data-cell-label");
   dataTitleElem.innerText = dataArray[4];
   dataChildContainer.appendChild(dataPercentageElem);
@@ -244,31 +270,20 @@ async function fetchJsonFile(file)  {
   return data;
 }
 
-// Community dropdown builder
-(async function communityDropdownBuilder() {
-  const communityData = await fetchJsonFile(communityDataFile);
-  for (const community in communityData) {
-    if (Object.hasOwnProperty.call(communityData, community)) {
-      const element = communityData[community];
-      const communityOption = document.createElement("option");
-      const communityText = document.createTextNode(`${element["Suggested name"]} -- ${element.borough}`);
-      communityOption.appendChild(communityText);
-      communityOption.setAttribute("value", element.smart_site);
-      communityDropdown.appendChild(communityOption);
-    }
-  }
-})();
-
 /**
  * Create divs to house data charts
  * We fill these in later with drawChart[xxx]
  */
 function chartElementDivBuilder(data, container) {
   // console.log("CHARTELEMENTDIVBUILDER param: ", data);
+  const chartWrapper = document.createElement("div");
+  chartWrapper.classList.add("data-explorer__row");
+  container.appendChild(chartWrapper);
+
   const chartElement = document.createElement("div");
   chartElement.setAttribute("id", `chart-container-${data.indicator_id}`);
-  chartElement.setAttribute("class", "container data-explorer__row");
-  container.appendChild(chartElement);
+  chartElement.setAttribute("class", "container data-explorer__row-content");
+  chartWrapper.appendChild(chartElement);
 
   // Place to hold text content (title, description) for the chart
   const chartContent = document.createElement("div");
@@ -289,6 +304,10 @@ function chartElementDivBuilder(data, container) {
   chartElement.appendChild(chartOptions);
   chartElement.appendChild(chartGraph);
 
+  const eyebrow = document.createElement("div");
+  eyebrow.setAttribute("id", `chart-content-eyebrow-${data.indicator_id}`);
+  eyebrow.classList.add("data-explorer__chart-eyebrow");
+
   const header = document.createElement("div");
   header.setAttribute("id", `chart-content-h1-${data.indicator_id}`);
   header.classList.add("data-explorer__chart-title");
@@ -297,12 +316,24 @@ function chartElementDivBuilder(data, container) {
   const paragraph = document.createElement("p");
   paragraph.setAttribute("id", `chart-content-p-${data.indicator_id}`);
 
+  // Use authored indicator title and text (from Advanced Custom Fields options)
+  // if they exist
+  if (chartContainer.dataset[data.indicator_id]) {
+    const indicatorData = JSON.parse(chartContainer.dataset[data.indicator_id]);
+    header.innerText = indicatorData.title;
+    paragraph.innerText = indicatorData.description;
+  }
+
+  chartContent.appendChild(eyebrow);
   chartContent.appendChild(header);
   chartContent.appendChild(paragraph);
 }
 
 const lookupSiteNameByCode = (smartSite) => {
-  return smartSite;
+  const siteObject = communityData.filter(dataItem => {
+    return dataItem.smart_site === smartSite;
+  });
+  return siteObject[0]["Suggested name"];
 };
 
 /**
@@ -314,26 +345,36 @@ const lookupSiteNameByCode = (smartSite) => {
 function domainDataBuilder() {
   const subDomainData = configData[selectedDomain];
 
-  if (subDomainData.admin) {
+  if (subDomainData && subDomainData.admin) {
     subDomainData.admin.forEach(dataItem => {
       const chartData = { data: subDomainData.survey, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
       google.charts.setOnLoadCallback(() => drawChartAdmin(chartData));
     });
   }
 
-  if (subDomainData.census) {
+  if (subDomainData && subDomainData.census) {
     subDomainData.census.forEach(dataItem => {
       const chartData = { data: subDomainData.survey, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
       google.charts.setOnLoadCallback(() => drawChartCensus(chartData));
     });
   }
 
-  if (subDomainData.survey) {
+  if (subDomainData && subDomainData.survey) {
     subDomainData.survey.forEach(dataItem => {
       const chartData = { data: subDomainData.survey, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
       google.charts.setOnLoadCallback(() => drawChartSurvey(chartData));
     });
   }
+}
+
+// Take a number and round it to zero or one decimal places
+// Accepts a string or a number
+// 15.02 => 15
+// 15.11 => 15.1
+// 14.98 => 15
+// 14.91 => 14.9
+function roundToOneDecimal(number) {
+  return Math.ceil(Number(number).toFixed(1)) === Math.floor(Number(number).toFixed(1)) ? Math.round(Number(number)) : Number(number).toFixed(1);
 }
 
 function csvDataIntoArray(str) {
@@ -432,10 +473,13 @@ const drawChartAdmin = async (domainObj) => {
   adminChartContainer.style.display = "block";
 
   const dataTable = new google.visualization.DataTable();
+  const eyebrow = document.getElementById(`chart-content-eyebrow-${indicatorId}`);
   const paragraph = document.getElementById(`chart-content-p-${indicatorId}`);
 
+  eyebrow.innerText = "Administrative";
+
   // Add description paragraph to chart area if we have one
-  if (filteredData[0] && filteredData[0].description) {
+  if (filteredData[0] && filteredData[0].description && paragraph.innerText === "") {
     paragraph.innerText = filteredData[0].description;
   }
 
@@ -454,7 +498,8 @@ const drawChartAdmin = async (domainObj) => {
 
   filteredData.forEach(item => {
     if (filteredData[0].indicator_id === item.indicator_id ) {
-      communityValues.push(item.value);
+      itemRoundedValue = roundToOneDecimal(item.value);
+      communityValues.push(itemRoundedValue);
 
       const labels = yearQuarterLabels[source];
       const year = item[labels.year];
@@ -462,17 +507,20 @@ const drawChartAdmin = async (domainObj) => {
 
       const yearQuarter = year + " Q" + quarter;
 
-      quarters.push(yearQuarter);
+      // quarters.push(yearQuarter);
+      quarters.push(year);
     }
   });
 
   if (cityWideData.length > 0) {
+    const siteName = lookupSiteNameByCode(filteredData[0].smart_site);
     dataTable.addColumn("string", filteredData[0].indicator_id);
     dataTable.addColumn("number", "Citywide");
-    dataTable.addColumn("number", `Site ${filteredData[0].smart_site}`);
+    dataTable.addColumn("number", siteName);
 
     cityWideData.forEach(item => {
-      cityWideValues.push(item.value);
+      itemRoundedValue = roundToOneDecimal(item.value);
+      cityWideValues.push(itemRoundedValue);
     });
 
     for (let i = 0; i < communityValues.length; i++) {
@@ -492,8 +540,8 @@ const drawChartAdmin = async (domainObj) => {
 
   const options = {
     colors: [
-      "#016789",
       "#DEAA00",
+      "#016789",
       "#7ACFE5",
     ],
     chartArea: {
@@ -536,11 +584,15 @@ const drawChartCensus = async (domainObj) => {
 
   chartElementDivBuilder(filteredData[0], censusChartContainer);
 
-  const paragraph = document.getElementById(`chart-content-p-${indicatorId}`);
   censusChartContainer.style.display = "block";
 
+  const eyebrow = document.getElementById(`chart-content-eyebrow-${indicatorId}`);
+  const paragraph = document.getElementById(`chart-content-p-${indicatorId}`);
+
+  eyebrow.innerText = "Census";
+
   filteredData.forEach(item => {
-    if (item && item.description) {
+    if (item && item.description && paragraph.innerText === "") {
       paragraph.innerText = item.description;
     }
   });
@@ -597,7 +649,10 @@ const drawChartSurvey = async (domainObj) => {
 
   const chartOptions = document.getElementById(`chart-options-${indicatorId}`);
   const chartArea = document.getElementById(`chart-${indicatorId}`);
+  const eyebrow = document.getElementById(`chart-content-eyebrow-${indicatorId}`);
   const paragraph = document.getElementById(`chart-content-p-${indicatorId}`);
+
+  eyebrow.innerText = "Survey";
 
   let demographics = ["All"]; // Major groups ("Age", "Race", etc.()
   let demoLevels = []; // Subgroups ("18-34", etc.)
@@ -621,6 +676,7 @@ const drawChartSurvey = async (domainObj) => {
     selectedDemo = "Age";
 
     let demoDropdown = document.createElement("select");
+    demoDropdown.classList.add("custom-dropdown");
     demoDropdown.setAttribute("id", `demo-dropdown-${indicatorId}`);
 
     demographics.forEach(demo => {
@@ -684,7 +740,7 @@ const drawChartSurvey = async (domainObj) => {
     dataTable.addColumn("number", "Score");
 
     filteredData.forEach(item => {
-      if (item && item.description) {
+      if (item && item.description && paragraph.innerText === "") {
         paragraph.innerText = item.description;
       }
     });
@@ -744,7 +800,7 @@ const drawChartSurvey = async (domainObj) => {
 
     filteredData.forEach(item => {
       if (indicatorId === Number(item.indicator_id) && selectedDemo === item.demographic) {
-        if (item && item.description) {
+        if (item && item.description && paragraph.innerText === "") {
           paragraph.innerText = item.description;
         }
       }
