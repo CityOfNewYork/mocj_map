@@ -187,7 +187,7 @@ const renderDemographyData = async (smart_site) => {
   }
 
   const raceDataData = filteredDemographyData.filter(item => { return item[3] === "Race/ethnicity";});
-  const sortedRaceData = raceDataData.sort((a, b) => { return a[6] > b[6] ? -1 : 1; });
+  const sortedRaceData = raceDataData.sort((a, b) => { return Number(a[6]) > Number(b[6]) ? -1 : 1; });
 
   sortedRaceData.forEach(item => {
     raceDataDiv.appendChild(createChildElementData(item));
