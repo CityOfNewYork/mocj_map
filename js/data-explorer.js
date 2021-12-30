@@ -91,6 +91,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+  // console.log("DOMAINS: ", domains);
+
   // Build the domain dropdown
   Object.keys(domains).forEach(key => {
     let domainOptGroup = document.createElement("optgroup");
@@ -347,14 +349,15 @@ function domainDataBuilder() {
 
   if (subDomainData && subDomainData.admin) {
     subDomainData.admin.forEach(dataItem => {
-      const chartData = { data: subDomainData.survey, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
+      // console.log("ADMIN DATA ITEM: ", dataItem);
+      const chartData = { data: subDomainData.admin, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
       google.charts.setOnLoadCallback(() => drawChartAdmin(chartData));
     });
   }
 
   if (subDomainData && subDomainData.census) {
     subDomainData.census.forEach(dataItem => {
-      const chartData = { data: subDomainData.survey, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
+      const chartData = { data: subDomainData.census, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
       google.charts.setOnLoadCallback(() => drawChartCensus(chartData));
     });
   }
@@ -401,6 +404,10 @@ const labelData = (labelsData) => {
   const labeledData = data.map((dataItem, i) => {
     const labeledDataRow = {};
 
+    if (labels.length !== dataItem.length) {
+      console.error("Data labels and data rows are of different lengths. This may be an error with parsing the CSV strings.");
+    }
+
     for (let i = 0; i < labels.length; i++) {
       labeledDataRow[labels[i]] = removeUnnecessaryChar(dataItem[i]);
     }
@@ -416,6 +423,7 @@ const labelData = (labelsData) => {
  * relevant chart type
  */
 function filterData(object) {
+  // console.log("FILTERING DATA: ", object);
   const { data, indicatorId, type } = object;
   let newFilteredData = {};
 
@@ -444,6 +452,7 @@ function filterData(object) {
     });
   }
 
+  // console.log("FILTERED DATA: ", newFilteredData);
   return newFilteredData;
 }
 
