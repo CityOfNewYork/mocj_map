@@ -63,7 +63,7 @@ get_header();
 		<span><?php _e('Sex/Gender', 'mocj'); ?></span>
 	      </div>
 	      <div class="data-table">
-		<div class="data-explorer__demo-data-cell">Stop, Question and Frisk Data
+		<div class="data-explorer__demo-data-cell">
 		  <p id="female-percentage" class="data-explorer__demo-data-cell-label"></p>
 		  <p><?php _e('Female', 'mocj'); ?></p>
 		</div>
