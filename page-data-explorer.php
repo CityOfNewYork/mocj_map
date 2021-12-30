@@ -4,6 +4,11 @@
  * Template Post Type: Page
  */
 
+// Load the necessary JavaScript
+add_action( 'wp_enqueue_scripts', function() {
+  wp_enqueue_script( 'mocj-data-explorer', get_template_directory_uri() . '/js/data-explorer.js', array(), '', true );
+});
+
 get_header();
 ?>
 
