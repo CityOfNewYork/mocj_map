@@ -113,7 +113,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     if (Object.hasOwnProperty.call(communityData, community)) {
       const element = communityData[community];
       const communityOption = document.createElement("option");
-      const communityText = document.createTextNode(`${element["Suggested name"]} — ${element.borough}`);
+      const communityText = document.createTextNode(element["Suggested name"]);
       communityOption.appendChild(communityText);
       communityOption.setAttribute("value", element.smart_site);
       communityDropdown.appendChild(communityOption);
