@@ -185,10 +185,12 @@ const renderDemographyData = async (smart_site) => {
   if (raceDataDiv.hasChildNodes()) {
     raceDataDiv.remove();
   }
-  filteredDemographyData.forEach(item => {
-    if (item[3] === "Race/ethnicity") {
-      raceDataDiv.appendChild(createChildElementData(item));
-    }
+
+  const raceDataData = filteredDemographyData.filter(item => { return item[3] === "Race/ethnicity";});
+  const sortedRaceData = raceDataData.sort((a, b) => { return a[6] > b[6] ? -1 : 1; });
+
+  sortedRaceData.forEach(item => {
+    raceDataDiv.appendChild(createChildElementData(item));
   });
   raceData.append(raceDataDiv);
 
