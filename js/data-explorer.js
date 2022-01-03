@@ -91,6 +91,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+  // console.log("DOMAINS: ", domains);
+
   // Build the domain dropdown
   Object.keys(domains).forEach(key => {
     let domainOptGroup = document.createElement("optgroup");
@@ -111,7 +113,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     if (Object.hasOwnProperty.call(communityData, community)) {
       const element = communityData[community];
       const communityOption = document.createElement("option");
-      const communityText = document.createTextNode(`${element["Suggested name"]} — ${element.borough}`);
+      const communityText = document.createTextNode(element["Suggested name"]);
       communityOption.appendChild(communityText);
       communityOption.setAttribute("value", element.smart_site);
       communityDropdown.appendChild(communityOption);
@@ -183,10 +185,12 @@ const renderDemographyData = async (smart_site) => {
   if (raceDataDiv.hasChildNodes()) {
     raceDataDiv.remove();
   }
-  filteredDemographyData.forEach(item => {
-    if (item[3] === "Race/ethnicity") {
-      raceDataDiv.appendChild(createChildElementData(item));
-    }
+
+  const raceDataData = filteredDemographyData.filter(item => { return item[3] === "Race/ethnicity";});
+  const sortedRaceData = raceDataData.sort((a, b) => { return Number(a[6]) > Number(b[6]) ? -1 : 1; });
+
+  sortedRaceData.forEach(item => {
+    raceDataDiv.appendChild(createChildElementData(item));
   });
   raceData.append(raceDataDiv);
 
@@ -347,14 +351,15 @@ function domainDataBuilder() {
 
   if (subDomainData && subDomainData.admin) {
     subDomainData.admin.forEach(dataItem => {
-      const chartData = { data: subDomainData.survey, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
+      // console.log("ADMIN DATA ITEM: ", dataItem);
+      const chartData = { data: subDomainData.admin, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
       google.charts.setOnLoadCallback(() => drawChartAdmin(chartData));
     });
   }
 
   if (subDomainData && subDomainData.census) {
     subDomainData.census.forEach(dataItem => {
-      const chartData = { data: subDomainData.survey, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
+      const chartData = { data: subDomainData.census, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
       google.charts.setOnLoadCallback(() => drawChartCensus(chartData));
     });
   }
@@ -401,6 +406,10 @@ const labelData = (labelsData) => {
   const labeledData = data.map((dataItem, i) => {
     const labeledDataRow = {};
 
+    if (labels.length !== dataItem.length) {
+      console.error("Data labels and data rows are of different lengths. This may be an error with parsing the CSV strings.");
+    }
+
     for (let i = 0; i < labels.length; i++) {
       labeledDataRow[labels[i]] = removeUnnecessaryChar(dataItem[i]);
     }
@@ -416,6 +425,7 @@ const labelData = (labelsData) => {
  * relevant chart type
  */
 function filterData(object) {
+  // console.log("FILTERING DATA: ", object);
   const { data, indicatorId, type } = object;
   let newFilteredData = {};
 
@@ -444,6 +454,7 @@ function filterData(object) {
     });
   }
 
+  // console.log("FILTERED DATA: ", newFilteredData);
   return newFilteredData;
 }
 
