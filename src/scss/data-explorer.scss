@@ -128,9 +128,20 @@ p {
   padding-top: 40px;
   padding-bottom: 40px;
   display: grid;
-  grid-template: 'g d' auto
-    'g c' auto / 30% 1fr;
 
+  grid-template: 'g' auto
+    'd' auto
+    'c' auto / 1fr;
+
+  @media screen and (min-width: $break-sm) {
+    grid-template: 'g d' auto
+      'c c' auto / 1fr auto;
+  }
+
+  @media screen and (min-width: $break-lg) {
+    grid-template: 'g d' auto
+      'g c' auto / 30% 1fr;
+  }
 }
 
 .data-explorer__content {
@@ -216,8 +227,20 @@ p {
 }
 
 .data-explorer__demo-section {
-  flex-basis: calc(50% - 16px);
+  flex-basis: 100%;
   margin-bottom: 32px;
+
+  @media screen and (min-width: $break-sm) {
+    flex-basis: calc((100% - 32px) / 2);
+  }
+
+  @media screen and (min-width: $break-lg) {
+    flex-basis: calc((100% - (32px * 3)) / 4);
+  }
+
+  @media screen and (min-width: $break-xl) {
+    flex-basis: calc((100% - 32px) / 2);
+  }
 }
 
 .data-explorer__demo-table {
@@ -252,7 +275,12 @@ p {
 }
 
 .data-explorer__header-title {
-  font-size: 50px;
+  font-size: 30px;
+
+  @media screen and (min-width: $break-md) {
+    font-size: 50px;
+  }
+
   strong {
     color: inherit;
   }
@@ -266,17 +294,26 @@ p {
   > .container {
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 32px;
   }
 }
 
 .data-explorer__category-title {
-  flex-basis: 50%;
+  @media screen and (min-width: $break-lg) {
+    flex-basis: calc(50% - 16px);
+  }
 }
 
 .data-explorer__category-selector {
   display: flex;
-  flex-basis: 50%;
+  flex-wrap: wrap;
   align-items: center;
+
+  @media screen and (min-width: $break-lg) {
+    flex-basis: calc(50% - 16px);
+  }
 }
 
 .data-explorer__category-selector-label {
@@ -338,11 +375,18 @@ p {
 
 .data-management {
   display: flex;
+  justify-content: flex-start;
   align-items: center;
+
+  @media screen and (max-width: #{$break-xl - 1px}) {
+    flex-wrap: wrap;
+  }
 }
 
 .community-chooser {
-  flex-grow: 1;
+  @media screen and (max-width: #{$break-xl - 1px}) {
+    margin-bottom: 40px;
+  }
 }
 
 .community-chooser__label {
