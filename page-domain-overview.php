@@ -32,10 +32,6 @@ get_header();
 
 	<div class="domain-grid__domain">
 
-	  <div class="domain-grid__domain-icon">
-	    <?php get_template_part('template-parts/svg/icon-police'); ?>
-	  </div>
-
 	  <p class="domain-grid__domain-title">
 	    <?php echo $domain['title']; ?>
 	  </p>
