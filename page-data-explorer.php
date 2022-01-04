@@ -40,7 +40,7 @@ get_header();
 	  </div>
 
 	  <div id="js-scroll-indicator" class="data-explorer__scroll-indicator">
-	    <?php get_template_part( 'template-parts/svg/scroll' ); ?>
+	    <?php get_template_part( 'template-parts/svg/scroll' ); ?>&nbsp;<?php _e('Scroll', 'mocj'); ?>
 	  </div>
 	</div>
       </div>

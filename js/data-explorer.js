@@ -129,7 +129,7 @@ communityDropdown.addEventListener("change", () => {
   renderDemographyData(communityDropdown.value);
   dataRenderDiv.style.display = "flex";
   dataContainer.style.display = "flex";
-  scrollIndicator.style.display = "block";
+  scrollIndicator.style.display = "flex";
 
   communityTitle.innerText = communityDropdown.options[communityDropdown.selectedIndex].text;
 
