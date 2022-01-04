@@ -42,6 +42,7 @@ body {
 // }
 
 .bg-light-gray {
+  overflow: auto;
   background: $color-light-gray;
   h1 {
     color: $color-secondary;
@@ -80,7 +81,6 @@ body {
 }
 
 .container {
-  // overflow: auto;
   max-width: $max-width;
   margin: 0 auto;
   padding-left: 2rem;

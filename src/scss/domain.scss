@@ -1,5 +1,9 @@
 @use 'sass:math';
 
+.domain__tabs {
+  overflow: auto;
+}
+
 .domain__subdomain-list {
   display: flex;
   flex-wrap: wrap;
