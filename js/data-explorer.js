@@ -731,7 +731,6 @@ const drawChartSurvey = async (domainObj) => {
     },
     backgroundColor: "transparent",
     vAxis: {
-      format: "percent",
       viewWindow: {
         max: 1,
         min: 0,
