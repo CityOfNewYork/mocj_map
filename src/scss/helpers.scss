@@ -13,3 +13,9 @@
     display: none !important;
   }
 }
+
+@mixin no-print {
+  @media print {
+    display: none !important;
+  }
+}

@@ -43,8 +43,11 @@ get_header();
 
       <div class="data-explorer__header-section data-explorer__header-section--backdrop" id="data-render">
 	<div class="data-explorer__header-data">
-	  <button class="print-bttn">
-	    <p><?php _e('Print PDF', 'mocj'); ?></p>
+	  <button class="print-bttn" type="button" onclick="window.print()">
+	    <p>
+	      <?php _e('Print PDF', 'mocj'); ?>&nbsp;
+	      <?php get_template_part( 'template-parts/svg/icon-print' ); ?>
+	    </p>
 	  </button>
 	  <div class="data-explorer__demo-table">
 	    <div class="data-explorer__demo-section">
