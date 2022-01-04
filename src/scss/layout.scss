@@ -1120,3 +1120,7 @@ h2.team-name{
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
+
+article {
+  overflow: auto;
+}
