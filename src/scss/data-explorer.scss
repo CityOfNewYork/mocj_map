@@ -224,6 +224,10 @@ p {
   padding-top: 16px;
   border-top: 2px solid $color-white;
   align-self: stretch;
+
+  @media screen and (min-width: $break-xl) {
+    margin-left: 80px;
+  }
 }
 
 .data-explorer__demo-section {
