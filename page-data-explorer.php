@@ -38,6 +38,10 @@ get_header();
 	      <?php get_template_part( 'template-parts/svg/boroughs' ); ?>
 	    </div>
 	  </div>
+
+	  <div id="js-scroll-indicator" class="data-explorer__scroll-indicator">
+	    <?php get_template_part( 'template-parts/svg/scroll' ); ?>
+	  </div>
 	</div>
       </div>
 

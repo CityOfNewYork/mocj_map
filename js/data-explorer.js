@@ -16,6 +16,7 @@
 
 const communityDropdown = document.getElementById("community-dropdown");
 const communityTitle = document.getElementById("community-title");
+const scrollIndicator = document.getElementById("js-scroll-indicator");
 const raceData = document.getElementById("race-data");
 const ageData = document.getElementById("age-data");
 const dataRenderDiv = document.getElementById("data-render");
@@ -128,6 +129,7 @@ communityDropdown.addEventListener("change", () => {
   renderDemographyData(communityDropdown.value);
   dataRenderDiv.style.display = "flex";
   dataContainer.style.display = "flex";
+  scrollIndicator.style.display = "block";
 
   communityTitle.innerText = communityDropdown.options[communityDropdown.selectedIndex].text;
 
