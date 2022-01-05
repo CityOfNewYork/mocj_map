@@ -12,10 +12,26 @@ add_action( 'wp_enqueue_scripts', function() {
 get_header();
 ?>
 
+<?php
+
+// Set up an array of existing Community post type posts, with info about Site
+// ID and hero image
+$communities = mocj_get_communities();
+
+?>
+
 <main id="main" class="site">
 
   <div class="container-fluid">
-    <div class="data-explorer__header">
+    <div class="data-explorer__header" id="js-data-explorer-header"
+      <?php
+      if ( $communities ) {
+	foreach ( $communities as $community ) {
+	  echo ' data-', $community['site_id'], '-image="', $community['image_url'], '"';
+	};
+      };
+      ?>
+    >
 
       <div class="data-explorer__header-section">
 	<div class="data-explorer__header-content">
