@@ -243,7 +243,8 @@ const createChildElementData = dataArray => {
   const dataTitleElem = document.createElement("p");
   const dataValue = Number(dataArray[6]);
   const dataRoundedValue = roundToOneDecimal(dataValue);
-  dataPercentageElem.innerText = dataRoundedValue + "%";
+  const dataLessThanOneValue = lessThanOne(dataRoundedValue);
+  dataPercentageElem.innerText = dataLessThanOneValue + "%";
   dataPercentageElem.classList.add("data-explorer__demo-data-cell-label");
   dataTitleElem.innerText = dataArray[4];
   dataChildContainer.appendChild(dataPercentageElem);
@@ -390,6 +391,14 @@ function domainDataBuilder() {
 // 14.91 => 14.9
 function roundToOneDecimal(number) {
   return Math.ceil(Number(number).toFixed(1)) === Math.floor(Number(number).toFixed(1)) ? Math.round(Number(number)) : Number(number).toFixed(1);
+}
+
+function lessThanOne(number) {
+  if (Number(number) > 0 && Number(number) < 1) {
+    return "<1";
+  } else {
+    return number;
+  }
 }
 
 function csvDataIntoArray(str) {
