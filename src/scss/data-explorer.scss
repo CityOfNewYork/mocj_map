@@ -59,6 +59,8 @@ p {
     top: 20px;
     right: 20px;
     color: $color-white;
+
+    @include no-print;
 }
 
 #accordion {
@@ -121,6 +123,10 @@ p {
 .data-explorer__row {
   &:nth-child(even) {
     background: $color-light-blue;
+
+    @media print {
+      background: none;
+    }
   }
 }
 
@@ -145,17 +151,22 @@ p {
 }
 
 .data-explorer__content {
-  grid-area: g
+  grid-area: g;
+  break-after: avoid-page;
 }
 
 .data-explorer__chart {
   grid-area: c;
   min-height: 500px;
   flex-grow: 1;
+  break-before: avoid-page;
 }
 
 .data-explorer__options {
+  @include no-print;
+
   grid-area: d;
+  break-after: avoid-page;
 }
 
 .data-explorer__header {
@@ -168,6 +179,11 @@ p {
 
   @media screen and (min-width: $break-xl) {
     flex-wrap: nowrap;
+  }
+
+  @media print {
+    background: none;
+    color: inherit;
   }
 }
 
@@ -187,10 +203,18 @@ p {
     width: auto;
     flex-basis: 50%;
   }
+
+  @media print {
+    padding: 0;
+  }
 }
 
 .data-explorer__header-section--backdrop {
   background-color: rgba(48, 79, 94, 0.8);
+
+  @media print {
+    background-color: transparent;
+  }
 }
 
 .data-explorer__header-content,
@@ -225,6 +249,10 @@ p {
   border-top: 2px solid $color-white;
   align-self: stretch;
 
+  @media print {
+    color: inherit;
+  }
+
   @media screen and (min-width: $break-xl) {
     margin-left: 80px;
   }
@@ -242,7 +270,7 @@ p {
     flex-basis: calc((100% - (32px * 3)) / 4);
   }
 
-  @media screen and (min-width: $break-xl) {
+  @media screen and (min-width: $break-xl), print {
     flex-basis: calc((100% - 32px) / 2);
   }
 }
@@ -291,6 +319,8 @@ p {
 }
 
 .data-explorer__category-selector-wrapper {
+  @include no-print;
+
   display: none;
   padding: 30px 0;
   background: $color-light-gray;
@@ -378,6 +408,8 @@ p {
 }
 
 .data-management {
+  @include no-print;
+
   display: flex;
   justify-content: flex-start;
   align-items: center;
