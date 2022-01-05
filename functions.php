@@ -549,6 +549,33 @@ add_action('init', function() {
   ]);
 });
 
+function mocj_get_communities() {
+  $communities = [];
+
+  $args = array(
+    'posts_per_page' => -1,
+    'post_type' => 'mocj_communities',
+  );
+
+  $communities_query = new WP_Query( $args );
+
+  if ( $communities_query->have_posts() ) :
+    while ( $communities_query->have_posts() ) :
+      $communities_query->the_post();
+      if ( get_field( 'site_id') && get_post_thumbnail_id() ) {
+	array_push($communities, [
+	  'site_id' => get_field( 'site_id' ),
+	  'image_url' => wp_get_attachment_image_src( get_post_thumbnail_id(), 'original' )[0]
+	]);
+      }
+    endwhile;
+  endif;
+
+  wp_reset_query();
+
+  return $communities;
+}
+
 // Domain Content Custom Fields (ACF)
 if( function_exists('acf_add_local_field_group') ):
 
