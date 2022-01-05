@@ -65,7 +65,7 @@ $communities = mocj_get_communities();
 	<div class="data-explorer__header-data">
 	  <button class="print-bttn" type="button" onclick="window.print()">
 	    <p>
-	      <?php _e('Print PDF', 'mocj'); ?>&nbsp;
+	      <?php _e('Print', 'mocj'); ?>&nbsp;
 	      <?php get_template_part( 'template-parts/svg/icon-print' ); ?>
 	    </p>
 	  </button>
