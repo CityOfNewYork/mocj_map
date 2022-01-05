@@ -44,7 +44,7 @@
 
       <?php the_content(); ?>
 
-      <div class="js-tabs">
+      <div class="domain__tabs js-tabs">
 
       <?php
 	if (get_field('subdomains')) {

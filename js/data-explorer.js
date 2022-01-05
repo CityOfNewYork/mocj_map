@@ -16,10 +16,12 @@
 
 const communityDropdown = document.getElementById("community-dropdown");
 const communityTitle = document.getElementById("community-title");
+const scrollIndicator = document.getElementById("js-scroll-indicator");
 const raceData = document.getElementById("race-data");
 const ageData = document.getElementById("age-data");
 const dataRenderDiv = document.getElementById("data-render");
 const dataContainer = document.getElementById("data-container");
+const dataExplorerHeader = document.getElementById("js-data-explorer-header");
 const chartContainer = document.getElementById("chart-container");
 const adminChartContainer = document.getElementById("admin-container");
 const censusChartContainer = document.getElementById("census-container");
@@ -77,6 +79,7 @@ google.charts.load("current", { packages: ["corechart", "line", "bar"] });
 window.addEventListener("DOMContentLoaded", async () => {
   // Load config data
   configData = await fetchJsonFile(chartContainer.dataset.config);
+  console.log("COMMUNITY DATA FILE: ", communityDataFile);
   communityData = await fetchJsonFile(communityDataFile);
 
   // Build the domains/subdomains object for reference
@@ -128,6 +131,13 @@ communityDropdown.addEventListener("change", () => {
   renderDemographyData(communityDropdown.value);
   dataRenderDiv.style.display = "flex";
   dataContainer.style.display = "flex";
+  scrollIndicator.style.display = "flex";
+
+  if (dataExplorerHeader.dataset[`${selectedCommunity.toLowerCase()}Image`]) {
+    dataExplorerHeader.style.setProperty("--background-image", `url('${dataExplorerHeader.dataset[`${selectedCommunity.toLowerCase()}Image`]}')`);
+  } else {
+    dataExplorerHeader.style.removeProperty("--background-image");
+  }
 
   communityTitle.innerText = communityDropdown.options[communityDropdown.selectedIndex].text;
 
@@ -729,7 +739,6 @@ const drawChartSurvey = async (domainObj) => {
     },
     backgroundColor: "transparent",
     vAxis: {
-      format: "percent",
       viewWindow: {
         max: 1,
         min: 0,
