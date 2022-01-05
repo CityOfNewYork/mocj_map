@@ -469,7 +469,10 @@ function filterData(object) {
     }
   } else {
     newFilteredData = filteredData.filter((dataItem) => {
-      return (Number(dataItem.indicator_id) === indicatorId);
+      return (
+        Number(dataItem.indicator_id) === indicatorId &&
+        Number(dataItem.value) === Number(dataItem.value) // Testing for "NA" values; must be a number; NaN is not equal to NaN
+      );
     });
   }
 
