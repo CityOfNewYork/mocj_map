@@ -79,18 +79,18 @@ google.charts.load("current", { packages: ["corechart", "line", "bar"] });
 window.addEventListener("DOMContentLoaded", async () => {
   // Load config data
   configData = await fetchJsonFile(chartContainer.dataset.config);
-  console.log("COMMUNITY DATA FILE: ", communityDataFile);
   communityData = await fetchJsonFile(communityDataFile);
 
   // Build the domains/subdomains object for reference
   Object.keys(configData).forEach(key => {
     const domain = configData[key].domain;
     const subDomain = configData[key].subDomain;
+    const subDomainObj = {"id": key, "name": subDomain};
 
     if (subDomain && domain && !(domain in domains)) {
-      domains[domain] = [subDomain];
+      domains[domain] = [subDomainObj];
     } else if (domain && subDomain && domains[domain].indexOf(subDomain) === -1) {
-      domains[domain].push(subDomain);
+      domains[domain].push(subDomainObj);
     }
   });
 
@@ -103,8 +103,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     domains[key].forEach(subdomain => {
       let subdomainOption = document.createElement("option");
-      subdomainOption.innerText = subdomain;
-      subdomainOption.setAttribute("value", subdomain);
+      subdomainOption.innerText = subdomain.name;
+      subdomainOption.setAttribute("value", subdomain.id);
       domainOptGroup.appendChild(subdomainOption);
     });
 
