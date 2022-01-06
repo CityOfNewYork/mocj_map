@@ -9,15 +9,9 @@ add_action( 'wp_enqueue_scripts', function() {
   wp_enqueue_script( 'mocj-data-explorer', get_template_directory_uri() . '/js/data-explorer.js', array(), '', true );
 });
 
+$neighborhood_meta = get_field( 'neighborhood_meta', 'option' );
+
 get_header();
-?>
-
-<?php
-
-// Set up an array of existing Community post type posts, with info about Site
-// ID and hero image
-$communities = mocj_get_communities();
-
 ?>
 
 <main id="main" class="site">
@@ -25,9 +19,9 @@ $communities = mocj_get_communities();
   <div class="container-fluid">
     <div class="data-explorer__header" id="js-data-explorer-header"
       <?php
-      if ( $communities ) {
-	foreach ( $communities as $community ) {
-	  echo ' data-', $community['site_id'], '-image="', $community['image_url'], '"';
+      if ( $neighborhood_meta ) {
+	foreach ( $neighborhood_meta as $neighborhood ) {
+	  echo ' data-', $neighborhood['neighborhood_id'], '-image="', $neighborhood['neighborhood_image'], '"';
 	};
       };
       ?>
