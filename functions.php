@@ -549,33 +549,6 @@ add_action('init', function() {
   ]);
 });
 
-function mocj_get_communities() {
-  $communities = [];
-
-  $args = array(
-    'posts_per_page' => -1,
-    'post_type' => 'mocj_communities',
-  );
-
-  $communities_query = new WP_Query( $args );
-
-  if ( $communities_query->have_posts() ) :
-    while ( $communities_query->have_posts() ) :
-      $communities_query->the_post();
-      if ( get_field( 'site_id') && get_post_thumbnail_id() ) {
-	array_push($communities, [
-	  'site_id' => get_field( 'site_id' ),
-	  'image_url' => wp_get_attachment_image_src( get_post_thumbnail_id(), 'original' )[0]
-	]);
-      }
-    endwhile;
-  endif;
-
-  wp_reset_query();
-
-  return $communities;
-}
-
 // Domain Content Custom Fields (ACF)
 if( function_exists('acf_add_local_field_group') ):
 
@@ -1535,6 +1508,99 @@ acf_add_local_field_group(array(
 				'param' => 'post_template',
 				'operator' => '==',
 				'value' => 'page-domain-overview.php',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
+endif;
+
+// Neighborhood Meta Options (ACF)
+if( function_exists('acf_add_local_field_group') ):
+
+acf_add_local_field_group(array(
+	'key' => 'group_61d7248ef07a6',
+	'title' => 'Neighborhood Meta',
+	'fields' => array(
+		array(
+			'key' => 'field_61d724a8e307e',
+			'label' => 'Neighborhood Meta',
+			'name' => 'neighborhood_meta',
+			'type' => 'repeater',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'collapsed' => '',
+			'min' => 0,
+			'max' => 0,
+			'layout' => 'table',
+			'button_label' => 'Add Neighborhood',
+			'sub_fields' => array(
+				array(
+					'key' => 'field_61d724b5e307f',
+					'label' => 'Neighborhood ID',
+					'name' => 'neighborhood_id',
+					'type' => 'text',
+					'instructions' => '"1A", "5B", etc.',
+					'required' => 1,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '1A',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_61d724c0e3080',
+					'label' => 'Neighborhood Image',
+					'name' => 'neighborhood_image',
+					'type' => 'image',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'return_format' => 'url',
+					'preview_size' => 'medium',
+					'library' => 'all',
+					'min_width' => '',
+					'min_height' => '',
+					'min_size' => '',
+					'max_width' => '',
+					'max_height' => '',
+					'max_size' => '',
+					'mime_types' => '',
+				),
+			),
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'options_page',
+				'operator' => '==',
+				'value' => 'theme-options',
 			),
 		),
 	),
