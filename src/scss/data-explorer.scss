@@ -357,6 +357,31 @@ p {
   font-weight: 700;
 }
 
+.data-explorer__subdomain-title {
+  font-family: $serif;
+  font-weight: 700;
+  font-size: 38px;
+  padding-top: 48px;
+
+  &.is-empty {
+    padding: 0;
+  }
+}
+
+.data-explorer__subdomain-description {
+  font-family: $sans;
+  font-size: 18px;
+  margin-top: 30px;
+  border-bottom: 1px solid $color-dark-blue;
+  padding-bottom: 48px;
+
+  &.is-empty {
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+}
+
 .data-explorer__chart-title {
   font-size: 30px;
   font-weight: 700;
