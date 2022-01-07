@@ -10,11 +10,14 @@ add_action( 'wp_enqueue_scripts', function() {
 });
 
 $neighborhood_meta = get_field( 'neighborhood_meta', 'option' );
+$subdomain_info = get_field( 'subdomain_info', 'option' );
 
 get_header();
 ?>
 
 <main id="main" class="site">
+
+	<?php while (have_posts()) : the_post(); ?>
 
 	<div class="container-fluid">
 		<div class="data-explorer__header" id="js-data-explorer-header"
@@ -131,7 +134,18 @@ get_header();
 		</div>
 	</div>
 
-	<?php while (have_posts()) : the_post(); ?>
+	<div class="container type--navy">
+		<div id="js-subdomain-title" class="data-explorer__subdomain-title is-empty"></div>
+		<div id="js-subdomain-description" class="data-explorer__subdomain-description is-empty"
+			<?php
+			if ( $subdomain_info ) {
+				foreach ( $subdomain_info as $subdomain ) {
+					echo ' data-', strtolower(str_replace(' ', '-', $subdomain['subdomain_id'])), '="', esc_attr($subdomain['subdomain_description']), '"';
+				};
+			};
+			?>
+		></div>
+	</div>
 
 	<div id="chart-container"
 		data-config="<?php echo get_field('config_data'); ?>"

@@ -1615,3 +1615,91 @@ acf_add_local_field_group(array(
 ));
 
 endif;
+
+// Add Subdmoain Info fields (ACF)
+if( function_exists('acf_add_local_field_group') ):
+
+acf_add_local_field_group(array(
+	'key' => 'group_61d887fc60a69',
+	'title' => 'Subdomain Info',
+	'fields' => array(
+		array(
+			'key' => 'field_61d88867cb909',
+			'label' => 'Subdomain Info',
+			'name' => 'subdomain_info',
+			'type' => 'repeater',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'collapsed' => '',
+			'min' => 0,
+			'max' => 0,
+			'layout' => 'table',
+			'button_label' => '',
+			'sub_fields' => array(
+				array(
+					'key' => 'field_61d8897ab7c3d',
+					'label' => 'Subdomain ID',
+					'name' => 'subdomain_id',
+					'type' => 'text',
+					'instructions' => 'Value must match subdomain text in CSV data, e.g. "Other Crimes"',
+					'required' => 1,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_61d88993b7c3e',
+					'label' => 'Subdomain Description',
+					'name' => 'subdomain_description',
+					'type' => 'textarea',
+					'instructions' => '',
+					'required' => 1,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'maxlength' => '',
+					'rows' => '',
+					'new_lines' => '',
+				),
+			),
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'options_page',
+				'operator' => '==',
+				'value' => 'theme-options',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
+endif;

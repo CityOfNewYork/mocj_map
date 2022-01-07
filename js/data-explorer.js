@@ -22,6 +22,8 @@ const ageData = document.getElementById("age-data");
 const dataRenderDiv = document.getElementById("data-render");
 const dataContainer = document.getElementById("data-container");
 const dataExplorerHeader = document.getElementById("js-data-explorer-header");
+const subdomainTitle = document.getElementById("js-subdomain-title");
+const subdomainDescription = document.getElementById("js-subdomain-description");
 const chartContainer = document.getElementById("chart-container");
 const adminChartContainer = document.getElementById("admin-container");
 const censusChartContainer = document.getElementById("census-container");
@@ -154,6 +156,32 @@ communityDropdown.addEventListener("change", () => {
 // Update charts when domain dropdown selected
 domainSelect.addEventListener("change", () => {
   selectedDomain = domainSelect.value;
+  selectedDomainAttr = selectedDomain.replace(" ", "-").toLowerCase();
+  selectedDomainDescription = subdomainDescription.dataset[selectedDomainAttr];
+
+  subdomainObject = {};
+  subdomainDomain = "";
+
+  // Find Domain of Selected Subdomain
+  Object.keys(domains).forEach(key => {
+    if (domains[key].findIndex(domain => { return domain.id === selectedDomain; }) !== -1) {
+      subdomainObject = domains[key].find(domain => { return domain.id === selectedDomain; });
+      subdomainDomain = key;
+    }
+  });
+
+  if (selectedDomainDescription) {
+    subdomainTitle.classList.remove("is-empty");
+    subdomainDescription.classList.remove("is-empty");
+    subdomainTitle.innerText = `${subdomainDomain} — ${subdomainObject.name}`;
+    subdomainDescription.innerText = selectedDomainDescription;
+  } else {
+    subdomainTitle.classList.add("is-empty");
+    subdomainDescription.classList.add("is-empty");
+    subdomainDescription.innerText = "";
+    subdomainTitle.innerText = "";
+  }
+
   removeGraphs();
   domainDataBuilder(); // This is where the charts themselves get built
 });
