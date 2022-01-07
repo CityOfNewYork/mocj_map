@@ -38,7 +38,7 @@ get_header();
 					<div class="data-management">
 						<div class="community-chooser">
 							<div class="community-chooser__label">
-								<?php _e('View Community Administrative Data', 'mocj'); ?>
+								<?php _e('View Community Data', 'mocj'); ?>
 							</div>
 							<select id="community-dropdown" class="custom-dropdown">
 								<option disabled selected hidden><?php _e('Select a Community', 'mocj'); ?></option>
@@ -119,7 +119,7 @@ get_header();
 		<div class="container">
 			<div class="data-explorer__category-title">
 				<p id="js-community-title" class="data-explorer__community-title"></p>
-				<div class="data-explorer__community-label"><?php _e('Community Administrative Data', 'mocj'); ?><span id="js-community-source-label"></span></div>
+				<div class="data-explorer__community-label"><?php _e('Community Data', 'mocj'); ?><span id="js-community-source-label"></span></div>
 			</div>
 
 			<div class="data-explorer__category-selector">
