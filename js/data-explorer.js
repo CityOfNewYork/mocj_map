@@ -16,7 +16,6 @@
 
 const communityDropdown = document.getElementById("community-dropdown");
 const communityTitle = document.getElementById("js-community-title");
-const communitySourceLabel = document.getElementById("js-community-source-label");
 const scrollIndicator = document.getElementById("js-scroll-indicator");
 const raceData = document.getElementById("race-data");
 const ageData = document.getElementById("age-data");
@@ -141,15 +140,8 @@ communityDropdown.addEventListener("change", () => {
   }
 
   communityName = communityDropdown.options[communityDropdown.selectedIndex].text;
-  communitySource = communityData.find(dataItem => { return dataItem.smart_site === selectedCommunity; }).source;
 
   communityTitle.innerText = communityName;
-
-  if (communitySource) {
-    communitySourceLabel.innerText = ` (${communitySource})`;
-  } else {
-    communitySourceLabel.innerText = "";
-  }
 
   // Add current community class to the borough SVG
   boroughMap.setAttribute("class", "");

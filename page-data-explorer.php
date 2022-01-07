@@ -119,7 +119,7 @@ get_header();
 		<div class="container">
 			<div class="data-explorer__category-title">
 				<p id="js-community-title" class="data-explorer__community-title"></p>
-				<div class="data-explorer__community-label"><?php _e('Community Data', 'mocj'); ?><span id="js-community-source-label"></span></div>
+				<div class="data-explorer__community-label"><?php _e('Community Data', 'mocj'); ?></div>
 			</div>
 
 			<div class="data-explorer__category-selector">
