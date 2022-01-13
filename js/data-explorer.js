@@ -173,13 +173,13 @@ domainSelect.addEventListener("change", () => {
   if (selectedDomainDescription) {
     subdomainTitle.classList.remove("is-empty");
     subdomainDescription.classList.remove("is-empty");
-    subdomainTitle.innerText = `${subdomainDomain} — ${subdomainObject.name}`;
-    subdomainDescription.innerText = selectedDomainDescription;
+    subdomainTitle.innerHTML = `${subdomainDomain} — ${subdomainObject.name}`;
+    subdomainDescription.innerHTML = selectedDomainDescription;
   } else {
     subdomainTitle.classList.add("is-empty");
     subdomainDescription.classList.add("is-empty");
-    subdomainDescription.innerText = "";
-    subdomainTitle.innerText = "";
+    subdomainDescription.innerHTML = "";
+    subdomainTitle.innerHTML = "";
   }
 
   removeGraphs();
@@ -365,8 +365,8 @@ function chartElementDivBuilder(data, container) {
   // if they exist
   if (chartContainer.dataset[data.indicator_id]) {
     const indicatorData = JSON.parse(chartContainer.dataset[data.indicator_id]);
-    header.innerText = indicatorData.title;
-    paragraph.innerText = indicatorData.description;
+    header.innerHTML = indicatorData.title;
+    paragraph.innerHTML = indicatorData.description;
   }
 
   chartContent.appendChild(eyebrow);
