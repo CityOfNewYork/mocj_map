@@ -1375,7 +1375,7 @@ acf_add_local_field_group(array(
 					'key' => 'field_61c9e9945768a',
 					'label' => 'Description',
 					'name' => 'description',
-					'type' => 'text',
+					'type' => 'textarea',
 					'instructions' => '',
 					'required' => 1,
 					'conditional_logic' => 0,
