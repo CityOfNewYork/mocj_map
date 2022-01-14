@@ -326,23 +326,23 @@ function chartElementDivBuilder(data, container) {
   container.appendChild(chartWrapper);
 
   const chartElement = document.createElement("div");
-  chartElement.setAttribute("id", `chart-container-${data.indicator_id}`);
+  chartElement.setAttribute("id", `chart-container-${data.indicatorID}`);
   chartElement.setAttribute("class", "container data-explorer__row-content");
   chartWrapper.appendChild(chartElement);
 
   // Place to hold text content (title, description) for the chart
   const chartContent = document.createElement("div");
-  chartContent.setAttribute("id", `chart-content-${data.indicator_id}`);
+  chartContent.setAttribute("id", `chart-content-${data.indicatorID}`);
   chartContent.classList.add("data-explorer__content");
 
   // Place to hold any options or dropdowns for the chart
   const chartOptions = document.createElement("div");
-  chartOptions.setAttribute("id", `chart-options-${data.indicator_id}`);
+  chartOptions.setAttribute("id", `chart-options-${data.indicatorID}`);
   chartOptions.classList.add("data-explorer__options");
 
   // Place to hold the graph itself
   const chartGraph = document.createElement("div");
-  chartGraph.setAttribute("id", `chart-${data.indicator_id}`);
+  chartGraph.setAttribute("id", `chart-${data.indicatorID}`);
   chartGraph.classList.add("data-explorer__chart");
 
   chartElement.appendChild(chartContent);
@@ -350,21 +350,21 @@ function chartElementDivBuilder(data, container) {
   chartElement.appendChild(chartGraph);
 
   const eyebrow = document.createElement("div");
-  eyebrow.setAttribute("id", `chart-content-eyebrow-${data.indicator_id}`);
+  eyebrow.setAttribute("id", `chart-content-eyebrow-${data.indicatorID}`);
   eyebrow.classList.add("data-explorer__chart-eyebrow");
 
   const header = document.createElement("div");
-  header.setAttribute("id", `chart-content-h1-${data.indicator_id}`);
+  header.setAttribute("id", `chart-content-h1-${data.indicatorID}`);
   header.classList.add("data-explorer__chart-title");
-  header.innerText = `${data.indicator}`;
+  header.innerText = `${data.indicatorName}`;
 
   const paragraph = document.createElement("p");
-  paragraph.setAttribute("id", `chart-content-p-${data.indicator_id}`);
+  paragraph.setAttribute("id", `chart-content-p-${data.indicatorID}`);
 
   // Use authored indicator title and text (from Advanced Custom Fields options)
   // if they exist
-  if (chartContainer.dataset[data.indicator_id]) {
-    const indicatorData = JSON.parse(chartContainer.dataset[data.indicator_id]);
+  if (chartContainer.dataset[data.indicatorID]) {
+    const indicatorData = JSON.parse(chartContainer.dataset[data.indicatorID]);
     header.innerHTML = indicatorData.title;
     paragraph.innerHTML = indicatorData.description;
   }
@@ -393,6 +393,7 @@ function domainDataBuilder() {
   if (subDomainData && subDomainData.admin) {
     subDomainData.admin.forEach(dataItem => {
       // console.log("ADMIN DATA ITEM: ", dataItem);
+      chartElementDivBuilder(dataItem, adminChartContainer);
       const chartData = { data: subDomainData.admin, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
       google.charts.setOnLoadCallback(() => drawChartAdmin(chartData));
     });
@@ -400,6 +401,7 @@ function domainDataBuilder() {
 
   if (subDomainData && subDomainData.census) {
     subDomainData.census.forEach(dataItem => {
+      chartElementDivBuilder(dataItem, censusChartContainer);
       const chartData = { data: subDomainData.census, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
       google.charts.setOnLoadCallback(() => drawChartCensus(chartData));
     });
@@ -407,6 +409,7 @@ function domainDataBuilder() {
 
   if (subDomainData && subDomainData.survey) {
     subDomainData.survey.forEach(dataItem => {
+      chartElementDivBuilder(dataItem, surveyChartContainer);
       const chartData = { data: subDomainData.survey, indicatorId: dataItem.indicatorID, source: dataItem.fileRef };
       google.charts.setOnLoadCallback(() => drawChartSurvey(chartData));
     });
@@ -531,8 +534,6 @@ const drawChartAdmin = async (domainObj) => {
   let dataArrayMapped = [];
   let quarters = [];
 
-  chartElementDivBuilder(filteredData[0], adminChartContainer);
-
   adminChartContainer.style.display = "block";
 
   const dataTable = new google.visualization.DataTable();
@@ -645,8 +646,6 @@ const drawChartCensus = async (domainObj) => {
   const labeledData = labelData(dataRequest);
   const filteredData = filterData({ data: labeledData, indicatorId: indicatorId, type: "census" });
 
-  chartElementDivBuilder(filteredData[0], censusChartContainer);
-
   censusChartContainer.style.display = "block";
 
   const eyebrow = document.getElementById(`chart-content-eyebrow-${indicatorId}`);
@@ -705,8 +704,6 @@ const drawChartSurvey = async (domainObj) => {
   const surveyAllData = await fetchTextFile(surveyAllDataPath);
   const surveyAllLabeledData = labelData(surveyAllData);
   const surveyAllFilteredData = filterData({ data: surveyAllLabeledData, indicatorId: indicatorId, type: "survey" });
-
-  chartElementDivBuilder(surveyAllFilteredData[0], surveyChartContainer);
 
   surveyChartContainer.style.display = "block";
 
