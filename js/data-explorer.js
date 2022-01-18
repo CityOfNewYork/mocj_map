@@ -138,7 +138,7 @@ communityDropdown.addEventListener("change", () => {
   if (dataExplorerHeader.dataset[`${selectedCommunity.toLowerCase()}Image`]) {
     dataExplorerHeader.style.setProperty("--background-image", `url('${dataExplorerHeader.dataset[`${selectedCommunity.toLowerCase()}Image`]}')`);
   } else {
-    dataExplorerHeader.style.removeProperty("--background-image");
+    dataExplorerHeader.style.setProperty("--background-image", `url('${dataExplorerHeader.dataset.defaultImage}')`);
   }
 
   communityName = communityDropdown.options[communityDropdown.selectedIndex].text;

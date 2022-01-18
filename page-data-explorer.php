@@ -21,6 +21,8 @@ get_header();
 
 	<div class="container-fluid">
 		<div class="data-explorer__header" id="js-data-explorer-header"
+			data-default-image="<?php echo get_template_directory_uri() . '/images/unsplash.png'; ?>"
+			style="--fallback-image: url(<?php echo get_template_directory_uri() . '/images/unsplash.png'; ?>)"
 			<?php
 			if ( $neighborhood_meta ) {
 				foreach ( $neighborhood_meta as $neighborhood ) {

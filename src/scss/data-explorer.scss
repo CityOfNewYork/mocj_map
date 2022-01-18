@@ -172,7 +172,7 @@ p {
 .data-explorer__header {
   display: flex;
   flex-wrap: wrap;
-  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), var(--background-image, url('../../images/unsplash.png')), url('../../images/unsplash.png');
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), var(--background-image, linear-gradient(transparent, transparent)), var(--fallback-image);
   background-size: cover;
   font-size: 16px;
   line-height: 1.4;
